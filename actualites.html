@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Actualités 2026 — Mairie de Margency</title>
+<meta name="description" content="Toutes les actualités 2026 de la commune de Margency (95580).">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/site/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/site/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MAIRIE DE MARGENCY — Actualités
+   Même design system que index.html / services.html
+   ============================================================ */
+:root{
+  --ink:#0b1a24; --ink-soft:#3d5563; --ink-mute:#5a7180;
+  --brand:#0f766e; --brand-2:#0ea5a2; --accent:#9e5527; --sky:#3b82f6;
+  --bg:#eef4f3;
+  --glass-bg:rgba(255,255,255,.42);
+  --glass-bg-strong:rgba(255,255,255,.62);
+  --glass-brd:rgba(255,255,255,.65);
+  --glass-shadow:0 8px 32px rgba(9,42,54,.13), 0 2px 8px rgba(9,42,54,.06);
+  --glass-inner:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.25);
+  --blur:blur(22px) saturate(180%);
+  --r-sm:14px; --r-md:22px; --r-lg:30px; --r-xl:40px; --r-pill:999px;
+  --maxw:1240px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+img{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+h1,h2,h3,h4{margin:0; line-height:1.14; font-weight:600; letter-spacing:-.02em}
+p{margin:0}
+.wrap{width:min(100% - 40px, var(--maxw)); margin-inline:auto}
+.eyebrow{font-size:.72rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--brand); display:flex; align-items:center; gap:10px}
+.eyebrow::before{content:""; width:26px; height:1.5px; background:currentColor; opacity:.5}
+
+/* fond */
+.aurora{position:fixed; inset:0; z-index:-2; overflow:hidden; pointer-events:none}
+.blob{position:absolute; border-radius:50%; filter:blur(90px); opacity:.55}
+.b1{width:640px;height:640px;background:radial-gradient(circle,#5eead4,#0ea5a2 60%);top:-240px;left:-160px;animation:float1 24s ease-in-out infinite}
+.b2{width:560px;height:560px;background:radial-gradient(circle,#93c5fd,#3b82f6 65%);top:-100px;right:-180px;animation:float2 30s ease-in-out infinite}
+.b3{width:520px;height:520px;background:radial-gradient(circle,#fed7aa,#f59e6b 65%);top:620px;left:36%;opacity:.36;animation:float3 27s ease-in-out infinite}
+.b4{width:600px;height:600px;background:radial-gradient(circle,#a7f3d0,#34d399 65%);top:1240px;right:-200px;opacity:.32;animation:float1 33s ease-in-out infinite}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E")}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(70px,60px) scale(1.12)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-80px,50px) scale(1.08)}}
+@keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-70px) scale(1.15)}}
+
+/* liquid glass */
+.glass{position:relative; background:var(--glass-bg);
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-brd);
+  box-shadow:var(--glass-shadow), var(--glass-inner);
+  border-radius:var(--r-lg); overflow:hidden; isolation:isolate}
+.glass::before{content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(135deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 60%, rgba(255,255,255,.22) 100%)}
+.glass::after{content:""; position:absolute; z-index:0; pointer-events:none; inset:-1px;
+  opacity:0; transition:opacity .45s var(--ease);
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.6), transparent 62%)}
+.glass:hover::after{opacity:1}
+.glass > *{position:relative; z-index:1}
+
+/* boutons */
+.btn{--pad:.9rem 1.5rem; display:inline-flex; align-items:center; gap:.6rem; padding:var(--pad);
+  border-radius:var(--r-pill); font-weight:600; font-size:.94rem; cursor:pointer;
+  border:1px solid transparent; position:relative; overflow:hidden; isolation:isolate;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .3s; white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none;transition:transform .35s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn:hover svg{transform:translateX(3px)}
+.btn-glass{background:var(--glass-bg-strong); color:var(--ink);
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  border-color:var(--glass-brd); box-shadow:0 6px 22px rgba(9,42,54,.12), var(--glass-inner)}
+.btn-glass:hover{background:rgba(255,255,255,.8); box-shadow:0 12px 34px rgba(9,42,54,.18), var(--glass-inner)}
+.btn-solid{background:linear-gradient(140deg,#14867d,#0b5f58); color:#fff;
+  box-shadow:0 8px 26px rgba(15,118,110,.4), inset 0 1px 0 rgba(255,255,255,.32)}
+.btn-solid:hover{box-shadow:0 14px 38px rgba(15,118,110,.5), inset 0 1px 0 rgba(255,255,255,.32)}
+.btn-back svg{transition:transform .35s var(--ease)}
+.btn-back:hover svg{transform:translateX(-4px)}
+
+/* header */
+.topbar{font-size:.8rem; color:var(--ink-soft); padding:.55rem 0;
+  border-bottom:1px solid rgba(255,255,255,.5); background:rgba(255,255,255,.3);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px)}
+.topbar .wrap{display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap}
+.topbar-l{display:flex; gap:1.4rem; align-items:center}
+.topbar-item{display:flex; align-items:center; gap:.45rem}
+.topbar-item svg{width:14px;height:14px;color:var(--brand)}
+.topbar a:hover{color:var(--brand)}
+/* statut de la mairie : gris le temps du calcul, puis vert / orange / rouge (js/horaires.js) */
+.pulse{--dot:148,163,184; width:7px;height:7px;border-radius:50%;flex:none;
+  background:rgb(var(--dot)); box-shadow:0 0 0 0 rgba(var(--dot),.6);
+  animation:pulse 2.4s infinite; transition:background .4s}
+.pulse.vert{--dot:34,197,94}
+.pulse.orange{--dot:245,158,11}
+.pulse.rouge{--dot:239,68,68; animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(var(--dot),0)}100%{box-shadow:0 0 0 0 rgba(var(--dot),0)}}
+header.site{position:sticky; top:0; z-index:100}
+.navbar{margin-top:14px; padding:.55rem .55rem .55rem 1.35rem; border-radius:var(--r-pill);
+  display:flex; align-items:center; gap:1.1rem; transition:box-shadow .4s var(--ease), background .4s}
+header.site.scrolled .navbar{background:rgba(255,255,255,.68); box-shadow:0 10px 40px rgba(9,42,54,.16), var(--glass-inner)}
+.brand{display:flex; align-items:center; gap:.75rem; flex:none}
+.crest{width:42px;height:42px;border-radius:13px; flex:none;
+  background:linear-gradient(145deg,#14867d,#0b5f58); display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 18px rgba(15,118,110,.38), inset 0 1px 0 rgba(255,255,255,.4)}
+.crest svg{width:22px;height:22px}
+.brand-txt strong{display:block;font-size:1rem;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.brand-txt span{display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+nav.main{display:flex; gap:.15rem; margin-left:auto; align-items:center}
+nav.main > a{padding:.62rem .82rem; border-radius:var(--r-pill); font-size:.875rem; font-weight:500;
+  color:var(--ink-soft); transition:color .25s, background .3s}
+nav.main > a:hover, nav.main > a.active{color:var(--ink); background:rgba(255,255,255,.6)}
+.nav-actions{display:flex; gap:.5rem; align-items:center; flex:none}
+.icon-btn{width:42px;height:42px;border-radius:50%; display:grid;place-items:center; cursor:pointer;
+  background:rgba(255,255,255,.55); border:1px solid var(--glass-brd); color:var(--ink-soft);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8); transition:.3s var(--ease)}
+.icon-btn:hover{background:#fff; color:var(--brand); transform:translateY(-2px)}
+.icon-btn svg{width:19px;height:19px}
+.burger{display:none}
+
+/* ============================================================
+   EN-TÊTE
+   ============================================================ */
+.page-head{padding:52px 0 24px}
+.crumb{display:flex; align-items:center; gap:.5rem; font-size:.82rem; color:var(--ink-mute); margin-bottom:1.1rem; flex-wrap:wrap}
+.crumb a:hover{color:var(--brand)}
+.crumb svg{width:14px;height:14px;opacity:.5;flex:none}
+.crumb b{color:var(--ink); font-weight:600}
+.page-head h1{font-size:clamp(2.2rem,4vw,3.4rem); letter-spacing:-.035em; margin-top:.7rem}
+.page-head h1 em{font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-weight:400;
+  background:linear-gradient(120deg,#0f766e,#3b82f6); -webkit-background-clip:text; background-clip:text; color:transparent}
+.page-head .lead{margin-top:1rem; font-size:1.05rem; color:var(--ink-soft); max-width:58ch}
+
+/* filtres par mois */
+.filters{display:flex; gap:.5rem; margin-top:1.8rem; flex-wrap:wrap}
+.fbtn{padding:.55rem 1.05rem; border-radius:var(--r-pill); font-size:.85rem; font-weight:600;
+  cursor:pointer; font-family:inherit; color:var(--ink-soft);
+  background:rgba(255,255,255,.45); border:1px solid var(--glass-brd);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+  transition:transform .35s var(--ease), background .3s, color .3s, box-shadow .35s var(--ease)}
+.fbtn:hover{transform:translateY(-2px); background:rgba(255,255,255,.8); color:var(--ink)}
+.fbtn.on{background:linear-gradient(140deg,#14867d,#0b5f58); color:#fff; border-color:transparent;
+  box-shadow:0 8px 22px rgba(15,118,110,.36), inset 0 1px 0 rgba(255,255,255,.3)}
+
+/* ============================================================
+   VUES
+   ============================================================ */
+.view{display:none}
+.view.on{display:block; animation:viewIn .5s var(--ease) both}
+@keyframes viewIn{from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none}}
+.views{padding-bottom:60px}
+
+/* ---------- grille d'articles ---------- */
+.grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px}
+.card{
+  border-radius:var(--r-lg); display:flex; flex-direction:column; cursor:pointer;
+  animation:cardIn .55s var(--ease) both;
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease), background .4s;
+}
+@keyframes cardIn{from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none}}
+.card:hover{transform:translateY(-8px) scale(1.012); background:rgba(255,255,255,.7);
+  box-shadow:0 28px 58px rgba(9,42,54,.2), var(--glass-inner)}
+.card:focus-visible{outline:2px solid var(--brand); outline-offset:3px}
+.card.feature{grid-column:span 2; flex-direction:row}
+
+/* la vignette : l'image réelle, sertie dans le verre */
+.thumb{position:relative; overflow:hidden; flex:none; height:220px;
+  background:linear-gradient(150deg,#0f766e,#124e6b)}
+.card.feature .thumb{width:48%; height:auto; min-height:330px}
+.thumb img{width:100%; height:100%; object-fit:cover; transition:transform .9s var(--ease)}
+.card:hover .thumb img{transform:scale(1.06)}
+/* voile de verre sur l'image : dégradé + reflet, pour l'intégrer au thème */
+.thumb::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(9,42,54,.05) 0%, rgba(9,42,54,0) 42%, rgba(9,42,54,.34) 100%),
+             linear-gradient(128deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,0) 46%)}
+.thumb .tags{position:absolute; top:14px; left:14px; display:flex; gap:.4rem; flex-wrap:wrap; z-index:2; max-width:80%}
+.tag{padding:.34rem .78rem; border-radius:var(--r-pill); font-size:.68rem; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase; color:#fff;
+  background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.42);
+  backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 4px 12px rgba(0,0,0,.14);
+  display:inline-flex; align-items:center; gap:.35rem; line-height:1.4}
+.tag svg{width:12px;height:12px;flex:none;opacity:.9}
+/* la date, en pastille de verre posée en bas de l'image */
+.thumb .when{position:absolute; left:14px; bottom:14px; z-index:2;
+  padding:.4rem .85rem; border-radius:var(--r-pill); color:#fff; font-size:.76rem; font-weight:600;
+  background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.36);
+  backdrop-filter:blur(18px) saturate(170%); -webkit-backdrop-filter:blur(18px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42), 0 6px 18px rgba(0,0,0,.2);
+  display:flex; align-items:center; gap:.4rem}
+.thumb .when svg{width:13px;height:13px;opacity:.85}
+.c-body{padding:22px 24px 24px; display:flex; flex-direction:column; gap:.6rem; flex:1}
+.card.feature .c-body{padding:34px 34px 32px; justify-content:center}
+.card h3{font-size:1.1rem; line-height:1.3}
+.card.feature h3{font-size:1.7rem; letter-spacing:-.03em}
+.card p{font-size:.88rem; color:var(--ink-soft)}
+.card.feature p{font-size:.98rem}
+.ev-line{display:flex; align-items:center; gap:.45rem; font-size:.8rem; font-weight:600; color:var(--accent)}
+.ev-line svg{width:14px;height:14px}
+.c-link{margin-top:auto; padding-top:1rem; font-size:.85rem; font-weight:600; color:var(--brand);
+  display:flex; align-items:center; gap:.4rem; transition:gap .35s var(--ease)}
+.card:hover .c-link{gap:.72rem}
+.c-link svg{width:15px;height:15px}
+
+/* ============================================================
+   VUE DÉTAIL
+   ============================================================ */
+.backbar{margin-bottom:18px}
+.art-hero{border-radius:var(--r-xl); overflow:hidden; position:relative; margin-bottom:22px;
+  box-shadow:0 24px 60px rgba(9,42,54,.24)}
+.art-hero img{width:100%; max-height:460px; object-fit:cover}
+.art-hero::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(9,42,54,.12) 0%, rgba(9,42,54,0) 30%, rgba(9,42,54,.62) 100%),
+             linear-gradient(128deg, rgba(255,255,255,.26) 0%, rgba(255,255,255,0) 44%)}
+.art-hero-in{position:absolute; left:0; right:0; bottom:0; z-index:2; padding:28px 32px;
+  display:flex; align-items:flex-end; gap:1rem; flex-wrap:wrap}
+.art-hero-in .meta{display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:.8rem}
+.art-hero-in h1{color:#fff; font-size:clamp(1.6rem,3.2vw,2.6rem); letter-spacing:-.03em;
+  text-shadow:0 2px 20px rgba(0,0,0,.35); max-width:22ch}
+
+.art-body{padding:38px 44px; border-radius:var(--r-lg); max-width:820px; margin:0 auto}
+.art-body p{margin:0 0 1.05rem; color:var(--ink-soft); font-size:1.02rem; line-height:1.75}
+.art-body h2,.art-body h3,.art-body h4{margin:2rem 0 .9rem; color:var(--ink); font-size:1.25rem}
+.art-body strong,.art-body b{color:var(--ink); font-weight:600}
+.art-body ul,.art-body ol{margin:0 0 1.2rem; padding-left:1.3rem; color:var(--ink-soft)}
+.art-body li{margin-bottom:.5rem}
+.art-body a{color:var(--brand); font-weight:600; text-decoration:underline; text-underline-offset:3px}
+.art-body a:hover{color:#0b5f58}
+.art-body img{border-radius:var(--r-md); margin:1.6rem 0; box-shadow:0 14px 34px rgba(9,42,54,.16)}
+.art-body br + br{content:""; display:block; height:.6rem}
+.art-foot{display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  margin-top:2rem; padding-top:1.6rem; border-top:1px solid rgba(11,26,36,.1); flex-wrap:wrap}
+.art-foot small{color:var(--ink-mute); font-size:.83rem}
+
+.more{margin-top:44px}
+.more h2{font-size:1.5rem; margin-bottom:1.2rem}
+
+.empty{padding:60px 30px; text-align:center; border-radius:var(--r-lg)}
+.empty h3{font-size:1.2rem}
+.empty p{color:var(--ink-soft); margin-top:.5rem; font-size:.92rem}
+
+/* footer */
+footer{margin-top:40px; background:#08181f; color:#a9c2cd; padding:56px 0 0}
+.f-grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:40px; padding-bottom:40px}
+footer h4{color:#fff; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; margin-bottom:1.1rem; font-weight:600}
+footer ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.6rem; font-size:.88rem}
+footer li a{transition:color .25s, padding-left .25s}
+footer li a:hover{color:#5eead4; padding-left:4px}
+.f-brand{display:flex; align-items:center; gap:.8rem; margin-bottom:1.1rem}
+.f-brand .crest{box-shadow:none}
+.f-brand strong{color:#fff; font-size:1.05rem}
+.f-about{font-size:.88rem; max-width:38ch; line-height:1.65}
+.f-bottom{border-top:1px solid rgba(255,255,255,.1); padding:22px 0; font-size:.8rem;
+  display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; color:#7d99a6}
+.f-bottom a:hover{color:#5eead4}
+
+/* menu mobile */
+.sheet{position:fixed; inset:0; z-index:200; display:none; padding:16px;
+  background:rgba(238,244,243,.7); backdrop-filter:blur(26px); -webkit-backdrop-filter:blur(26px)}
+.sheet.open{display:block}
+.sheet-inner{padding:26px; border-radius:var(--r-lg); margin-top:70px}
+.sheet nav{display:flex; flex-direction:column; gap:.2rem}
+.sheet nav a{padding:.95rem .6rem; font-weight:500; border-bottom:1px solid rgba(11,26,36,.08)}
+.sheet .close{position:absolute; top:28px; right:28px}
+
+/* responsive */
+@media (max-width:1100px){
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .f-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media (max-width:900px){
+  nav.main{display:none}
+  .burger{display:grid}
+  .topbar-l{display:none}
+  .card.feature{flex-direction:column}
+  .card.feature .thumb{width:100%; min-height:0; height:240px}
+  .art-body{padding:28px 24px}
+}
+@media (max-width:760px){
+  .navbar{gap:.6rem; padding-left:1rem}
+  .nav-actions .btn-solid .lbl{display:none}
+  .nav-actions .btn-solid{--pad:0; width:42px; height:42px; gap:0; justify-content:center; border-radius:50%}
+  .nav-actions .btn-solid svg{width:19px;height:19px}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .card.feature{grid-column:span 1}
+  .f-grid{grid-template-columns:minmax(0,1fr); gap:30px}
+  .brand-txt span{display:none}
+  .page-head{padding:34px 0 18px}
+  .art-hero-in{padding:20px}
+}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
+
+/* ---------- blason de la commune ---------- */
+.blason{height:48px; width:auto; flex:none; display:block;
+  filter:drop-shadow(0 4px 10px rgba(9,42,54,.28)) drop-shadow(0 1px 1px rgba(9,42,54,.2));
+  transition:transform .45s var(--ease)}
+.brand:hover .blason{transform:rotate(-4deg) scale(1.06)}
+.blason-lg{height:60px; filter:drop-shadow(0 6px 16px rgba(0,0,0,.45))}
+@media (max-width:760px){ .navbar .blason{height:40px} }
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+<div class="grain"></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-l">
+      <span class="topbar-item" id="statutMairie"><span class="pulse"></span> <span class="statut-txt">Horaires de la mairie</span></span>
+      <a class="topbar-item" href="tel:0134274040">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
+        01 34 27 40 40
+      </a>
+      <span class="topbar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        5 avenue Georges-Pompidou, 95580 Margency
+      </span>
+    </div>
+    <div class="topbar-l" style="display:flex">
+      <a href="vie-municipale.html#marches">Marchés publics</a>
+      <a href="compte-citoyen.html">Alertes SMS</a>
+      <a href="vie-municipale.html#mairie/ecrire">Nous écrire</a>
+    </div>
+  </div>
+</div>
+
+<header class="site" id="header">
+  <div class="wrap">
+    <div class="navbar glass">
+      <a class="brand" href="index.html">
+        <img class="blason" src="assets/site/blason-128.webp" width="44" height="48" alt="Blason de Margency">
+        <span class="brand-txt"><strong>Margency</strong><span>Val-d'Oise</span></span>
+      </a>
+      <nav class="main">
+          <a href="index.html">Accueil</a>
+          <a class="active" href="actualites.html">Actualités</a>
+          <a href="agenda.html">Agenda</a>
+          <a href="vie-municipale.html">Vie municipale</a>
+          <a href="vivre-a-margency.html">Vivre à Margency</a>
+          <a href="services.html">Tous les services</a>
+        </nav>
+      <div class="nav-actions">
+        <a class="btn btn-solid" href="compte-citoyen.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="lbl">Compte citoyen</span>
+        </a>
+        <button class="icon-btn burger" id="burger" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <div class="wrap">
+    <div class="sheet-inner glass">
+      <button class="icon-btn close" id="closeSheet" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <nav>
+            <a href="index.html">Accueil</a>
+            <a class="active" href="actualites.html">Actualités</a>
+            <a href="agenda.html">Agenda</a>
+            <a href="vie-municipale.html">Vie municipale</a>
+            <a href="enfance-education.html">Enfance &amp ; Éducation</a>
+            <a href="sport-loisirs-culture.html">Sport, Loisirs &amp ; Culture</a>
+            <a href="vivre-a-margency.html">Vivre à Margency</a>
+            <a href="environnement-urbanisme.html">Environnement &amp ; Urbanisme</a>
+            <a href="action-sociale.html">Action sociale</a>
+            <a href="conseil-municipal.html">Conseil municipal</a>
+            <a href="services.html">Tous les services</a>
+            <a href="compte-citoyen.html">Compte citoyen</a>
+          </nav>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb">
+        <a href="index.html">Accueil</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        <a href="actualites.html" id="crumbActus">Actualités</a>
+        <span id="crumbTail"></span>
+      </div>
+      <div class="eyebrow" id="pageEyebrow">Année 2026</div>
+      <h1 id="pageTitle">Les <em>actualités</em> de la commune</h1>
+      <p class="lead" id="pageLead">Retrouvez toutes les informations publiées par la municipalité en 2026, de la plus récente à la plus ancienne.</p>
+      <div class="filters" id="filters"></div>
+    </div>
+  </div>
+
+  <div class="views">
+    <div class="wrap">
+      <section class="view on" id="viewList">
+        <div class="grid" id="grid"></div>
+        <div class="empty glass" id="listEmpty" style="display:none">
+          <h3>Aucune actualité pour ce mois</h3>
+          <p>Choisissez un autre mois ou revenez à l'année complète.</p>
+        </div>
+      </section>
+
+      <section class="view" id="viewArticle">
+        <div class="backbar">
+          <button class="btn btn-glass btn-back" id="btnBack">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+            Toutes les actualités
+          </button>
+        </div>
+        <div id="artHero"></div>
+        <article class="art-body glass" id="artBody"></article>
+        <div class="more">
+          <h2>À lire également</h2>
+          <div class="grid" id="moreGrid"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand">
+          <img class="blason blason-lg" src="assets/site/blason-256.webp" width="55" height="60" alt="Blason de Margency">
+          <strong>Mairie de Margency</strong>
+        </div>
+        <p class="f-about">5, avenue Georges-Pompidou — 95580 Margency<br><span data-horaires-mairie>Lundi, mardi, vendredi : 8h30–12h et 13h30–17h.<br>Mercredi, jeudi, samedi : 8h30–11h45.</span></p>
+                <div class="socials">
+          <a class="soc" href="https://www.facebook.com/profile.php?id=100007993065299" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a class="soc" href="https://www.instagram.com/margency95580/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc" href="https://twitter.com/villedemargency" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg></a>
+        </div>
+        </div>
+        <div>
+          <h4>La commune</h4>
+          <ul>
+            <li><a href="services.html">Notre ville</a></li>
+            <li><a href="conseil-municipal.html#elus">Le conseil municipal</a></li>
+            <li><a href="conseil-municipal.html#seances">Comptes rendus</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="agenda.html">Agenda</a></li>
+            <li><a href="vie-municipale.html#magazines">Le bulletin municipal</a></li>
+            <li><a href="vie-municipale.html#marches">Marchés publics</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Tous les services</a></li>
+            <li><a href="vie-municipale.html#demarches">Démarches en ligne</a></li>
+            <li><a href="enfance-education.html#portail">Portail Famille</a></li>
+            <li><a href="environnement-urbanisme.html">Urbanisme</a></li>
+            <li><a href="action-sociale.html">Action sociale (CCAS)</a></li>
+            <li><a href="vie-municipale.html#dechets">Déchets &amp ; collecte</a></li>
+            <li><a href="compte-citoyen.html">Compte citoyen</a></li>
+            <li><a class="agent-link" href="gestion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Gérer le site</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pratique</h4>
+          <ul>
+            <li><a href="vie-municipale.html#mairie/ecrire">Nous contacter</a></li>
+            <li><a href="vivre-a-margency.html#salles">Réserver une salle</a></li>
+            <li><a href="sport-loisirs-culture.html#associations">Associations</a></li>
+            <li><a href="vivre-a-margency.html#commerces">Commerces</a></li>
+            <li><a href="vivre-a-margency.html">Nouvel arrivant</a></li>
+            <li><a href="services.html">Toutes les rubriques</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© <span data-annee>2026</span> Commune de Margency — Val-d'Oise. Tous droits réservés.</span>
+      <span style="display:flex;gap:1.4rem;flex-wrap:wrap">
+        <a href="mentions-legales.html#mentions">Mentions légales</a>
+        <a href="mentions-legales.html#accessibilite">Accessibilité : non conforme</a>
+        <a href="mentions-legales.html#donnees">Données personnelles</a>
+        <a href="https://commons.wikimedia.org/wiki/File:Blason_ville_fr_Margency_(Val-d%27Oise).svg" target="_blank" rel="noopener">Blason : Wikimedia Commons, CC BY-SA 3.0</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="data/actus.js"></script>
+<script>
+var ACTUS = (window.ACTUS || []).slice().sort(function(a,b){ return a.date < b.date ? 1 : -1; });
+var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+var CAL   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>';
+var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+
+/* ---------- une carte ---------- */
+function cardHTML(a, feature, i){
+  var tags = (a.tags||[]).map(function(t){
+    return '<span class="tag">'+esc(t.replace(/-/g,' '))+'</span>';
+  }).join('');
+  var ev = a.event ? '<span class="ev-line">'+CAL+esc(a.event)+'</span>' : '';
+  return '<a class="card glass'+(feature?' feature':'')+'" href="#'+a.slug+'" style="animation-delay:'+(Math.min(i,9)*55)+'ms">'+
+    '<span class="thumb">'+
+      '<img src="'+a.cover+'" alt="'+esc(a.title)+'" loading="lazy">'+
+      '<span class="tags">'+tags+'</span>'+
+      '<span class="when">'+CAL+esc(a.dateLabel)+'</span>'+
+    '</span>'+
+    '<span class="c-body">'+
+      ev+
+      '<h3>'+esc(a.title)+'</h3>'+
+      '<p>'+esc(a.excerpt)+'</p>'+
+      '<span class="c-link">Lire l\'article '+ARROW+'</span>'+
+    '</span>'+
+  '</a>';
+}
+
+/* ---------- liste ---------- */
+var currentMonth = 'all';
+
+function buildFilters(){
+  var months = [];
+  ACTUS.forEach(function(a){
+    var m = a.date.slice(5,7);
+    if(months.indexOf(m) === -1) months.push(m);
+  });
+  var html = '<button class="fbtn on" data-m="all">Toute l\'année</button>';
+  months.forEach(function(m){
+    var label = MOIS[parseInt(m,10)-1];
+    html += '<button class="fbtn" data-m="'+m+'">'+label.charAt(0).toUpperCase()+label.slice(1)+'</button>';
+  });
+  var box = document.getElementById('filters');
+  box.innerHTML = html;
+  box.addEventListener('click', function(e){
+    var b = e.target.closest('.fbtn'); if(!b) return;
+    currentMonth = b.dataset.m;
+    box.querySelectorAll('.fbtn').forEach(function(x){ x.classList.toggle('on', x === b); });
+    renderList();
+  });
+}
+
+function renderList(){
+  var list = ACTUS.filter(function(a){
+    return currentMonth === 'all' || a.date.slice(5,7) === currentMonth;
+  });
+  document.getElementById('grid').innerHTML = list.map(function(a,i){
+    return cardHTML(a, currentMonth === 'all' && i === 0, i);
+  }).join('');
+  document.getElementById('listEmpty').style.display = list.length ? 'none' : 'block';
+  document.getElementById('pageEyebrow').textContent =
+    list.length + (list.length>1 ? ' actualités' : ' actualité') +
+    (currentMonth === 'all' ? ' en 2026' : ' en ' + MOIS[parseInt(currentMonth,10)-1] + ' 2026');
+}
+
+/* ---------- détail ---------- */
+function renderArticle(a){
+  var tags = (a.tags||[]).map(function(t){
+    return '<span class="tag">'+esc(t.replace(/-/g,' '))+'</span>';
+  }).join('');
+  var when = a.period ? a.period : a.dateLabel;
+  document.getElementById('artHero').innerHTML =
+    '<div class="art-hero">'+
+      '<img src="'+a.cover+'" alt="'+esc(a.title)+'">'+
+      '<div class="art-hero-in">'+
+        '<div>'+
+          '<div class="meta">'+tags+'<span class="tag">'+CAL+' '+esc(when)+'</span></div>'+
+          '<h1>'+esc(a.title)+'</h1>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+
+  document.getElementById('artBody').innerHTML =
+    a.body +
+    '<div class="art-foot">'+
+      '<small>Publié le '+esc(a.dateLabel)+' par la Mairie de Margency</small>'+
+      '<a class="btn btn-glass" href="actualites.html">Toutes les actualités '+ARROW+'</a>'+
+    '</div>';
+
+  var others = ACTUS.filter(function(x){ return x.slug !== a.slug; }).slice(0,3);
+  document.getElementById('moreGrid').innerHTML = others.map(function(x,i){ return cardHTML(x,false,i); }).join('');
+
+  document.getElementById('pageEyebrow').textContent = 'Actualité · ' + a.dateLabel;
+  document.getElementById('pageTitle').innerHTML = esc(a.title);
+  document.getElementById('pageLead').textContent = a.excerpt;
+  document.getElementById('crumbTail').innerHTML =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="width:14px;height:14px;opacity:.5"><path d="m9 6 6 6-6 6"/></svg> <b>'+esc(a.title)+'</b>';
+  document.title = a.title + ' — Mairie de Margency';
+}
+
+function resetHead(){
+  document.getElementById('pageTitle').innerHTML = 'Les <em>actualités</em> de la commune';
+  document.getElementById('pageLead').textContent = "Retrouvez toutes les informations publiées par la municipalité en 2026, de la plus récente à la plus ancienne.";
+  document.getElementById('crumbTail').innerHTML = '';
+  document.title = 'Actualités 2026 — Mairie de Margency';
+}
+
+function show(id){
+  ['viewList','viewArticle'].forEach(function(v){
+    document.getElementById(v).classList.toggle('on', v === id);
+  });
+  document.getElementById('filters').style.display = (id === 'viewList') ? 'flex' : 'none';
+}
+
+function route(){
+  var slug = decodeURIComponent(location.hash.replace('#',''));
+  var a = ACTUS.filter(function(x){ return x.slug === slug; })[0];
+  if(a){ renderArticle(a); show('viewArticle'); }
+  else { resetHead(); renderList(); show('viewList'); }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+window.addEventListener('hashchange', route);
+document.getElementById('btnBack').addEventListener('click', function(){
+  if(location.hash && history.length > 1) history.back(); else location.hash = '';
+});
+
+/* ---------- halo sur le verre ---------- */
+function bindGlow(){
+  document.querySelectorAll('.glass').forEach(function(el){
+    if(el.dataset.glow) return;
+    el.dataset.glow = '1';
+    el.addEventListener('pointermove', function(e){
+      var r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+}
+new MutationObserver(bindGlow).observe(document.body, {childList:true, subtree:true});
+
+/* ---------- header / menu ---------- */
+var header = document.getElementById('header');
+function onScroll(){ header.classList.toggle('scrolled', window.scrollY > 12); }
+onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+var sheet = document.getElementById('sheet');
+document.getElementById('burger').addEventListener('click', function(){ sheet.classList.add('open'); });
+document.getElementById('closeSheet').addEventListener('click', function(){ sheet.classList.remove('open'); });
+sheet.addEventListener('click', function(e){ if(e.target === sheet) sheet.classList.remove('open'); });
+
+/* ---------- démarrage ---------- */
+buildFilters();
+route();
+bindGlow();
+</script>
+<script src="js/horaires.js"></script>
+</body>
+</html>

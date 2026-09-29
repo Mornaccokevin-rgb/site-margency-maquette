@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tous les services — Mairie de Margency</title>
+<meta name="description" content="L'ensemble des services de la commune de Margency (95580), classés par grande rubrique.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/site/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/site/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MAIRIE DE MARGENCY — Tous les services
+   Reprend strictement le design system de index.html
+   ============================================================ */
+:root{
+  --ink:#0b1a24; --ink-soft:#3d5563; --ink-mute:#5a7180;
+  --brand:#0f766e; --brand-2:#0ea5a2; --accent:#9e5527; --sky:#3b82f6;
+  --bg:#eef4f3; --surface:#ffffff;
+  --glass-bg:rgba(255,255,255,.42);
+  --glass-bg-strong:rgba(255,255,255,.62);
+  --glass-brd:rgba(255,255,255,.65);
+  --glass-shadow:0 8px 32px rgba(9,42,54,.13), 0 2px 8px rgba(9,42,54,.06);
+  --glass-inner:inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.25);
+  --blur:blur(22px) saturate(180%);
+  --r-sm:14px; --r-md:22px; --r-lg:30px; --r-xl:40px; --r-pill:999px;
+  --maxw:1240px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+img{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+h1,h2,h3,h4{margin:0; line-height:1.12; font-weight:600; letter-spacing:-.02em}
+p{margin:0}
+.wrap{width:min(100% - 40px, var(--maxw)); margin-inline:auto}
+.eyebrow{font-size:.72rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--brand); display:flex; align-items:center; gap:10px}
+.eyebrow::before{content:""; width:26px; height:1.5px; background:currentColor; opacity:.5}
+
+/* ---------- fond ---------- */
+.aurora{position:fixed; inset:0; z-index:-2; overflow:hidden; pointer-events:none}
+.blob{position:absolute; border-radius:50%; filter:blur(90px); opacity:.55}
+.b1{width:640px;height:640px;background:radial-gradient(circle,#5eead4,#0ea5a2 60%);top:-240px;left:-160px;animation:float1 24s ease-in-out infinite}
+.b2{width:560px;height:560px;background:radial-gradient(circle,#93c5fd,#3b82f6 65%);top:-100px;right:-180px;animation:float2 30s ease-in-out infinite}
+.b3{width:520px;height:520px;background:radial-gradient(circle,#fed7aa,#f59e6b 65%);top:560px;left:36%;opacity:.38;animation:float3 27s ease-in-out infinite}
+.b4{width:600px;height:600px;background:radial-gradient(circle,#a7f3d0,#34d399 65%);top:1160px;right:-200px;opacity:.33;animation:float1 33s ease-in-out infinite}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E")}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(70px,60px) scale(1.12)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-80px,50px) scale(1.08)}}
+@keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-70px) scale(1.15)}}
+
+/* ---------- liquid glass ---------- */
+.glass{position:relative; background:var(--glass-bg);
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-brd);
+  box-shadow:var(--glass-shadow), var(--glass-inner);
+  border-radius:var(--r-lg); overflow:hidden; isolation:isolate}
+.glass::before{content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(135deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 60%, rgba(255,255,255,.22) 100%)}
+.glass::after{content:""; position:absolute; z-index:0; pointer-events:none; inset:-1px;
+  opacity:0; transition:opacity .45s var(--ease);
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.6), transparent 62%)}
+.glass:hover::after{opacity:1}
+.glass > *{position:relative; z-index:1}
+
+/* ---------- boutons ---------- */
+.btn{--pad:.9rem 1.5rem; display:inline-flex; align-items:center; gap:.6rem; padding:var(--pad);
+  border-radius:var(--r-pill); font-weight:600; font-size:.94rem; cursor:pointer;
+  border:1px solid transparent; position:relative; overflow:hidden; isolation:isolate;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .3s; white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none;transition:transform .35s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn:hover svg:not(.no-slide){transform:translateX(3px)}
+.btn-glass{background:var(--glass-bg-strong); color:var(--ink);
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  border-color:var(--glass-brd); box-shadow:0 6px 22px rgba(9,42,54,.12), var(--glass-inner)}
+.btn-glass::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(140deg,rgba(255,255,255,.8),rgba(255,255,255,0) 55%)}
+.btn-glass:hover{background:rgba(255,255,255,.8); box-shadow:0 12px 34px rgba(9,42,54,.18), var(--glass-inner)}
+.btn-solid{background:linear-gradient(140deg,#14867d,#0b5f58); color:#fff;
+  box-shadow:0 8px 26px rgba(15,118,110,.4), inset 0 1px 0 rgba(255,255,255,.32)}
+.btn-solid:hover{box-shadow:0 14px 38px rgba(15,118,110,.5), inset 0 1px 0 rgba(255,255,255,.32)}
+.btn-lg{--pad:1.05rem 1.9rem; font-size:1rem}
+.btn-back svg{transition:transform .35s var(--ease)}
+.btn-back:hover svg{transform:translateX(-4px)}
+
+/* ---------- header (identique à l'accueil) ---------- */
+.topbar{font-size:.8rem; color:var(--ink-soft); padding:.55rem 0;
+  border-bottom:1px solid rgba(255,255,255,.5); background:rgba(255,255,255,.3);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px)}
+.topbar .wrap{display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap}
+.topbar-l{display:flex; gap:1.4rem; align-items:center}
+.topbar-item{display:flex; align-items:center; gap:.45rem}
+.topbar-item svg{width:14px;height:14px;color:var(--brand)}
+.topbar a:hover{color:var(--brand)}
+/* statut de la mairie : gris le temps du calcul, puis vert / orange / rouge (js/horaires.js) */
+.pulse{--dot:148,163,184; width:7px;height:7px;border-radius:50%;flex:none;
+  background:rgb(var(--dot)); box-shadow:0 0 0 0 rgba(var(--dot),.6);
+  animation:pulse 2.4s infinite; transition:background .4s}
+.pulse.vert{--dot:34,197,94}
+.pulse.orange{--dot:245,158,11}
+.pulse.rouge{--dot:239,68,68; animation:none}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(var(--dot),0)}100%{box-shadow:0 0 0 0 rgba(var(--dot),0)}}
+
+header.site{position:sticky; top:0; z-index:100}
+.navbar{margin-top:14px; padding:.55rem .55rem .55rem 1.35rem; border-radius:var(--r-pill);
+  display:flex; align-items:center; gap:1.1rem; transition:box-shadow .4s var(--ease), background .4s}
+header.site.scrolled .navbar{background:rgba(255,255,255,.68); box-shadow:0 10px 40px rgba(9,42,54,.16), var(--glass-inner)}
+.brand{display:flex; align-items:center; gap:.75rem; flex:none}
+.crest{width:42px;height:42px;border-radius:13px; flex:none;
+  background:linear-gradient(145deg,#14867d,#0b5f58); display:grid;place-items:center;color:#fff;
+  box-shadow:0 6px 18px rgba(15,118,110,.38), inset 0 1px 0 rgba(255,255,255,.4)}
+.crest svg{width:22px;height:22px}
+.brand-txt strong{display:block;font-size:1rem;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.brand-txt span{display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+nav.main{display:flex; gap:.15rem; margin-left:auto; align-items:center}
+nav.main > a{padding:.62rem .82rem; border-radius:var(--r-pill); font-size:.875rem; font-weight:500;
+  color:var(--ink-soft); transition:color .25s, background .3s}
+nav.main > a:hover, nav.main > a.active{color:var(--ink); background:rgba(255,255,255,.6)}
+.nav-actions{display:flex; gap:.5rem; align-items:center; flex:none}
+.icon-btn{width:42px;height:42px;border-radius:50%; display:grid;place-items:center; cursor:pointer;
+  background:rgba(255,255,255,.55); border:1px solid var(--glass-brd); color:var(--ink-soft);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8); transition:.3s var(--ease)}
+.icon-btn:hover{background:#fff; color:var(--brand); transform:translateY(-2px)}
+.icon-btn svg{width:19px;height:19px}
+.burger{display:none}
+
+/* ============================================================
+   EN-TÊTE DE PAGE
+   ============================================================ */
+.page-head{padding:52px 0 26px}
+.crumb{display:flex; align-items:center; gap:.5rem; font-size:.82rem; color:var(--ink-mute); margin-bottom:1.1rem}
+.crumb a:hover{color:var(--brand)}
+.crumb svg{width:14px;height:14px;opacity:.5}
+.crumb b{color:var(--ink); font-weight:600}
+.page-head h1{font-size:clamp(2.2rem,4vw,3.4rem); letter-spacing:-.035em; margin-top:.7rem}
+.page-head h1 em{font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-weight:400;
+  background:linear-gradient(120deg,#0f766e,#3b82f6); -webkit-background-clip:text; background-clip:text; color:transparent}
+.page-head .lead{margin-top:1rem; font-size:1.05rem; color:var(--ink-soft); max-width:58ch}
+
+/* recherche */
+.searchbar{display:flex; align-items:center; gap:.9rem; padding:.5rem .5rem .5rem 1.3rem;
+  border-radius:var(--r-pill); margin-top:1.8rem; max-width:600px}
+.searchbar svg.mag{width:19px;height:19px;color:var(--ink-mute);flex:none}
+.searchbar input{flex:1; border:none; background:none; outline:none; font:inherit; font-size:.95rem;
+  color:var(--ink); padding:.5rem 0}
+.searchbar input::placeholder{color:var(--ink-mute)}
+.search-clear{display:none}
+.search-clear.on{display:grid}
+
+/* ============================================================
+   VUE 1 — LES GRANDES RUBRIQUES
+   ============================================================ */
+.views{position:relative; padding-bottom:60px}
+.view{display:none}
+.view.on{display:block; animation:viewIn .55s var(--ease) both}
+@keyframes viewIn{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
+
+.cat-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px}
+.cat{
+  --glow:rgba(15,118,110,.3);
+  padding:30px 28px 26px; border-radius:var(--r-lg); cursor:pointer; text-align:left;
+  display:flex; flex-direction:column; gap:.9rem; font:inherit; color:inherit;
+  border:1px solid var(--glass-brd); background:var(--glass-bg);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease), background .4s, border-color .4s;
+}
+.cat:hover{
+  transform:translateY(-8px) scale(1.018);
+  background:rgba(255,255,255,.74);
+  border-color:rgba(255,255,255,.9);
+  box-shadow:0 26px 56px rgba(9,42,54,.18), 0 0 0 1px rgba(255,255,255,.5), 0 14px 40px var(--glow), var(--glass-inner);
+}
+.cat:focus-visible{outline:2px solid var(--brand); outline-offset:3px}
+.cat-top{display:flex; align-items:flex-start; justify-content:space-between; gap:1rem}
+.cat-ico{width:56px;height:56px;border-radius:18px; display:grid;place-items:center; color:#fff; flex:none;
+  background:linear-gradient(145deg,var(--c1),var(--c2));
+  box-shadow:0 10px 24px var(--glow), inset 0 1px 0 rgba(255,255,255,.42);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease)}
+.cat:hover .cat-ico{transform:scale(1.1) rotate(-5deg); box-shadow:0 16px 32px var(--glow), inset 0 1px 0 rgba(255,255,255,.5)}
+.cat-ico svg{width:27px;height:27px}
+.cat-count{font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--ink-mute); padding:.35rem .75rem; border-radius:var(--r-pill);
+  background:rgba(255,255,255,.6); border:1px solid rgba(255,255,255,.7); flex:none;
+  transition:color .35s, background .35s}
+.cat:hover .cat-count{color:#fff; background:linear-gradient(145deg,var(--c1),var(--c2)); border-color:transparent}
+.cat h2{font-size:1.24rem; letter-spacing:-.025em}
+.cat p{font-size:.88rem; color:var(--ink-soft); line-height:1.55}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.2rem}
+.chip{font-size:.75rem; color:var(--ink-mute); padding:.3rem .65rem; border-radius:var(--r-pill);
+  background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.65); white-space:nowrap;
+  transition:background .35s, color .35s}
+.cat:hover .chip{background:rgba(255,255,255,.85); color:var(--ink-soft)}
+.cat-go{margin-top:auto; padding-top:1rem; font-size:.86rem; font-weight:600;
+  display:flex; align-items:center; gap:.45rem; color:var(--c2); opacity:.8;
+  transition:gap .4s var(--ease), opacity .35s}
+.cat:hover .cat-go{opacity:1; gap:.75rem}
+.cat-go svg{width:16px;height:16px}
+
+/* ============================================================
+   VUE 2 — LES SOUS-RUBRIQUES
+   ============================================================ */
+.sub-head{
+  --glow:rgba(15,118,110,.3);
+  padding:34px 36px; border-radius:var(--r-xl); margin-bottom:20px; position:relative; overflow:hidden;
+  background:linear-gradient(140deg,var(--c1),var(--c2)); color:#fff;
+  box-shadow:0 24px 60px var(--glow), inset 0 1px 0 rgba(255,255,255,.3);
+  display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap;
+}
+.sub-head::before{content:""; position:absolute; inset:0;
+  background:radial-gradient(600px circle at 12% -20%, rgba(255,255,255,.34), transparent 62%),
+             radial-gradient(500px circle at 95% 130%, rgba(255,255,255,.22), transparent 60%)}
+.sub-head > *{position:relative}
+.sub-head-ico{width:64px;height:64px;border-radius:20px;flex:none; display:grid;place-items:center;
+  background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.sub-head-ico svg{width:31px;height:31px}
+.sub-head h2{font-size:clamp(1.6rem,2.6vw,2.2rem)}
+.sub-head p{opacity:.88; margin-top:.4rem; max-width:52ch; font-size:.95rem}
+.sub-head .sh-count{margin-left:auto; text-align:right; flex:none}
+.sub-head .sh-count b{display:block; font-size:2.4rem; font-weight:700; letter-spacing:-.04em; line-height:1}
+.sub-head .sh-count span{font-size:.74rem; text-transform:uppercase; letter-spacing:.12em; opacity:.8}
+
+.sub-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.sub{
+  --glow:rgba(15,118,110,.22);
+  display:flex; align-items:center; gap:1rem; padding:18px 20px; border-radius:var(--r-md);
+  background:var(--glass-bg); border:1px solid var(--glass-brd);
+  backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+  box-shadow:var(--glass-shadow), var(--glass-inner);
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), background .35s;
+  animation:subIn .5s var(--ease) both;
+}
+.sub:hover{transform:translateY(-5px) scale(1.015); background:rgba(255,255,255,.78);
+  box-shadow:0 20px 44px rgba(9,42,54,.16), 0 10px 30px var(--glow), var(--glass-inner)}
+.sub:focus-visible{outline:2px solid var(--brand); outline-offset:3px}
+@keyframes subIn{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+.sub-dot{width:38px;height:38px;border-radius:12px;flex:none;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,var(--c1),var(--c2));
+  box-shadow:0 6px 16px var(--glow), inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .45s var(--ease)}
+.sub:hover .sub-dot{transform:scale(1.1) rotate(-6deg)}
+.sub-dot svg{width:18px;height:18px}
+.sub-t{flex:1; min-width:0}
+.sub-t b{display:block; font-size:.95rem; font-weight:600; letter-spacing:-.01em; line-height:1.3}
+.sub-t small{display:block; font-size:.78rem; color:var(--ink-mute); margin-top:.15rem}
+.sub-arrow{color:var(--ink-mute); flex:none; transition:transform .45s var(--ease), color .35s}
+.sub:hover .sub-arrow{color:var(--c2); transform:translateX(5px)}
+.sub-arrow svg{width:18px;height:18px}
+
+/* état vide de la recherche */
+.empty{padding:60px 30px; text-align:center; border-radius:var(--r-lg)}
+.empty svg{width:40px;height:40px;color:var(--ink-mute);margin:0 auto 1rem}
+.empty h3{font-size:1.2rem}
+.empty p{color:var(--ink-soft); margin-top:.5rem; font-size:.92rem}
+
+/* barre de retour */
+.backbar{display:flex; align-items:center; gap:.8rem; margin-bottom:18px; flex-wrap:wrap}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{margin-top:40px; background:#08181f; color:#a9c2cd; padding:56px 0 0}
+.f-grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:40px; padding-bottom:40px}
+footer h4{color:#fff; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; margin-bottom:1.1rem; font-weight:600}
+footer ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.6rem; font-size:.88rem}
+footer li a{transition:color .25s, padding-left .25s}
+footer li a:hover{color:#5eead4; padding-left:4px}
+.f-brand{display:flex; align-items:center; gap:.8rem; margin-bottom:1.1rem}
+.f-brand .crest{box-shadow:none}
+.f-brand strong{color:#fff; font-size:1.05rem}
+.f-about{font-size:.88rem; max-width:38ch; line-height:1.65}
+.f-bottom{border-top:1px solid rgba(255,255,255,.1); padding:22px 0; font-size:.8rem;
+  display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; color:#7d99a6}
+.f-bottom a:hover{color:#5eead4}
+
+/* ---------- menu mobile ---------- */
+.sheet{position:fixed; inset:0; z-index:200; display:none; padding:16px;
+  background:rgba(238,244,243,.7); backdrop-filter:blur(26px); -webkit-backdrop-filter:blur(26px)}
+.sheet.open{display:block}
+.sheet-inner{padding:26px; border-radius:var(--r-lg); margin-top:70px}
+.sheet nav{display:flex; flex-direction:column; gap:.2rem}
+.sheet nav a{padding:.95rem .6rem; font-weight:500; border-bottom:1px solid rgba(11,26,36,.08)}
+.sheet .close{position:absolute; top:28px; right:28px}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1100px){
+  .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .f-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media (max-width:900px){
+  nav.main{display:none}
+  .burger{display:grid}
+  .topbar-l{display:none}
+  .sub-head{padding:26px 24px}
+  .sub-head .sh-count{margin-left:0}
+}
+@media (max-width:640px){
+  .cat-grid{grid-template-columns:minmax(0,1fr)}
+  .sub-grid{grid-template-columns:minmax(0,1fr)}
+  .f-grid{grid-template-columns:minmax(0,1fr); gap:30px}
+  .brand-txt span{display:none}
+  .page-head{padding:34px 0 20px}
+}
+@media (max-width:760px){
+  .navbar{gap:.6rem; padding-left:1rem}
+  .nav-actions .btn-solid .lbl{display:none}
+  .nav-actions .btn-solid{--pad:0; width:42px; height:42px; gap:0;
+    justify-content:center; border-radius:50%}
+  .nav-actions .btn-solid svg{width:19px;height:19px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important; transition:none!important}
+}
+
+/* ---------- blason de la commune ---------- */
+.blason{height:48px; width:auto; flex:none; display:block;
+  filter:drop-shadow(0 4px 10px rgba(9,42,54,.28)) drop-shadow(0 1px 1px rgba(9,42,54,.2));
+  transition:transform .45s var(--ease)}
+.brand:hover .blason{transform:rotate(-4deg) scale(1.06)}
+.blason-lg{height:60px; filter:drop-shadow(0 6px 16px rgba(0,0,0,.45))}
+@media (max-width:760px){ .navbar .blason{height:40px} }
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+<div class="grain"></div>
+
+<!-- ========================= HEADER ========================= -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-l">
+      <span class="topbar-item" id="statutMairie"><span class="pulse"></span> <span class="statut-txt">Horaires de la mairie</span></span>
+      <a class="topbar-item" href="tel:0134274040">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
+        01 34 27 40 40
+      </a>
+      <span class="topbar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        5 avenue Georges-Pompidou, 95580 Margency
+      </span>
+    </div>
+    <div class="topbar-l" style="display:flex">
+      <a href="vie-municipale.html#marches">Marchés publics</a>
+      <a href="compte-citoyen.html">Alertes SMS</a>
+      <a href="vie-municipale.html#mairie/ecrire">Nous écrire</a>
+    </div>
+  </div>
+</div>
+
+<header class="site" id="header">
+  <div class="wrap">
+    <div class="navbar glass">
+      <a class="brand" href="index.html">
+        <img class="blason" src="assets/site/blason-128.webp" width="44" height="48" alt="Blason de Margency">
+        <span class="brand-txt"><strong>Margency</strong><span>Val-d'Oise</span></span>
+      </a>
+
+      <nav class="main">
+          <a href="index.html">Accueil</a>
+          <a href="actualites.html">Actualités</a>
+          <a href="agenda.html">Agenda</a>
+          <a href="vie-municipale.html">Vie municipale</a>
+          <a href="vivre-a-margency.html">Vivre à Margency</a>
+          <a class="active" href="services.html">Tous les services</a>
+        </nav>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="focusSearch" aria-label="Rechercher un service">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+        <a class="btn btn-solid" href="compte-citoyen.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="lbl">Compte citoyen</span>
+        </a>
+        <button class="icon-btn burger" id="burger" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <div class="wrap">
+    <div class="sheet-inner glass">
+      <button class="icon-btn close" id="closeSheet" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <nav>
+            <a href="index.html">Accueil</a>
+            <a href="actualites.html">Actualités</a>
+            <a href="agenda.html">Agenda</a>
+            <a href="vie-municipale.html">Vie municipale</a>
+            <a href="enfance-education.html">Enfance &amp ; Éducation</a>
+            <a href="sport-loisirs-culture.html">Sport, Loisirs &amp ; Culture</a>
+            <a href="vivre-a-margency.html">Vivre à Margency</a>
+            <a href="environnement-urbanisme.html">Environnement &amp ; Urbanisme</a>
+            <a href="action-sociale.html">Action sociale</a>
+            <a href="conseil-municipal.html">Conseil municipal</a>
+            <a class="active" href="services.html">Tous les services</a>
+            <a href="compte-citoyen.html">Compte citoyen</a>
+          </nav>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= CONTENU ========================= -->
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb">
+        <a href="index.html">Accueil</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        <b id="crumbCurrent">Tous les services</b>
+      </div>
+      <div class="eyebrow" id="pageEyebrow">Annuaire des services</div>
+      <h1 id="pageTitle">Tous les <em>services</em> de la commune</h1>
+      <p class="lead" id="pageLead">Choisissez une grande rubrique pour découvrir l'ensemble des services et démarches qu'elle regroupe.</p>
+
+      <div class="searchbar glass">
+        <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="search" placeholder="Rechercher un service : cantine, PLU, salle, déchets…" aria-label="Rechercher un service">
+        <button class="icon-btn search-clear" id="searchClear" aria-label="Effacer la recherche">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="views">
+    <div class="wrap">
+      <!-- VUE 1 : les grandes rubriques -->
+      <section class="view on" id="viewCats">
+        <div class="cat-grid" id="catGrid"></div>
+      </section>
+
+      <!-- VUE 2 : les sous-rubriques -->
+      <section class="view" id="viewSubs">
+        <div class="backbar">
+          <button class="btn btn-glass btn-back" id="btnBack">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+            Toutes les rubriques
+          </button>
+        </div>
+        <div id="subHead"></div>
+        <div class="sub-grid" id="subGrid"></div>
+      </section>
+
+      <!-- VUE 3 : résultats de recherche -->
+      <section class="view" id="viewSearch">
+        <div class="sub-grid" id="searchGrid"></div>
+        <div class="empty glass" id="searchEmpty" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <h3>Aucun service ne correspond</h3>
+          <p>Essayez un autre mot-clé, ou parcourez les rubriques une par une.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ========================= FOOTER ========================= -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand">
+          <img class="blason blason-lg" src="assets/site/blason-256.webp" width="55" height="60" alt="Blason de Margency">
+          <strong>Mairie de Margency</strong>
+        </div>
+        <p class="f-about">5, avenue Georges-Pompidou — 95580 Margency<br><span data-horaires-mairie>Lundi, mardi, vendredi : 8h30–12h et 13h30–17h.<br>Mercredi, jeudi, samedi : 8h30–11h45.</span></p>
+                <div class="socials">
+          <a class="soc" href="https://www.facebook.com/profile.php?id=100007993065299" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a class="soc" href="https://www.instagram.com/margency95580/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc" href="https://twitter.com/villedemargency" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg></a>
+        </div>
+        </div>
+        <div>
+          <h4>La commune</h4>
+          <ul>
+            <li><a href="services.html">Notre ville</a></li>
+            <li><a href="conseil-municipal.html#elus">Le conseil municipal</a></li>
+            <li><a href="conseil-municipal.html#seances">Comptes rendus</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="agenda.html">Agenda</a></li>
+            <li><a href="vie-municipale.html#magazines">Le bulletin municipal</a></li>
+            <li><a href="vie-municipale.html#marches">Marchés publics</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Tous les services</a></li>
+            <li><a href="vie-municipale.html#demarches">Démarches en ligne</a></li>
+            <li><a href="enfance-education.html#portail">Portail Famille</a></li>
+            <li><a href="environnement-urbanisme.html">Urbanisme</a></li>
+            <li><a href="action-sociale.html">Action sociale (CCAS)</a></li>
+            <li><a href="vie-municipale.html#dechets">Déchets &amp ; collecte</a></li>
+            <li><a href="compte-citoyen.html">Compte citoyen</a></li>
+            <li><a class="agent-link" href="gestion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Gérer le site</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pratique</h4>
+          <ul>
+            <li><a href="vie-municipale.html#mairie/ecrire">Nous contacter</a></li>
+            <li><a href="vivre-a-margency.html#salles">Réserver une salle</a></li>
+            <li><a href="sport-loisirs-culture.html#associations">Associations</a></li>
+            <li><a href="vivre-a-margency.html#commerces">Commerces</a></li>
+            <li><a href="vivre-a-margency.html">Nouvel arrivant</a></li>
+            <li><a href="services.html">Toutes les rubriques</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© <span data-annee>2026</span> Commune de Margency — Val-d'Oise. Tous droits réservés.</span>
+      <span style="display:flex;gap:1.4rem;flex-wrap:wrap">
+        <a href="mentions-legales.html#mentions">Mentions légales</a>
+        <a href="mentions-legales.html#accessibilite">Accessibilité : non conforme</a>
+        <a href="mentions-legales.html#donnees">Données personnelles</a>
+        <a href="https://commons.wikimedia.org/wiki/File:Blason_ville_fr_Margency_(Val-d%27Oise).svg" target="_blank" rel="noopener">Blason : Wikimedia Commons, CC BY-SA 3.0</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/icones.js"></script>
+<script src="data/services.js"></script>
+<script>
+/* ============================================================
+   DONNÉES — arborescence reprise du site actuel mairie-margency.fr
+   ============================================================ */
+var ICONS = window.ICONES;
+
+var DATA = window.SERVICES;
+
+/* ============================================================
+   RENDU
+   ============================================================ */
+function svg(name, cls){
+  return '<svg class="'+(cls||'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICONS[name]+'</svg>';
+}
+var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+/* --- Vue 1 : les rubriques --- */
+var catGrid = document.getElementById('catGrid');
+DATA.forEach(function(cat){
+  var chips = cat.subs.slice(0,3).map(function(s){ return '<span class="chip">'+s.t+'</span>'; }).join('');
+  var el = document.createElement('button');
+  el.className = 'cat glass';
+  el.type = 'button';
+  el.style.setProperty('--c1', cat.c1);
+  el.style.setProperty('--c2', cat.c2);
+  el.style.setProperty('--glow', cat.glow);
+  el.setAttribute('aria-label', cat.title + ' — ' + cat.subs.length + ' services');
+  el.innerHTML =
+    '<span class="cat-top">'+
+      '<span class="cat-ico">'+svg(cat.icon)+'</span>'+
+      '<span class="cat-count">'+cat.subs.length+' services</span>'+
+    '</span>'+
+    '<h2>'+cat.title+'</h2>'+
+    '<p>'+cat.desc+'</p>'+
+    '<span class="chips">'+chips+'<span class="chip">+'+(cat.subs.length-3)+'</span></span>'+
+    '<span class="cat-go">Voir la rubrique '+ARROW+'</span>';
+  el.addEventListener('click', function(){ location.hash = cat.id; });
+  catGrid.appendChild(el);
+});
+
+/* --- Vue 2 : les sous-rubriques --- */
+function renderCat(cat){
+  document.getElementById('subHead').innerHTML =
+    '<div class="sub-head" style="--c1:'+cat.c1+';--c2:'+cat.c2+';--glow:'+cat.glow+'">'+
+      '<span class="sub-head-ico">'+svg(cat.icon)+'</span>'+
+      '<div><h2>'+cat.title+'</h2><p>'+cat.desc+'</p></div>'+
+      '<div class="sh-count"><b>'+cat.subs.length+'</b><span>services</span></div>'+
+    '</div>';
+
+  var grid = document.getElementById('subGrid');
+  grid.innerHTML = '';
+  cat.subs.forEach(function(s, i){
+    var a = document.createElement('a');
+    a.className = 'sub';
+    a.href = s.href || '#';
+    a.style.setProperty('--c1', cat.c1);
+    a.style.setProperty('--c2', cat.c2);
+    a.style.setProperty('--glow', cat.glow);
+    a.style.animationDelay = Math.min(i,10)*45 + 'ms';
+    a.innerHTML =
+      '<span class="sub-dot">'+svg(s.i)+'</span>'+
+      '<span class="sub-t"><b>'+s.t+'</b><small>'+s.d+'</small></span>'+
+      '<span class="sub-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
+    grid.appendChild(a);
+  });
+
+  document.getElementById('crumbCurrent').textContent = cat.title;
+  document.getElementById('pageEyebrow').textContent = 'Rubrique';
+  document.getElementById('pageTitle').innerHTML = cat.title;
+  document.getElementById('pageLead').textContent = cat.desc;
+}
+
+/* --- Vue 3 : recherche transverse --- */
+function renderSearch(q){
+  var grid = document.getElementById('searchGrid');
+  var norm = function(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); };
+  var needle = norm(q);
+  grid.innerHTML = '';
+  var n = 0;
+  DATA.forEach(function(cat){
+    cat.subs.forEach(function(s, i){
+      if(norm(s.t+' '+s.d+' '+cat.title).indexOf(needle) === -1) return;
+      n++;
+      var a = document.createElement('a');
+      a.className = 'sub';
+      a.href = s.href || '#';
+      a.style.setProperty('--c1', cat.c1);
+      a.style.setProperty('--c2', cat.c2);
+      a.style.setProperty('--glow', cat.glow);
+      a.style.animationDelay = Math.min(n,12)*35 + 'ms';
+      a.innerHTML =
+        '<span class="sub-dot">'+svg(s.i)+'</span>'+
+        '<span class="sub-t"><b>'+s.t+'</b><small>'+cat.title+'</small></span>'+
+        '<span class="sub-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
+      grid.appendChild(a);
+    });
+  });
+  document.getElementById('searchEmpty').style.display = n ? 'none' : 'block';
+  document.getElementById('crumbCurrent').textContent = 'Recherche';
+  document.getElementById('pageEyebrow').textContent = n + (n>1?' résultats':' résultat');
+  document.getElementById('pageTitle').innerHTML = 'Recherche : <em>'+q.replace(/</g,'&lt;')+'</em>';
+  document.getElementById('pageLead').textContent = 'Résultats trouvés dans l\'ensemble des rubriques de la commune.';
+}
+
+/* --- Bascule entre les vues --- */
+function show(id){
+  ['viewCats','viewSubs','viewSearch'].forEach(function(v){
+    document.getElementById(v).classList.toggle('on', v === id);
+  });
+}
+function resetHead(){
+  document.getElementById('crumbCurrent').textContent = 'Tous les services';
+  document.getElementById('pageEyebrow').textContent = 'Annuaire des services';
+  document.getElementById('pageTitle').innerHTML = 'Tous les <em>services</em> de la commune';
+  document.getElementById('pageLead').textContent = "Choisissez une grande rubrique pour découvrir l'ensemble des services et démarches qu'elle regroupe.";
+}
+
+function route(){
+  var id = location.hash.replace('#','');
+  var cat = DATA.filter(function(c){ return c.id === id; })[0];
+  if(cat){
+    renderCat(cat);
+    show('viewSubs');
+    document.title = cat.title + ' — Mairie de Margency';
+  }else{
+    resetHead();
+    show('viewCats');
+    document.title = 'Tous les services — Mairie de Margency';
+  }
+  document.querySelectorAll('.nav-cat').forEach(function(a){
+    a.classList.toggle('active', a.dataset.cat === id);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+window.addEventListener('hashchange', route);
+
+document.getElementById('btnBack').addEventListener('click', function(){
+  if(history.length > 1 && location.hash) history.back();
+  else location.hash = '';
+});
+
+/* --- Recherche --- */
+var input = document.getElementById('search');
+var clear = document.getElementById('searchClear');
+input.addEventListener('input', function(){
+  var q = input.value.trim();
+  clear.classList.toggle('on', !!q);
+  if(q.length < 2){ route(); return; }
+  renderSearch(q);
+  show('viewSearch');
+});
+clear.addEventListener('click', function(){
+  input.value = ''; clear.classList.remove('on'); input.focus(); route();
+});
+document.getElementById('focusSearch').addEventListener('click', function(){
+  input.focus(); input.scrollIntoView({block:'center', behavior:'smooth'});
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && document.activeElement === input){ input.value=''; clear.classList.remove('on'); route(); }
+});
+
+/* --- Halo qui suit la souris (toutes les surfaces en verre) --- */
+function bindGlow(){
+  document.querySelectorAll('.glass, .cat, .sub').forEach(function(el){
+    if(el.dataset.glow) return;
+    el.dataset.glow = '1';
+    el.addEventListener('pointermove', function(e){
+      var r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+}
+new MutationObserver(bindGlow).observe(document.body, {childList:true, subtree:true});
+bindGlow();
+
+/* --- Header au scroll --- */
+var header = document.getElementById('header');
+function onScroll(){ header.classList.toggle('scrolled', window.scrollY > 12); }
+onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+/* --- Menu mobile --- */
+var sheet = document.getElementById('sheet');
+document.getElementById('burger').addEventListener('click', function(){ sheet.classList.add('open'); });
+document.getElementById('closeSheet').addEventListener('click', function(){ sheet.classList.remove('open'); });
+sheet.addEventListener('click', function(e){ if(e.target === sheet) sheet.classList.remove('open'); });
+document.querySelectorAll('.sheet .nav-cat').forEach(function(a){
+  a.addEventListener('click', function(){ sheet.classList.remove('open'); });
+});
+
+/* --- Démarrage --- */
+route();
+</script>
+<script src="js/horaires.js"></script>
+</body>
+</html>

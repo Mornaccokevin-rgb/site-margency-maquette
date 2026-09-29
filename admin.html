@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espace agents — Mairie de Margency</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/site/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=2">
+<style>
+.muted{color:var(--ink-mute)}
+.view{animation:viewIn .45s var(--ease) both}
+@keyframes viewIn{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+
+/* ============ en-tête agents ============ */
+.admin-top{position:sticky; top:0; z-index:100; padding-top:14px}
+.admin-bar{display:flex; align-items:center; gap:1rem; padding:.5rem .55rem .5rem 1.1rem; border-radius:var(--r-pill)}
+.admin-bar .brand-txt span{color:var(--brand); font-weight:600}
+.tabs{display:flex; gap:.2rem; margin-left:auto}
+.tab{display:flex; align-items:center; gap:.45rem; padding:.6rem .9rem; border-radius:var(--r-pill);
+  font-size:.86rem; font-weight:500; color:var(--ink-soft); transition:.3s}
+.tab svg{width:16px;height:16px}
+.tab:hover{background:rgba(255,255,255,.6); color:var(--ink)}
+.tab.on{background:#fff; color:var(--ink); box-shadow:0 4px 14px rgba(9,42,54,.1)}
+.agent{display:flex; align-items:center; gap:.55rem; padding-left:.9rem; margin-left:.3rem;
+  border-left:1px solid rgba(11,26,36,.1); font-size:.8rem; color:var(--ink-soft); white-space:nowrap}
+.agent i{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;color:#fff;font-size:.78rem;
+  background:linear-gradient(145deg,#60a5fa,#2563eb)}
+.admin-ribbon{margin-bottom:22px}
+
+.admin-main{padding:18px 0 60px}
+.h-row{display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:18px}
+.h-row h1{font-size:clamp(1.7rem,2.8vw,2.3rem); letter-spacing:-.03em; margin-top:.5rem}
+.h-row p{color:var(--ink-soft); margin-top:.35rem; max-width:62ch}
+
+/* ============ tableau de bord ============ */
+.kpis{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:18px}
+.kpi{padding:20px 22px; border-radius:var(--r-md)}
+.kpi b{display:block; font-size:2rem; font-weight:700; letter-spacing:-.04em; line-height:1.1}
+.kpi span{font-size:.8rem; color:var(--ink-mute)}
+.kpi small{display:block; margin-top:.35rem; font-size:.76rem; color:var(--brand); font-weight:600}
+.reg-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.rcard{--c1:#14b8a6;--c2:#0f766e; display:flex; flex-direction:column; gap:.8rem; padding:22px; border-radius:var(--r-md); cursor:pointer;
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), background .3s}
+.rcard:hover{transform:translateY(-6px) scale(1.012); background:rgba(255,255,255,.72);
+  box-shadow:0 22px 46px rgba(9,42,54,.16), 0 10px 26px color-mix(in srgb, var(--c2) 26%, transparent), var(--glass-inner)}
+.rcard-top{display:flex; align-items:center; gap:.8rem}
+.rcard .ic{width:44px;height:44px;border-radius:14px;flex:none;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,var(--c1),var(--c2)); box-shadow:0 6px 16px color-mix(in srgb, var(--c2) 35%, transparent), inset 0 1px 0 rgba(255,255,255,.4)}
+.rcard .ic svg{width:21px;height:21px}
+.rcard h3{font-size:1rem; line-height:1.25}
+.rcard .svc{font-size:.78rem; color:var(--ink-mute)}
+.rcard .count{margin-left:auto; text-align:right}
+.rcard .count b{display:block; font-size:1.6rem; font-weight:700; letter-spacing:-.03em; line-height:1}
+.rcard .count span{font-size:.7rem; color:var(--ink-mute); text-transform:uppercase; letter-spacing:.06em}
+.bars{display:flex; align-items:flex-end; gap:4px; height:46px; padding-top:.3rem}
+.bars div{flex:1; border-radius:5px 5px 2px 2px; background:linear-gradient(180deg,var(--c1),var(--c2)); opacity:.85; min-height:3px; position:relative}
+.bars-l{display:flex; gap:4px; font-size:.64rem; color:var(--ink-mute)}
+.bars-l span{flex:1; text-align:center}
+.rcard .tag-new{align-self:flex-start; font-size:.66rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  padding:.2rem .55rem; border-radius:var(--r-pill); color:#0b5f58; background:rgba(15,118,110,.12)}
+.add-card{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; min-height:220px;
+  border-radius:var(--r-md); border:2px dashed rgba(15,118,110,.3); color:var(--brand); font-weight:600; cursor:pointer;
+  background:rgba(255,255,255,.25); transition:.35s var(--ease)}
+.add-card:hover{background:rgba(255,255,255,.55); border-color:rgba(15,118,110,.6); transform:translateY(-4px)}
+.add-card .plus{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,#14867d,#0b5f58); box-shadow:0 8px 20px rgba(15,118,110,.35)}
+.add-card .plus svg{width:22px;height:22px}
+.add-card small{font-weight:500; color:var(--ink-mute); font-size:.8rem}
+
+/* ============ registre ============ */
+.reg-head-card{--c1:#14b8a6;--c2:#0f766e; padding:26px 28px; border-radius:var(--r-lg); margin-bottom:16px}
+.rh{display:flex; gap:1.1rem; align-items:flex-start; flex-wrap:wrap}
+.rh .ic{width:56px;height:56px;border-radius:18px;flex:none;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,var(--c1),var(--c2)); box-shadow:0 10px 24px color-mix(in srgb, var(--c2) 35%, transparent), inset 0 1px 0 rgba(255,255,255,.4)}
+.rh .ic svg{width:26px;height:26px}
+.rh h1{font-size:1.65rem}
+.rh p{color:var(--ink-soft); margin-top:.3rem; max-width:70ch; font-size:.93rem}
+.rh .count{margin-left:auto; text-align:right}
+.rh .count b{display:block; font-size:2.3rem; font-weight:700; letter-spacing:-.04em; line-height:1}
+.rh .count span{font-size:.74rem; color:var(--ink-mute); text-transform:uppercase; letter-spacing:.08em}
+.meta{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:1.3rem}
+.meta div{padding:10px 13px; border-radius:12px; background:rgba(255,255,255,.45); border:1px solid rgba(255,255,255,.7)}
+.meta dt{font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-mute)}
+.meta dd{margin:.15rem 0 0; font-size:.85rem; font-weight:500}
+
+.workspace{display:grid; grid-template-columns:330px minmax(0,1fr); gap:16px; align-items:start}
+.filters{padding:22px; border-radius:var(--r-lg); position:sticky; top:118px}
+.filters h3{display:flex; align-items:center; gap:.5rem; font-size:1.02rem}
+.filters h3 svg{width:17px;height:17px;color:var(--brand)}
+.filters > p{font-size:.8rem; color:var(--ink-mute); margin:.3rem 0 1rem}
+.cond{display:grid; gap:6px; padding:12px; border-radius:12px; margin-bottom:10px;
+  background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.75); position:relative; animation:viewIn .35s var(--ease) both}
+.cond select, .cond input{width:100%; padding:.55rem .7rem; border-radius:10px; font-size:.84rem;
+  background:#fff; border:1px solid rgba(11,26,36,.12)}
+.cond select:focus, .cond input:focus{outline:none; border-color:rgba(15,118,110,.55); box-shadow:0 0 0 3px rgba(15,118,110,.14)}
+.cond .row{display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:6px}
+.cond .del{position:absolute; top:-8px; right:-8px; width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+  background:#fff; border:1px solid rgba(11,26,36,.12); color:var(--ink-mute); cursor:pointer; box-shadow:0 3px 8px rgba(9,42,54,.12)}
+.cond .del:hover{color:var(--danger)}
+.cond .del svg{width:13px;height:13px}
+.and{display:block; text-align:center; font-size:.68rem; font-weight:700; letter-spacing:.12em; color:var(--ink-mute); margin:-4px 0 6px}
+.f-actions{display:grid; gap:8px; margin-top:12px}
+.saved{margin-top:18px; padding-top:16px; border-top:1px solid rgba(11,26,36,.08)}
+.saved h4{font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:.6rem}
+.saved-item{display:flex; align-items:center; gap:.5rem; width:100%; text-align:left; padding:.6rem .75rem; margin-bottom:6px; border-radius:11px; cursor:pointer;
+  font-size:.84rem; font-weight:500; background:rgba(255,255,255,.45); border:1px solid rgba(255,255,255,.7); transition:.3s}
+.saved-item:hover, .saved-item.on{background:#fff; box-shadow:0 6px 16px rgba(9,42,54,.08)}
+.saved-item.on{border-color:rgba(15,118,110,.4)}
+.saved-item svg{width:15px;height:15px;color:var(--brand);flex:none}
+.saved-item span{flex:1; min-width:0}
+
+.results{border-radius:var(--r-lg); padding:0}
+.res-bar{display:flex; align-items:center; gap:.8rem; padding:16px 20px; flex-wrap:wrap; border-bottom:1px solid rgba(11,26,36,.07)}
+.res-bar .n{font-size:1.05rem; font-weight:600}
+.res-bar .n b{color:var(--brand)}
+.res-bar .sp{margin-left:auto; display:flex; gap:.5rem; flex-wrap:wrap}
+.table-wrap{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:.84rem}
+th{text-align:left; font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-mute);
+  padding:12px 16px; white-space:nowrap; background:rgba(255,255,255,.3)}
+td{padding:11px 16px; border-top:1px solid rgba(11,26,36,.06); vertical-align:top}
+tbody tr{transition:background .2s}
+tbody tr:hover{background:rgba(255,255,255,.55)}
+td .nm{font-weight:600}
+td .sm{display:block; font-size:.76rem; color:var(--ink-mute)}
+.age-pill{display:inline-block; min-width:44px; text-align:center; padding:.15rem .5rem; border-radius:var(--r-pill);
+  font-weight:700; font-size:.78rem; background:rgba(11,26,36,.06)}
+.age-pill.hi{background:rgba(251,146,60,.18); color:#9a3412}
+.empty-res{padding:50px 20px; text-align:center; color:var(--ink-soft)}
+.empty-res svg{width:34px;height:34px;color:var(--ink-mute);margin:0 auto .6rem;display:block}
+
+/* ============ nouveau registre ============ */
+.creator{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); gap:18px; align-items:start}
+.form-card{padding:30px 32px; border-radius:var(--r-lg)}
+.form-card h2{font-size:1.15rem; display:flex; align-items:center; gap:.6rem}
+.form-card h2 i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.78rem;color:#fff;
+  background:linear-gradient(145deg,#14867d,#0b5f58)}
+.form-card section + section{margin-top:1.8rem; padding-top:1.6rem; border-top:1px solid rgba(11,26,36,.08)}
+.form-card section > p{font-size:.84rem; color:var(--ink-mute); margin:.3rem 0 1rem}
+.form-card .field + .field, .form-card .grid-2 + .field, .form-card .field + .grid-2{margin-top:14px}
+.swatches{display:flex; gap:8px; flex-wrap:wrap}
+.swatch{width:36px;height:36px;border-radius:12px;cursor:pointer;border:2px solid transparent;position:relative;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4); transition:transform .3s var(--ease)}
+.swatch:hover{transform:scale(1.1)}
+.swatch input{position:absolute; opacity:0; inset:0; cursor:pointer}
+.swatch:has(input:checked){border-color:#fff; box-shadow:0 0 0 2px var(--ink), inset 0 1px 0 rgba(255,255,255,.4)}
+.icon-pick{display:flex; gap:6px; flex-wrap:wrap}
+.icon-opt{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;cursor:pointer;position:relative;
+  background:rgba(255,255,255,.6); border:1px solid rgba(11,26,36,.1); color:var(--ink-soft); transition:.25s}
+.icon-opt svg{width:19px;height:19px}
+.icon-opt input{position:absolute; opacity:0; inset:0; cursor:pointer}
+.icon-opt:has(input:checked){background:var(--ink); color:#fff; border-color:var(--ink)}
+.champ-list{display:grid; gap:8px}
+.champ-opt{display:flex; gap:.75rem; align-items:flex-start; padding:.75rem .9rem; border-radius:12px; cursor:pointer;
+  background:rgba(255,255,255,.5); border:1px solid rgba(11,26,36,.08); transition:.25s}
+.champ-opt:has(input:checked){background:rgba(15,118,110,.08); border-color:rgba(15,118,110,.4)}
+.champ-opt input{margin-top:.25rem; accent-color:var(--brand); width:16px; height:16px; flex:none}
+.champ-opt b{display:block; font-size:.88rem; font-weight:600}
+.champ-opt small{display:block; font-size:.76rem; color:var(--ink-mute)}
+.rule{display:flex; gap:.6rem; padding:.85rem 1rem; border-radius:12px; font-size:.84rem; color:#1e3a8a;
+  background:rgba(219,234,254,.6); border:1px solid rgba(37,99,235,.2)}
+.rule svg{width:17px;height:17px;flex:none;margin-top:.1rem}
+.counter{font-size:.74rem; color:var(--ink-mute); text-align:right}
+.counter.bad{color:var(--danger)}
+
+.preview{position:sticky; top:118px}
+.preview .lbl{font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); margin:0 0 .6rem .3rem}
+.pv{--c1:#2dd4bf;--c2:#0f766e; padding:20px; border-radius:var(--r-md)}
+.pv-head{display:flex; align-items:center; gap:.9rem}
+.pv-head .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;
+  background:linear-gradient(145deg,var(--c1),var(--c2)); box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.pv-head .ic svg{width:22px;height:22px}
+.pv-head b{display:block}
+.pv-head small{display:block; font-size:.78rem; color:var(--ink-mute)}
+.pv p{font-size:.86rem; color:var(--ink-soft); margin-top:.8rem}
+.pv .qs{margin-top:.9rem; display:grid; gap:6px}
+.pv .q{display:flex; align-items:center; gap:.5rem; font-size:.82rem; padding:.45rem .7rem; border-radius:10px; background:rgba(255,255,255,.55)}
+.pv .q svg{width:14px;height:14px;color:var(--brand)}
+.pv-badges{display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.9rem}
+.pv-badges span{font-size:.7rem; font-weight:600; padding:.25rem .6rem; border-radius:var(--r-pill); background:rgba(11,26,36,.05); color:var(--ink-soft)}
+.pv-note{margin-top:12px; font-size:.78rem; color:var(--ink-mute); padding:0 .4rem}
+
+/* ============ journal ============ */
+.journal td:first-child{white-space:nowrap; color:var(--ink-mute); font-variant-numeric:tabular-nums}
+.act{display:inline-block; padding:.18rem .6rem; border-radius:var(--r-pill); font-size:.74rem; font-weight:700; background:rgba(11,26,36,.06)}
+.act.export{background:rgba(251,146,60,.16); color:#9a3412}
+.act.create{background:rgba(15,118,110,.12); color:#0b5f58}
+.act.delete{background:rgba(220,38,38,.1); color:#991b1b}
+
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .reg-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .workspace, .creator{grid-template-columns:minmax(0,1fr)}
+  .filters, .preview{position:static}
+  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .agent span{display:none}
+}
+@media (max-width:760px){
+  .admin-bar{flex-wrap:wrap; border-radius:var(--r-lg); padding:.7rem}
+  .tabs{margin-left:0; width:100%; overflow-x:auto}
+  .tab span{display:none}
+  .agent{display:none}
+  .reg-grid{grid-template-columns:minmax(0,1fr)}
+  .form-card{padding:24px 20px}
+  .rh .count{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+<div class="grain"></div>
+
+<div class="admin-top">
+  <div class="wrap">
+    <div class="admin-bar glass">
+      <a class="brand" href="index.html" title="Retour au site public">
+        <img class="blason" src="assets/site/blason-128.webp" width="40" height="44" alt="Blason de Margency" style="height:42px">
+        <span class="brand-txt"><strong>Margency</strong><span>Espace agents</span></span>
+      </a>
+      <nav class="tabs" aria-label="Sections">
+        <a class="tab" data-tab="tableau" href="#tableau">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span>Registres</span></a>
+        <a class="tab" data-tab="nouveau" href="#nouveau">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Nouveau registre</span></a>
+        <a class="tab" data-tab="journal" href="#journal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          <span>Journal</span></a>
+        <a class="tab" href="compte-citoyen.html" title="Voir le compte citoyen côté habitant">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Côté habitant</span></a>
+      </nav>
+      <div class="agent"><i>AD</i><span>Agent démo<br><b style="color:var(--ink)">CCAS</b></span></div>
+    </div>
+
+  </div>
+</div>
+
+<main class="admin-main">
+  <div class="wrap">
+    <div class="demo-ribbon admin-ribbon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <span><b>Maquette.</b> Habitants fictifs, aucune connexion requise. Dans la version réelle : accès nominatif, droits par service, journal inaltérable.</span>
+      <button class="btn btn-glass btn-sm" id="resetDemo">Réinitialiser la démo</button>
+    </div>
+  </div>
+  <div class="wrap" id="app"></div>
+</main>
+
+<script src="data/demo-citoyens.js"></script>
+<script src="js/compte-demo.js"></script>
+<script>
+(function(){
+  var S = MD.state, app = document.getElementById('app'), svg = MD.svg, esc = MD.esc;
+  function vars(r){ return '--c1:' + r.c1 + ';--c2:' + r.c2 + ';'; }
+  function tabs(on){ document.querySelectorAll('.tab[data-tab]').forEach(function(t){ t.classList.toggle('on', t.dataset.tab === on); }); }
+
+  /* ============================================================
+     TABLEAU DE BORD
+     ============================================================ */
+  var TRANCHES = [['<30',0,29],['30-49',30,49],['50-64',50,64],['65-79',65,79],['80+',80,200]];
+  function vueTableau(){
+    tabs('tableau');
+    var avecInscr = S.citoyens.filter(function(c){ return Object.keys(c.inscriptions).length; }).length;
+    var totalInscr = S.citoyens.reduce(function(n, c){ return n + Object.keys(c.inscriptions).length; }, 0);
+    var recent = S.citoyens.reduce(function(n, c){
+      return n + Object.keys(c.inscriptions).filter(function(k){ return c.inscriptions[k].date >= '2026-08-14'; }).length; }, 0);
+
+    app.innerHTML = '<div class="view">'+
+      '<div class="h-row"><div><div class="eyebrow">Espace agents</div><h1>Les registres de la commune</h1>'+
+        '<p>Chaque registre a un but précis et ne contient que les habitants qui s\'y sont inscrits. C\'est à l\'intérieur d\'un registre que vous créez vos filtres.</p></div>'+
+        '<a class="btn btn-solid" href="#nouveau">'+svg('plus')+' Nouveau registre</a></div>'+
+      '<div class="kpis">'+
+        kpi(S.citoyens.length, 'comptes citoyens', 'dont ' + avecInscr + ' inscrits à au moins un registre')+
+        kpi(S.registres.length, 'registres actifs', S.registres.filter(function(r){ return !r.systeme; }).length + ' créé(s) par la mairie')+
+        kpi(totalInscr, 'inscriptions', 'tous registres confondus')+
+        kpi(recent, 'inscriptions sur 30 jours', 'depuis le 14 août')+
+      '</div>'+
+      '<div class="reg-grid">'+ S.registres.map(carteRegistre).join('') +
+        '<a class="add-card" href="#nouveau"><span class="plus">'+svg('plus')+'</span>Créer un registre<small>Nouveau thème, nouvelle finalité</small></a>'+
+      '</div></div>';
+  }
+  function kpi(n, l, s){ return '<div class="kpi glass"><b>'+n+'</b><span>'+l+'</span><small>'+s+'</small></div>'; }
+  function carteRegistre(r){
+    var ins = MD.inscrits(r.id);
+    var parTranche = TRANCHES.map(function(t){ return ins.filter(function(c){ var a = MD.age(c.naissance); return a >= t[1] && a <= t[2]; }).length; });
+    var max = Math.max.apply(null, parTranche.concat([1]));
+    return '<div class="rcard glass" style="'+vars(r)+'" data-open="'+r.id+'" tabindex="0" role="link" aria-label="Ouvrir '+esc(r.nom)+'">'+
+      '<div class="rcard-top"><span class="ic">'+svg(r.icone)+'</span>'+
+        '<div><h3>'+esc(r.nom)+'</h3><div class="svc">'+esc(r.service)+'</div></div>'+
+        '<div class="count"><b>'+ins.length+'</b><span>inscrits</span></div></div>'+
+      (r.systeme ? '' : '<span class="tag-new">Créé par la mairie</span>')+
+      '<div><div class="bars">'+ parTranche.map(function(n){
+          return '<div style="height:'+Math.max(4, Math.round(n / max * 100))+'%" title="'+n+' personne(s)"></div>'; }).join('') +'</div>'+
+        '<div class="bars-l">'+ TRANCHES.map(function(t){ return '<span>'+t[0]+'</span>'; }).join('') +'</div></div>'+
+    '</div>';
+  }
+
+  /* ============================================================
+     UN REGISTRE : FILTRES + RÉSULTATS
+     ============================================================ */
+  var conds = [], listeActive = null;
+
+  function vueRegistre(id){
+    var r = MD.registre(id);
+    if(!r){ location.hash = 'tableau'; return; }
+    tabs('tableau');
+    var ins = MD.inscrits(r.id);
+    app.innerHTML = '<div class="view">'+
+      '<a class="btn btn-glass btn-sm" href="#tableau" style="margin-bottom:14px">'+svg('back')+' Tous les registres</a>'+
+      '<div class="reg-head-card glass" style="'+vars(r)+'">'+
+        '<div class="rh"><span class="ic">'+svg(r.icone)+'</span>'+
+          '<div><h1>'+esc(r.nom)+'</h1><p>'+esc(r.finalite)+'</p></div>'+
+          '<div class="count"><b>'+ins.length+'</b><span>inscrits</span></div></div>'+
+        '<dl class="meta">'+
+          '<div><dt>Base légale</dt><dd>'+esc(r.base.split(' — ')[0])+'</dd></div>'+
+          '<div><dt>Service destinataire</dt><dd>'+esc(r.service)+'</dd></div>'+
+          '<div><dt>Conservation</dt><dd>'+esc(r.conservation)+'</dd></div>'+
+          '<div><dt>Questions posées</dt><dd>'+r.champs.map(function(c){ return esc(MD.CHAMPS[c].label); }).join(' · ')+'</dd></div>'+
+        '</dl>'+
+      '</div>'+
+      '<div class="workspace">'+
+        '<aside class="filters glass">'+
+          '<h3>'+svg('filter')+' Filtres</h3>'+
+          '<p>Toutes les conditions doivent être remplies. Vous ne pouvez filtrer que sur ce que ce registre collecte.</p>'+
+          '<div id="condList"></div>'+
+          '<div class="f-actions">'+
+            '<button class="btn btn-glass btn-sm" id="addCond">'+svg('plus')+' Ajouter une condition</button>'+
+            '<button class="btn btn-solid btn-sm" id="saveList">'+svg('save')+' Enregistrer cette liste</button>'+
+          '</div>'+
+          '<div class="saved"><h4>Listes enregistrées</h4><div id="savedList"></div></div>'+
+          (r.systeme ? '' : '<button class="btn btn-danger btn-sm" id="delReg" style="width:100%;margin-top:14px">'+svg('trash')+' Supprimer ce registre</button>')+
+        '</aside>'+
+        '<section class="results glass">'+
+          '<div class="res-bar"><div class="n" id="resCount"></div>'+
+            '<div class="sp"><button class="btn btn-glass btn-sm" id="exportCsv">'+svg('download')+' Exporter la liste</button></div></div>'+
+          '<div class="table-wrap" id="resTable"></div>'+
+        '</section>'+
+      '</div></div>';
+
+    conds = []; listeActive = null;
+    rendreConds(r); rendreSaved(r); rendreResultats(r);
+
+    document.getElementById('addCond').addEventListener('click', function(){
+      conds.push({champ:'_age', op:'gte', valeur:''}); listeActive = null;
+      rendreConds(r); rendreSaved(r);
+      var last = document.querySelectorAll('.cond input, .cond select'); if(last.length) last[last.length-1].focus();
+    });
+    document.getElementById('saveList').addEventListener('click', function(){ enregistrerListe(r); });
+    document.getElementById('exportCsv').addEventListener('click', function(){ exporter(r); });
+    var del = document.getElementById('delReg');
+    if(del) del.addEventListener('click', function(){ supprimerRegistre(r); });
+  }
+
+  function champDef(r, id){ return MD.champsFiltrables(r).filter(function(c){ return c.id === id; })[0]; }
+
+  function rendreConds(r){
+    var champs = MD.champsFiltrables(r), box = document.getElementById('condList');
+    if(!conds.length){
+      box.innerHTML = '<p class="muted" style="font-size:.84rem;padding:.2rem 0 .4rem">Aucun filtre : tous les inscrits sont affichés.</p>';
+      return;
+    }
+    box.innerHTML = conds.map(function(k, i){
+      var def = champDef(r, k.champ) || champs[0], ops = MD.OPS[def.type];
+      if(!ops.some(function(o){ return o[0] === k.op; })) k.op = ops[0][0];
+      return (i ? '<span class="and">ET</span>' : '')+
+        '<div class="cond" data-i="'+i+'">'+
+          '<button class="del" data-del="'+i+'" aria-label="Retirer cette condition">'+svg('x')+'</button>'+
+          '<select data-k="champ" aria-label="Champ">'+ champs.map(function(c){
+            return '<option value="'+c.id+'"'+(c.id === k.champ ? ' selected' : '')+'>'+esc(c.label)+'</option>'; }).join('') +'</select>'+
+          '<div class="row">'+
+            '<select data-k="op" aria-label="Opérateur">'+ ops.map(function(o){
+              return '<option value="'+o[0]+'"'+(o[0] === k.op ? ' selected' : '')+'>'+o[1]+'</option>'; }).join('') +'</select>'+
+            valeurInput(def, k)+
+          '</div>'+
+        '</div>';
+    }).join('');
+
+    box.querySelectorAll('.cond').forEach(function(el){
+      var i = +el.dataset.i;
+      el.querySelectorAll('[data-k]').forEach(function(inp){
+        inp.addEventListener(inp.tagName === 'INPUT' ? 'input' : 'change', function(){
+          conds[i][inp.dataset.k] = inp.value;
+          if(inp.dataset.k === 'champ'){ conds[i].valeur = ''; conds[i].op = MD.OPS[champDef(r, inp.value).type][0][0]; rendreConds(r); }
+          if(inp.dataset.k === 'op') rendreConds(r);
+          listeActive = null ; rendreSaved(r); rendreResultats(r);
+        });
+      });
+    });
+    box.querySelectorAll('[data-del]').forEach(function(b){
+      b.addEventListener('click', function(){ conds.splice(+b.dataset.del, 1); listeActive = null ; rendreConds(r); rendreSaved(r); rendreResultats(r); });
+    });
+  }
+
+  function valeurInput(def, k){
+    if(k.op === 'notempty') return '<input disabled value="—" aria-label="Valeur">';
+    if(def.type === 'bool')
+      return '<select data-k="valeur" aria-label="Valeur"><option value="">…</option>'+
+        '<option value="true"'+(k.valeur === 'true' ? ' selected' : '')+'>Oui</option>'+
+        '<option value="false"'+(k.valeur === 'false' ? ' selected' : '')+'>Non</option></select>';
+    if(def.type === 'choix' || def.type === 'multi')
+      return '<select data-k="valeur" aria-label="Valeur"><option value="">…</option>'+ def.options.map(function(o){
+        return '<option'+(k.valeur === o ? ' selected' : '')+'>'+esc(o)+'</option>'; }).join('') +'</select>';
+    if(def.type === 'date') return '<input type="date" data-k="valeur" value="'+esc(k.valeur)+'" aria-label="Valeur">';
+    if(def.type === 'nombre' || def.type === 'foyer')
+      return '<input type="number" min="0" data-k="valeur" value="'+esc(k.valeur)+'" placeholder="ex. 80" aria-label="Valeur">';
+    return '<input type="text" data-k="valeur" value="'+esc(k.valeur)+'" placeholder="texte" aria-label="Valeur">';
+  }
+
+  function rendreSaved(r){
+    var listes = S.listes.filter(function(l){ return l.registre === r.id; });
+    document.getElementById('savedList').innerHTML = listes.length
+      ? listes.map(function(l){
+          return '<button class="saved-item'+(listeActive === l.id ? ' on' : '')+'" data-liste="'+l.id+'">'+svg('list')+
+            '<span>'+esc(l.nom)+'</span><span class="muted" style="flex:none;font-size:.76rem">'+MD.filtrer(r, l.conditions).length+'</span></button>';
+        }).join('')
+      : '<p class="muted" style="font-size:.8rem">Aucune liste pour ce registre.</p>';
+    document.querySelectorAll('[data-liste]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var l = S.listes.filter(function(x){ return x.id === b.dataset.liste; })[0];
+        conds = JSON.parse(JSON.stringify(l.conditions)); listeActive = l.id;
+        rendreConds(r); rendreSaved(r); rendreResultats(r);
+      });
+    });
+  }
+
+  function rendreResultats(r){
+    var res = MD.filtrer(r, conds).sort(function(a, b){ return MD.age(b.naissance) - MD.age(a.naissance); });
+    var total = MD.inscrits(r.id).length;
+    document.getElementById('resCount').innerHTML = '<b>'+res.length+'</b> personne'+(res.length > 1 ? 's' : '')+
+      ' <span class="muted" style="font-weight:400;font-size:.88rem">sur '+total+' inscrits</span>';
+    document.getElementById('exportCsv').disabled = !res.length;
+    if(!res.length){
+      document.getElementById('resTable').innerHTML = '<div class="empty-res">'+svg('filter')+'Aucune personne ne correspond à ces conditions.</div>';
+      return;
+    }
+    var entetes = '<th>Habitant</th><th>Âge</th><th>Adresse</th><th>Contact</th>' +
+      r.champs.map(function(c){ return '<th>'+esc(MD.CHAMPS[c].label.replace(/ \(.*\)$/, ''))+'</th>'; }).join('') + '<th>Inscrit le</th>';
+    var lignes = res.map(function(c){
+      var a = MD.age(c.naissance), ins = c.inscriptions[r.id];
+      return '<tr><td><span class="nm">'+esc(c.prenom + ' ' + c.nom)+'</span></td>'+
+        '<td><span class="age-pill'+(a >= 80 ? ' hi' : '')+'">'+a+' ans</span></td>'+
+        '<td>'+esc(c.adresse.numero + ' ' + c.adresse.rue)+'<span class="sm">Secteur '+esc(c.secteur)+'</span></td>'+
+        '<td>'+(c.tel ? esc(c.tel) : '<span class="muted">—</span>')+'<span class="sm">'+esc(c.email)+'</span></td>'+
+        r.champs.map(function(ch){ return '<td>'+MD.afficherReponse(ch, ins.reponses[ch])+'</td>'; }).join('')+
+        '<td class="muted">'+MD.dateFr(ins.date)+'</td></tr>';
+    }).join('');
+    document.getElementById('resTable').innerHTML = '<table><thead><tr>'+entetes+'</tr></thead><tbody>'+lignes+'</tbody></table>';
+  }
+
+  function enregistrerListe(r){
+    var valides = conds.filter(function(k){ return k.op === 'notempty' || k.valeur !== ''; });
+    if(!valides.length){ MD.toast("Ajoutez au moins une condition avant d'enregistrer"); return; }
+    var m = MD.modal('<h3>Enregistrer cette liste</h3>'+
+      '<p style="margin-top:.5rem;color:var(--ink-soft);font-size:.9rem">La liste se met à jour toute seule : ce sont les conditions qui sont enregistrées, pas les noms.</p>'+
+      '<label class="field" style="margin-top:1rem"><span>Nom de la liste</span><input id="listName" placeholder="ex. Tournée d\'appel — secteur Nord"></label>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-solid" id="okSave">'+svg('save')+' Enregistrer</button></div>');
+    m.el.querySelector('#okSave').addEventListener('click', function(){
+      var nom = m.el.querySelector('#listName').value.trim();
+      if(!nom){ m.el.querySelector('#listName').closest('.field').classList.add('error'); return; }
+      var l = {id:MD.nouvelId('l', S.listes), registre:r.id, nom:nom, conditions:JSON.parse(JSON.stringify(valides)), creeLe:MD.AUJOURDHUI};
+      S.listes.push(l); listeActive = l.id;
+      MD.log('Liste créée', r.nom + ' · ' + nom);
+      m.fermer(); rendreSaved(r); MD.toast('Liste enregistrée');
+    });
+  }
+
+  function exporter(r){
+    var res = MD.filtrer(r, conds);
+    var col = ['Prénom','Nom','Âge','Adresse','Secteur','Téléphone','E-mail'].concat(r.champs.map(function(c){ return MD.CHAMPS[c].label; }));
+    var q = function(v){ v = String(v == null ? '' : v); return /[";\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    var csv = '﻿' + col.map(q).join(';') + '\n' + res.map(function(c){
+      var ins = c.inscriptions[r.id];
+      return [c.prenom, c.nom, MD.age(c.naissance), c.adresse.numero + ' ' + c.adresse.rue + ', 95580 Margency', c.secteur, c.tel, c.email]
+        .concat(r.champs.map(function(ch){ return MD.texteReponse(ch, ins.reponses[ch]); })).map(q).join(';');
+    }).join('\n');
+
+    var nomListe = listeActive ? S.listes.filter(function(l){ return l.id === listeActive; })[0].nom : 'filtre personnalisé';
+    var m = MD.modal('<h3>Exporter '+res.length+' personne'+(res.length > 1 ? 's' : '')+'</h3>'+
+      '<div class="rule" style="margin-top:1rem">'+svg('shield')+'<span>Cet export contient des données personnelles. Il sera inscrit au journal, avec votre nom et la date. Utilisez-le uniquement pour : <b>'+esc(r.finalite.charAt(0).toLowerCase() + r.finalite.slice(1))+'</b></span></div>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-solid" id="okExport">'+svg('download')+' Télécharger le fichier CSV</button></div>');
+    m.el.querySelector('#okExport').addEventListener('click', function(){
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+      a.download = 'margency-' + r.id + '-' + MD.AUJOURDHUI + '.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+      MD.log('Export CSV', r.nom + ' · ' + nomListe + ' · ' + res.length + ' personne(s)');
+      m.fermer(); MD.toast('Export enregistré au journal');
+    });
+  }
+
+  function supprimerRegistre(r){
+    var n = MD.inscrits(r.id).length;
+    var m = MD.modal('<h3>Supprimer « '+esc(r.nom)+' » ?</h3>'+
+      '<p style="margin-top:.7rem;color:var(--ink-soft)">Les réponses des '+n+' personne(s) inscrite(s) seront effacées, ainsi que les listes enregistrées. Leurs comptes citoyens ne sont pas touchés.</p>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-danger" id="okDelReg">'+svg('trash')+' Supprimer</button></div>');
+    m.el.querySelector('#okDelReg').addEventListener('click', function(){
+      S.citoyens.forEach(function(c){ delete c.inscriptions[r.id]; });
+      S.listes = S.listes.filter(function(l){ return l.registre !== r.id; });
+      S.registres = S.registres.filter(function(x){ return x.id !== r.id; });
+      MD.log('Registre supprimé', r.nom + ' · ' + n + ' inscription(s) effacée(s)');
+      m.fermer(); MD.toast('Registre supprimé'); location.hash = 'tableau';
+    });
+  }
+
+  /* ============================================================
+     CRÉER UN REGISTRE
+     C'est ici que la mairie crée ses propres thèmes. La règle est simple :
+     pas de finalité écrite, pas de registre. Et les habitants s'y inscrivent eux-mêmes.
+     ============================================================ */
+  function vueNouveau(){
+    tabs('nouveau');
+    var d = {nom:'', service:'', finalite:'', base:'Consentement', conservation:"Jusqu'à la désinscription", ageMin:'',
+             couleur:5, icone:'book', champs:[]};
+
+    app.innerHTML = '<div class="view">'+
+      '<div class="h-row"><div><div class="eyebrow">Nouveau registre</div><h1>Créer un thème</h1>'+
+        '<p>Un registre, c\'est un service proposé aux habitants. Il apparaîtra dans leur compte citoyen, et seuls ceux qui s\'y inscrivent y figureront.</p></div></div>'+
+      '<div class="creator">'+
+        '<form class="form-card glass" id="newReg" novalidate>'+
+          '<section><h2><i>1</i>Le service</h2><p>Comment les habitants le verront dans leur compte.</p>'+
+            '<div class="grid-2">'+
+              '<label class="field"><span>Nom du registre</span><input name="nom" maxlength="60" placeholder="ex. Bibliothèque : portage de livres"></label>'+
+              '<label class="field"><span>Service destinataire</span><input name="service" maxlength="50" placeholder="ex. Bibliothèque municipale"></label>'+
+            '</div>'+
+            '<div class="field" style="margin-top:14px"><span>Couleur</span><div class="swatches">'+ MD.COULEURS.map(function(c, i){
+              return '<label class="swatch" style="background:linear-gradient(145deg,'+c[0]+','+c[1]+')"><input type="radio" name="couleur" value="'+i+'"'+(i === d.couleur ? ' checked' : '')+' aria-label="Couleur '+(i+1)+'"></label>'; }).join('') +'</div></div>'+
+            '<div class="field" style="margin-top:14px"><span>Icône</span><div class="icon-pick">'+ MD.ICONES_REGISTRE.map(function(ic){
+              return '<label class="icon-opt">'+svg(ic)+'<input type="radio" name="icone" value="'+ic+'"'+(ic === d.icone ? ' checked' : '')+' aria-label="'+ic+'"></label>'; }).join('') +'</div></div>'+
+          '</section>'+
+          '<section><h2><i>2</i>La finalité</h2><p>À quoi serviront les informations. C\'est la phrase que l\'habitant lira avant d\'accepter.</p>'+
+            '<label class="field"><span>Finalité</span><textarea name="finalite" rows="3" maxlength="260" placeholder="ex. Livrer des livres à domicile aux personnes qui ne peuvent pas se déplacer jusqu\'à la bibliothèque."></textarea>'+
+              '<div class="counter" id="finCount">0 / 30 caractères minimum</div></label>'+
+            '<div class="rule" style="margin-top:12px">'+svg('info')+'<span>Pas de finalité précise, pas de registre. « Mieux connaître la population » ou « usage futur » ne sont pas des finalités.</span></div>'+
+            '<div class="grid-2" style="margin-top:14px">'+
+              '<label class="field"><span>Base légale</span><select name="base">'+
+                ['Consentement',"Mission d'intérêt public","Obligation légale"].map(function(b){ return '<option>'+b+'</option>'; }).join('')+'</select>'+
+                '<small>Dans le doute, le consentement. À valider avec votre délégué à la protection des données.</small></label>'+
+              '<label class="field"><span>Durée de conservation</span><select name="conservation">'+
+                ["Jusqu'à la désinscription",'6 mois','1 an, renouvelable','18 mois','3 ans'].map(function(b){ return '<option>'+b+'</option>'; }).join('')+'</select></label>'+
+            '</div>'+
+          '</section>'+
+          '<section><h2><i>3</i>Qui peut s\'inscrire, et quelles questions</h2><p>Ne cochez que ce qui est indispensable à la finalité.</p>'+
+            '<label class="field" style="max-width:260px"><span>Âge minimum <i>(facultatif)</i></span><input type="number" name="ageMin" min="0" max="110" placeholder="ex. 60"></label>'+
+            '<div class="field" style="margin-top:14px"><span>Questions posées en plus du profil (nom, âge, adresse, contact)</span>'+
+              '<div class="champ-list">'+ Object.keys(MD.CHAMPS).map(function(id){
+                var ch = MD.CHAMPS[id], typ = {bool:'Oui / non', choix:'Choix unique', multi:'Choix multiples', nombre:'Nombre', date:'Date', texte:'Texte libre', foyer:'Liste des membres du foyer'}[ch.type];
+                return '<label class="champ-opt"><input type="checkbox" name="champs" value="'+id+'"><span><b>'+esc(ch.label)+'</b><small>'+typ+
+                  (ch.options ? ' · ' + ch.options.map(esc).join(', ') : '')+'</small></span></label>'; }).join('') +
+              '</div></div>'+
+          '</section>'+
+          '<div id="newErr"></div>'+
+          '<div style="display:flex;justify-content:flex-end;gap:.6rem;margin-top:1.6rem">'+
+            '<a class="btn btn-glass" href="#tableau">Annuler</a>'+
+            '<button type="submit" class="btn btn-solid">'+svg('check')+' Créer le registre</button></div>'+
+        '</form>'+
+        '<aside class="preview"><div class="lbl">Aperçu côté habitant</div><div class="pv glass" id="pv"></div>'+
+          '<p class="pv-note">Les habitants verront ce service dans leur compte citoyen et choisiront de s\'y inscrire ou non.</p></aside>'+
+      '</div></div>';
+
+    var f = document.getElementById('newReg');
+    function lire(){
+      d.nom = f.nom.value.trim(); d.service = f.service.value.trim(); d.finalite = f.finalite.value.trim();
+      d.base = f.base.value ; d.conservation = f.conservation.value ; d.ageMin = f.ageMin.value;
+      d.couleur = +f.querySelector('input[name="couleur"]:checked').value;
+      d.icone = f.querySelector('input[name="icone"]:checked').value;
+      d.champs = [].map.call(f.querySelectorAll('input[name="champs"]:checked'), function(i){ return i.value; });
+    }
+    function apercu(){
+      lire();
+      var c = MD.COULEURS[d.couleur], n = d.finalite.length, cnt = document.getElementById('finCount');
+      cnt.textContent = n + (n < 30 ? ' / 30 caractères minimum' : ' caractères');
+      cnt.classList.toggle('bad', n > 0 && n < 30);
+      document.getElementById('pv').setAttribute('style', '--c1:' + c[0] + ';--c2:' + c[1]);
+      document.getElementById('pv').innerHTML =
+        '<div class="pv-head"><span class="ic">'+svg(d.icone)+'</span><span><b>'+esc(d.nom || 'Nom du registre')+'</b>'+
+          '<small>'+esc(d.service || 'Service destinataire')+(d.ageMin ? ' · dès ' + esc(d.ageMin) + ' ans' : '')+'</small></span></div>'+
+        '<p>'+(d.finalite ? esc(d.finalite) : '<span class="muted">La finalité s\'affichera ici.</span>')+'</p>'+
+        '<div class="qs">'+(d.champs.length ? d.champs.map(function(id){ return '<div class="q">'+svg('check')+esc(MD.CHAMPS[id].label)+'</div>'; }).join('')
+                                             : '<div class="q muted">'+svg('info')+'Aucune question en plus du profil</div>')+'</div>'+
+        '<div class="pv-badges"><span>'+esc(d.base)+'</span><span>Conservation : '+esc(d.conservation)+'</span></div>';
+    }
+    f.addEventListener('input', apercu); f.addEventListener('change', apercu); apercu();
+
+    f.addEventListener('submit', function(e){
+      e.preventDefault(); lire();
+      f.querySelectorAll('.field').forEach(function(x){ x.classList.remove('error'); });
+      var err = [];
+      if(!d.nom){ err.push('le nom'); f.nom.closest('.field').classList.add('error'); }
+      if(!d.service){ err.push('le service destinataire'); f.service.closest('.field').classList.add('error'); }
+      if(d.finalite.length < 30){ err.push('une finalité précise (30 caractères minimum)'); f.finalite.closest('.field').classList.add('error'); }
+      if(S.registres.some(function(r){ return r.nom.toLowerCase() === d.nom.toLowerCase(); })) err.push('un nom différent : ce registre existe déjà');
+      if(err.length){
+        document.getElementById('newErr').innerHTML = '<div class="form-error" style="margin-top:1.2rem">'+svg('alert')+'<span>Il manque : '+err.join(', ')+'.</span></div>';
+        return;
+      }
+      var c = MD.COULEURS[d.couleur];
+      var base = d.nom.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0, 30) || 'registre';
+      var id = base, k = 2; while(MD.registre(id)) id = base + '-' + (k++);
+      var reg = {id:id, nom:d.nom, c1:c[0], c2:c[1], icone:d.icone, finalite:d.finalite, base:d.base, service:d.service,
+                 conservation:d.conservation, ageMin:d.ageMin ? +d.ageMin : null, champs:d.champs, systeme:false, creeLe:MD.AUJOURDHUI};
+      S.registres.push(reg);
+      MD.log('Registre créé', reg.nom + ' · ' + (reg.champs.length ? reg.champs.length + ' question(s)' : 'profil seul'));
+      MD.toast('Registre créé — il apparaît dans le compte des habitants');
+      location.hash = 'registre/' + id;
+    });
+  }
+
+  /* ============================================================
+     JOURNAL
+     ============================================================ */
+  function vueJournal(){
+    tabs('journal');
+    var cls = function(a){ return /Export/.test(a) ? 'export' : /supprim/i.test(a) ? 'delete' : /créé/i.test(a) ? 'create' : ''; };
+    app.innerHTML = '<div class="view">'+
+      '<div class="h-row"><div><div class="eyebrow">Traçabilité</div><h1>Journal des opérations</h1>'+
+        '<p>Chaque création de registre, liste ou export est enregistrée. Dans la version réelle, ce journal ne peut être ni modifié ni effacé par les agents.</p></div></div>'+
+      '<div class="results glass journal"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Agent</th><th>Opération</th><th>Détail</th></tr></thead><tbody>'+
+        S.journal.map(function(j){
+          return '<tr><td>'+MD.dateFr(j.t)+' · '+esc(j.t.slice(11,16).replace(':', 'h'))+'</td><td>'+esc(j.agent)+'</td>'+
+            '<td><span class="act '+cls(j.action)+'">'+esc(j.action)+'</span></td><td>'+esc(j.detail)+'</td></tr>';
+        }).join('')+
+      '</tbody></table></div></div></div>';
+  }
+
+  /* ============================================================
+     ROUTAGE
+     ============================================================ */
+  function route(){
+    var h = location.hash.replace('#', '');
+    if(h.indexOf('registre/') === 0) vueRegistre(decodeURIComponent(h.slice(9)));
+    else if(h === 'nouveau') vueNouveau();
+    else if(h === 'journal') vueJournal();
+    else vueTableau();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  app.addEventListener('click', function(e){
+    var c = e.target.closest('[data-open]'); if(c) location.hash = 'registre/' + c.dataset.open;
+  });
+  app.addEventListener('keydown', function(e){
+    var c = e.target.closest('[data-open]'); if(c && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); location.hash = 'registre/' + c.dataset.open; }
+  });
+  document.getElementById('resetDemo').addEventListener('click', function(){
+    var m = MD.modal('<h3>Réinitialiser la démonstration ?</h3><p style="margin-top:.7rem;color:var(--ink-soft)">Les registres, listes, comptes et exports créés pendant la démo seront effacés, et les 96 habitants fictifs d\'origine restaurés.</p>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-solid" id="okReset">Réinitialiser</button></div>');
+    m.el.querySelector('#okReset').addEventListener('click', function(){ MD.reset(); location.reload(); });
+  });
+  window.addEventListener('hashchange', route);
+  MD.chrome();
+  route();
+})();
+</script>
+</body>
+</html>

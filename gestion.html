@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestion du site — Mairie de Margency</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/site/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=2">
+<style>
+.muted{color:var(--ink-mute)}
+.view{animation:viewIn .45s var(--ease) both}
+@keyframes viewIn{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+
+/* ============ en-tête ============ */
+.g-top{position:sticky; top:0; z-index:100; padding-top:14px}
+.g-bar{display:flex; align-items:center; gap:1rem; padding:.5rem .55rem .5rem 1.1rem; border-radius:var(--r-pill)}
+.g-bar .brand-txt span{color:var(--brand); font-weight:600}
+.tabs{display:flex; gap:.15rem; margin-left:auto; overflow-x:auto; scrollbar-width:none; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch}
+.tab{display:flex; align-items:center; gap:.45rem; padding:.58rem .8rem; border-radius:var(--r-pill); white-space:nowrap;
+  font-size:.85rem; font-weight:500; color:var(--ink-soft); transition:.3s}
+.tab svg{width:16px;height:16px;flex:none}
+.tab:hover{background:rgba(255,255,255,.6); color:var(--ink)}
+.tab.on{background:#fff; color:var(--ink); box-shadow:0 4px 14px rgba(9,42,54,.1)}
+
+.g-main{padding:18px 0 90px}
+.etat{display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; padding:.7rem 1.1rem; border-radius:var(--r-sm); font-size:.84rem; margin-bottom:22px;
+  background:rgba(220,252,231,.6); border:1px solid rgba(22,163,74,.25); color:#14532d}
+.etat.ko{background:rgba(254,215,170,.55); border-color:rgba(234,88,12,.25); color:#7c2d12}
+.etat svg{width:17px;height:17px;flex:none}
+.etat code{font-size:.8rem; padding:.15rem .45rem; border-radius:6px; background:rgba(11,26,36,.08)}
+
+.h-row{display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:18px}
+.h-row h1{font-size:clamp(1.7rem,2.8vw,2.3rem); letter-spacing:-.03em; margin-top:.5rem}
+.h-row p{color:var(--ink-soft); margin-top:.35rem; max-width:64ch}
+
+/* ============ tableau de bord ============ */
+.dash{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.tuile{display:flex; flex-direction:column; gap:.3rem; padding:20px; border-radius:var(--r-md)}
+.tuile .t-top{display:flex; align-items:center; justify-content:space-between}
+.pastille{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:#fff;flex:none;
+  background:linear-gradient(145deg,var(--c1),var(--c2)); box-shadow:0 8px 20px rgba(9,42,54,.16), inset 0 1px 0 rgba(255,255,255,.35)}
+.pastille svg{width:22px;height:22px}
+.pastille.sm{width:36px;height:36px;border-radius:11px}
+.pastille.sm svg{width:17px;height:17px}
+.tuile b.n{font-size:2rem; letter-spacing:-.04em; line-height:1}
+.tuile h3{font-size:1.05rem; margin-top:.6rem}
+.tuile p{font-size:.84rem; color:var(--ink-soft)}
+.tuile .t-act{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:auto; padding-top:.9rem}
+.bloc{padding:22px 24px; border-radius:var(--r-lg); margin-top:18px}
+.bloc h2{font-size:1.1rem; margin-bottom:.9rem}
+.histo{display:grid; gap:6px; font-size:.84rem; color:var(--ink-soft)}
+.histo div{display:flex; gap:.8rem; padding:.45rem .7rem; border-radius:10px; background:rgba(255,255,255,.45)}
+.histo b{color:var(--ink); min-width:110px}
+
+/* ============ listes ============ */
+.outils{display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin-bottom:14px}
+.recherche{flex:1; min-width:220px; display:flex; align-items:center; gap:.6rem; padding:.2rem .4rem .2rem 1rem; border-radius:var(--r-pill)}
+.recherche svg{width:17px;height:17px;color:var(--ink-mute);flex:none}
+.recherche input{flex:1; border:0; background:transparent; padding:.65rem 0; font-size:.94rem; outline:none}
+.filtre{display:flex; gap:4px; padding:4px; border-radius:var(--r-pill)}
+.filtre button{border:0; background:transparent; padding:.5rem .9rem; border-radius:var(--r-pill); font-size:.84rem; font-weight:600; color:var(--ink-soft); cursor:pointer}
+.filtre button.on{background:#fff; color:var(--ink); box-shadow:0 4px 12px rgba(9,42,54,.1)}
+.liste{display:grid; gap:8px}
+.ligne{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:1rem; align-items:center; padding:10px 12px; border-radius:18px;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease)}
+.ligne:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(9,42,54,.12), var(--glass-inner)}
+.vign{width:74px; height:56px; border-radius:12px; object-fit:cover; background:linear-gradient(145deg,#cfe6e3,#9cc9c4); flex:none}
+.date-pas{width:62px; text-align:center; padding:8px 0; border-radius:14px; color:#fff; background:linear-gradient(155deg,#1b8f86,#0b5f58)}
+.date-pas.vi{background:linear-gradient(155deg,#8b5cf6,#6d28d9)}
+.date-pas b{display:block; font-size:1.35rem; line-height:1}
+.date-pas span{font-size:.68rem; font-weight:600}
+.ligne h3{font-size:.98rem; line-height:1.3}
+.ligne small{display:block; font-size:.8rem; color:var(--ink-mute); margin-top:.2rem}
+.badge{display:inline-block; font-size:.68rem; font-weight:700; padding:.12rem .5rem; border-radius:var(--r-pill); margin-left:.4rem; vertical-align:middle;
+  background:rgba(15,118,110,.12); color:#0b5f58}
+.badge.passe{background:rgba(11,26,36,.07); color:var(--ink-mute)}
+.actions{display:flex; gap:.35rem}
+.ib{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;border:1px solid rgba(11,26,36,.08);background:rgba(255,255,255,.6);cursor:pointer;color:var(--ink-soft);transition:.25s}
+.ib:hover{background:#fff; color:var(--brand)}
+.ib.del:hover{color:var(--danger)}
+.ib svg{width:17px;height:17px}
+.ib:disabled{opacity:.35; cursor:not-allowed}
+.vide{padding:40px; text-align:center; color:var(--ink-mute); border-radius:var(--r-lg)}
+
+/* ============ formulaires ============ */
+.form{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:18px; align-items:start}
+.carte-f{padding:26px 28px; border-radius:var(--r-lg)}
+.carte-f + .carte-f{margin-top:18px}
+.carte-f h2{font-size:1.05rem; display:flex; align-items:center; gap:.6rem; margin-bottom:1rem}
+.carte-f h2 i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.78rem;color:#fff;background:linear-gradient(145deg,#14b8a6,#0f766e)}
+.carte-f .aide{font-size:.8rem; color:var(--ink-mute); margin:-.6rem 0 1rem}
+.pile{display:grid; gap:14px}
+.field textarea{min-height:90px; resize:vertical; line-height:1.5}
+.req{color:var(--danger)}
+.barre-bas{position:fixed; left:0; right:0; bottom:0; z-index:90; padding:12px 0; background:rgba(238,244,243,.78);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-top:1px solid rgba(11,26,36,.08)}
+.barre-bas .wrap{display:flex; gap:.6rem; align-items:center; justify-content:flex-end; flex-wrap:wrap}
+.barre-bas .info{margin-right:auto; font-size:.84rem; color:var(--ink-soft)}
+
+/* éditeur de texte */
+.editeur{border-radius:12px; border:1px solid rgba(11,26,36,.12); background:rgba(255,255,255,.66); overflow:hidden}
+.editeur:focus-within{border-color:rgba(15,118,110,.55); box-shadow:0 0 0 4px rgba(15,118,110,.14); background:#fff}
+.ed-outils{display:flex; gap:2px; flex-wrap:wrap; padding:6px; border-bottom:1px solid rgba(11,26,36,.08); background:rgba(255,255,255,.5)}
+.ed-outils button{border:0; background:transparent; min-width:34px; height:32px; padding:0 .55rem; border-radius:8px; cursor:pointer; font-size:.84rem; font-weight:600; color:var(--ink-soft); display:flex; align-items:center; gap:.35rem}
+.ed-outils button:hover{background:rgba(15,118,110,.1); color:var(--brand)}
+.ed-outils button svg{width:16px;height:16px}
+.ed-outils .sep{width:1px; background:rgba(11,26,36,.1); margin:4px 4px}
+.ed-zone{min-height:220px; max-height:520px; overflow:auto; padding:14px 16px; outline:none; font-size:.94rem; line-height:1.65}
+.ed-zone a{color:var(--brand); text-decoration:underline}
+.ed-zone h3{font-size:1.1rem; margin:.6rem 0 .3rem}
+.ed-zone p{margin:0 0 .6rem}
+
+/* image & fichier */
+.media{display:grid; grid-template-columns:150px minmax(0,1fr); gap:14px; align-items:start}
+.media .apercu{width:150px; aspect-ratio:4/3; border-radius:14px; object-fit:cover; background:linear-gradient(145deg,#cfe6e3,#9cc9c4)}
+.fichier{display:flex; gap:.5rem; align-items:center; flex-wrap:wrap}
+.fichier input[type=text]{flex:1; min-width:160px}
+.fichier .etiq{font-size:.78rem; color:var(--ink-mute)}
+input[type=file]{display:none}
+
+/* étiquettes */
+[data-tags] .check-pill{white-space:nowrap}
+.form > div:last-child .media{grid-template-columns:minmax(0,1fr)}
+.form > div:last-child .media .apercu{width:100%; aspect-ratio:16/10}
+.tags-new{display:flex; gap:.5rem; margin-top:.6rem}
+.tags-new input{flex:1}
+
+/* blocs répétables */
+.rep{display:grid; gap:10px}
+.rep-item{padding:14px; border-radius:16px; background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.8)}
+.rep-head{display:flex; align-items:center; gap:.6rem; margin-bottom:.7rem}
+.rep-head b{font-size:.86rem}
+.rep-head .actions{margin-left:auto}
+.rep-head .ib{width:32px;height:32px;border-radius:10px}
+.rep-head .ib svg{width:15px;height:15px}
+.ajouter{border:1.5px dashed rgba(15,118,110,.35); background:rgba(255,255,255,.35); border-radius:14px; padding:.8rem; font-weight:600; color:var(--brand); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; font-size:.88rem; transition:.25s}
+.ajouter:hover{background:rgba(255,255,255,.7)}
+.ajouter svg{width:17px;height:17px}
+
+/* présences */
+.pres{display:grid; gap:6px}
+.pres-l{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:.6rem; align-items:center; padding:6px 10px; border-radius:12px; background:rgba(255,255,255,.45)}
+.pres-l span{font-size:.86rem}
+.pres-l small{color:var(--ink-mute); font-size:.74rem}
+.seg3{display:flex; gap:3px; padding:3px; border-radius:var(--r-pill); background:rgba(11,26,36,.06)}
+.seg3 label{cursor:pointer}
+.seg3 input{display:none}
+.seg3 span{display:block; padding:.3rem .65rem; border-radius:var(--r-pill); font-size:.76rem; font-weight:600; color:var(--ink-soft)}
+.seg3 input:checked + span{background:#fff; color:var(--ink); box-shadow:0 2px 8px rgba(9,42,54,.12)}
+.seg3 input[value=present]:checked + span{color:#15803d}
+.seg3 input[value=absent]:checked + span{color:#b91c1c}
+.pres-l > span{min-width:0; overflow-wrap:anywhere}
+.pres-l > span small{display:block; line-height:1.3}
+.pouvoir{grid-column:1 / -1; display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--ink-soft)}
+.pouvoir select{padding:.35rem .5rem; border-radius:8px; border:1px solid rgba(11,26,36,.12); background:#fff; font-size:.8rem}
+
+/* sélecteur d'icônes et de couleurs */
+.icones{display:grid; grid-template-columns:repeat(auto-fill,minmax(40px,1fr)); gap:6px; max-height:170px; overflow:auto; padding:2px}
+.icones button{height:40px; border-radius:11px; border:1px solid rgba(11,26,36,.08); background:rgba(255,255,255,.6); cursor:pointer; display:grid; place-items:center; color:var(--ink-soft)}
+.icones button svg{width:18px;height:18px}
+.icones button.on{background:linear-gradient(145deg,var(--c1),var(--c2)); color:#fff; border-color:transparent}
+.teintes{display:flex; gap:8px; flex-wrap:wrap}
+.teintes button{width:32px;height:32px;border-radius:50%;border:3px solid #fff;cursor:pointer;background:linear-gradient(145deg,var(--c1),var(--c2));box-shadow:0 2px 8px rgba(9,42,54,.18)}
+.teintes button.on{outline:3px solid var(--ink); outline-offset:1px}
+
+/* aperçu de carte */
+.apercu-carte{display:flex; gap:.9rem; align-items:flex-start; padding:16px; border-radius:18px; background:rgba(255,255,255,.7); border:1px solid rgba(255,255,255,.9)}
+.apercu-carte b{display:block; font-size:.93rem}
+.apercu-carte span.t{display:block; font-size:.82rem; color:var(--ink-soft); margin-top:.2rem}
+.apercu-carte span.go{display:block; color:#6d28d9; font-weight:600; font-size:.82rem; margin-top:.4rem}
+
+/* sélecteur de lien */
+.lien-f{display:grid; gap:8px}
+.lien-f .dest{font-size:.78rem; color:var(--ink-mute); word-break:break-all}
+.lien-f .dest a{color:var(--brand)}
+
+/* zones (cartes) */
+.zones{display:grid; grid-template-columns:260px minmax(0,1fr); gap:18px; align-items:start}
+.zone-nav{padding:10px; border-radius:var(--r-md); display:grid; gap:4px; position:sticky; top:96px}
+.zone-nav button{text-align:left; border:0; background:transparent; padding:.7rem .85rem; border-radius:14px; cursor:pointer; transition:.25s}
+.zone-nav button b{display:block; font-size:.88rem}
+.zone-nav button small{display:block; font-size:.74rem; color:var(--ink-mute)}
+.zone-nav button:hover{background:rgba(255,255,255,.55)}
+.zone-nav button.on{background:#fff; box-shadow:0 4px 14px rgba(9,42,54,.1)}
+.zone-nav h4{font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); padding:.6rem .85rem .2rem}
+
+@media (max-width:1100px){
+  .form{grid-template-columns:minmax(0,1fr)}
+  .dash{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .zones{grid-template-columns:minmax(0,1fr)}
+  .zone-nav{position:static}
+  .tab span{display:none}
+}
+@media (max-width:760px){
+  .g-bar{flex-wrap:wrap; border-radius:var(--r-lg); padding:.7rem}
+  /* la barre déborde : un dégradé sur le bord droit dit qu'elle défile */
+  .tabs{margin-left:0; width:100%; scrollbar-width:thin;
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);
+            mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+  .dash{grid-template-columns:minmax(0,1fr)}
+  .carte-f{padding:20px 18px}
+  .media{grid-template-columns:minmax(0,1fr)}
+  .ligne{grid-template-columns:auto minmax(0,1fr)}
+  .ligne .actions{grid-column:1 / -1; justify-content:flex-end}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+<div class="grain"></div>
+
+<div class="g-top">
+  <div class="wrap">
+    <div class="g-bar glass">
+      <a class="brand" href="index.html" title="Retour au site">
+        <img class="blason" src="assets/site/blason-128.webp" width="40" height="44" alt="Blason de Margency" style="height:42px">
+        <span class="brand-txt"><strong>Margency</strong><span>Gestion du site</span></span>
+      </a>
+      <nav class="tabs" tabindex="0" aria-label="Sections de la gestion" id="tabs" aria-label="Sections"></nav>
+    </div>
+  </div>
+</div>
+
+<main class="g-main">
+  <div class="wrap">
+    <div class="etat" id="etat" hidden></div>
+    <div id="app"></div>
+  </div>
+</main>
+
+<input type="file" id="choixFichier" aria-label="Choisir un fichier sur l'ordinateur" tabindex="-1">
+
+<script src="js/icones.js"></script>
+<script src="data/accueil.js"></script>
+<script src="data/agenda.js"></script>
+<script src="data/actus.js"></script>
+<script src="data/conseil.js"></script>
+<script src="data/ccas.js"></script>
+<script src="data/cartes.js"></script>
+<script src="data/services.js"></script>
+<script src="data/vie-municipale.js"></script>
+<script src="data/enfance.js"></script>
+<script src="data/culture.js"></script>
+<script src="data/vivre.js"></script>
+<script src="data/urbanisme.js"></script>
+<script src="js/compte-demo.js"></script>
+<script>
+(function(){
+  var app = document.getElementById('app'), esc = MD.esc, toast = MD.toast, modal = MD.modal;
+  var ICONES = window.ICONES, TEINTES = window.TEINTES, TODAY = MD.AUJOURDHUI;
+
+  /* ============================================================
+     DONNÉES & ENREGISTREMENT
+     ============================================================ */
+  var D = {accueil:window.ACCUEIL, agenda:window.AGENDA, actus:window.ACTUS, conseil:window.CONSEIL, ccas:window.CCAS, cartes:window.CARTES, services:window.SERVICES, vie:window.VIE, enfance:window.ENFANCE, culture:window.CULTURE, vivre:window.VIVRE, urbanisme:window.URBA};
+  var serveurOk = false;
+
+  function ico(n){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICONES[n] || MD.svg(n).replace(/^<svg[^>]*>|<\/svg>$/g, ''))+'</svg>'; }
+  function copie(o){ return JSON.parse(JSON.stringify(o)); }
+
+  function verifierServeur(){
+    return fetch('/api/etat', {cache:'no-store'}).then(function(r){ return r.json(); })
+      .then(function(j){ serveurOk = !!j.ok; }).catch(function(){ serveurOk = false; })
+      .then(afficherEtat);
+  }
+  function afficherEtat(){
+    var el = document.getElementById('etat');
+    el.hidden = false;
+    el.className = 'etat' + (serveurOk ? '' : ' ko');
+    el.innerHTML = serveurOk
+      ? ico('check') + '<span><b>Enregistrement activé.</b> Chaque modification est écrite dans les fichiers du site ; l\'ancienne version est gardée dans <code>data/historique</code>.</span>'
+      : ico('info') + '<span><b>Lecture seule.</b> Pour enregistrer, ouvrez le Terminal dans le dossier du site et lancez <code>python3 serveur.py</code>, puis rechargez cette page depuis <code>http://localhost:8766/gestion.html</code>.</span>';
+  }
+
+  /* enregistre un fichier entier ; en cas d'échec, restaure l'état précédent */
+  function enregistrer(fichier, avant){
+    var cle = fichier === 'vie-municipale' ? 'vie' : fichier;
+    if(!serveurOk){
+      if(avant !== undefined) D[cle] = avant;
+      modal('<h3>Enregistrement impossible</h3><p style="margin-top:.8rem;color:var(--ink-soft)">Le serveur de gestion n\'est pas lancé. Dans le Terminal, depuis le dossier <b>mairie-de-margency</b> :</p><pre>python3 serveur.py</pre><p style="margin-top:.8rem;color:var(--ink-soft)">Puis ouvrez <b>http://localhost:8766/gestion.html</b>.</p><div class="modal-actions"><button class="btn btn-solid" data-close>Compris</button></div>');
+      return Promise.reject(new Error('serveur'));
+    }
+    return fetch('/api/enregistrer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fichier:fichier, donnees:D[cle]})})
+      .then(function(r){ return r.json(); })
+      .then(function(j){ if(!j.ok) throw new Error(j.erreur || 'Erreur'); })
+      .catch(function(e){
+        if(avant !== undefined) D[cle] = avant;
+        if(e.message !== 'serveur') toast('Échec de l\'enregistrement : ' + e.message);
+        throw e;
+      });
+  }
+
+  /* dépôt d'une image ou d'un PDF dans assets/uploads */
+  function deposer(accept){
+    return new Promise(function(resolve, reject){
+      if(!serveurOk){ enregistrer().catch(function(){}); return reject(new Error('serveur')); }
+      var inp = document.getElementById('choixFichier');
+      inp.value = ''; inp.accept = accept;
+      inp.onchange = function(){
+        var f = inp.files[0]; if(!f) return;
+        var lecteur = new FileReader();
+        lecteur.onload = function(){
+          toast('Envoi de « ' + f.name + ' »…');
+          fetch('/api/deposer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({nom:f.name, contenu:lecteur.result})})
+            .then(function(r){ return r.json(); })
+            .then(function(j){ if(!j.ok) throw new Error(j.erreur); resolve(j); })
+            .catch(function(e){ toast(e.message); reject(e); });
+        };
+        lecteur.readAsDataURL(f);
+      };
+      inp.click();
+    });
+  }
+
+  /* ============================================================
+     OUTILS : dates, identifiants
+     ============================================================ */
+  var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  var MOIS_C = ['Janv','Févr','Mars','Avril','Mai','Juin','Juil','Août','Sept','Oct','Nov','Déc'];
+  function dateTexte(iso, majuscule){
+    if(!iso) return '';
+    var p = iso.split('-'), m = MOIS[+p[1]-1];
+    if(majuscule) m = m.charAt(0).toUpperCase() + m.slice(1);
+    return (+p[2]) + ' ' + m + ' ' + p[0];
+  }
+  function datePastille(iso, cls){
+    var p = (iso || '----').split('-');
+    return '<span class="date-pas '+(cls||'')+'"><b>'+(+p[2] || '?')+'</b><span>'+(MOIS_C[+p[1]-1] || '')+' '+p[0]+'</span></span>';
+  }
+  function slugifier(t){
+    return (t || 'sans-titre').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80) || 'sans-titre';
+  }
+  function slugUnique(t, liste, ancien){
+    var base = slugifier(t), s = base, i = 2;
+    while(liste.some(function(x){ return x.slug === s && x.slug !== ancien; })) s = base + '-' + (i++);
+    return s;
+  }
+  function nouvelId(liste){
+    var max = liste.reduce(function(m, x){ return Math.max(m, parseInt(x.id, 10) || 0); }, 0) + 1;
+    return typeof (liste[0] && liste[0].id) === 'number' ? max : String(max);
+  }
+  function texteBrut(html){ var d = document.createElement('div'); d.innerHTML = html || ''; return (d.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function extrait(html){ var t = texteBrut(html); return t.length > 190 ? t.slice(0, 187).replace(/\s+\S*$/, '') + '…' : t; }
+
+  /* ============================================================
+     DESTINATIONS DES LIENS
+     ============================================================ */
+  function destinations(){
+    var g = [];
+    g.push(['Pages du site', [
+      ['index.html','Accueil'], ['actualites.html','Actualités (liste)'], ['agenda.html','Agenda (calendrier)'],
+      ['services.html','Tous les services'], ['conseil-municipal.html','Conseil municipal · séances'], ['conseil-municipal.html#elus','Conseil municipal · les élus'],
+      ['compte-citoyen.html','Compte citoyen']
+    ]]);
+    g.push(['Vie municipale', [
+      ['vie-municipale.html#mairie','La Mairie · horaires et accès'], ['vie-municipale.html#services','Services municipaux'], ['vie-municipale.html#demarches','Démarches en ligne'],
+      ['vie-municipale.html#dechets','Gestion des déchets'], ['vie-municipale.html#magazines','Magazines municipaux'], ['vie-municipale.html#kiosque','Kiosque'],
+      ['vie-municipale.html#budgets','Budgets'], ['vie-municipale.html#marches','Marchés publics'], ['vie-municipale.html#recrutement','Recrutement'], ['vie-municipale.html#contact','Contacter le Maire']
+    ]]);
+    g.push(['Enfance & Éducation', [
+      ['enfance-education.html#portail','Portail Famille'], ['enfance-education.html#inscriptions','Inscriptions'], ['enfance-education.html#cantine','Restaurant scolaire · menus'],
+      ['enfance-education.html#petite-enfance','Petite Enfance'], ['enfance-education.html#maternelle','École maternelle Petit Prince'], ['enfance-education.html#elementaire','École élémentaire Saint-Exupéry'],
+      ['enfance-education.html#loisirs','Centre de loisirs Les Marcyens'], ['enfance-education.html#ados','Espace Ados'], ['enfance-education.html#cmj','Conseil municipal des jeunes'], ['enfance-education.html#caisse','Caisse des écoles']
+    ]]);
+    g.push(['Sport, Loisirs & Culture', [
+      ['sport-loisirs-culture.html#associations','Vie associative'], ['sport-loisirs-culture.html#bibliotheque','Bibliothèque municipale'], ['sport-loisirs-culture.html#ceremonies','Cérémonies'],
+      ['sport-loisirs-culture.html#culture','Événements culturels'], ['sport-loisirs-culture.html#sport','Événements sportifs'], ['sport-loisirs-culture.html#fetes','Fêtes municipales']
+    ]]);
+    g.push(['Vivre à Margency', [
+      ['actualites.html','Actualités'], ['agenda.html','Agenda'], ['vivre-a-margency.html#salles','Réserver une salle'], ['vivre-a-margency.html#annuaire','Annuaire général'],
+      ['vivre-a-margency.html#commerces','Commerces & artisans'], ['vivre-a-margency.html#sante','Professions de santé'], ['vivre-a-margency.html#securite','Sécurité & Prévention'],
+      ['vivre-a-margency.html#deplacer','Se déplacer'], ['vivre-a-margency.html#numeros','Numéros et infos pratiques'], ['vivre-a-margency.html#cimetiere','Le Cimetière'],
+      ['vie-municipale.html#mairie/ecrire','Écrire à la mairie (formulaire)']
+    ]]);
+    g.push(['Environnement & Urbanisme', [
+      ['environnement-urbanisme.html#plu','Plan Local d\'Urbanisme'], ['environnement-urbanisme.html#demarches','Démarches urbanisme (quelle autorisation ?)'], ['environnement-urbanisme.html#arretes','Arrêtés municipaux'],
+      ['environnement-urbanisme.html#logements','Logements'], ['environnement-urbanisme.html#projets','Travaux & Projets'], ['environnement-urbanisme.html#revision','Révision du PLU'],
+      ['environnement-urbanisme.html#voies','Classement des voies privées'], ['environnement-urbanisme.html#zaenr','Énergies renouvelables (ZAEnR)']
+    ]]);
+    g.push(['Action sociale', [
+      ['action-sociale.html#ccas','CCAS'], ['action-sociale.html#deliberations','Délibérations du CCAS'], ['action-sociale.html#emploi','Emploi & Formation'],
+      ['action-sociale.html#aines','Nos aînés'], ['action-sociale.html#aines/canicule','Nos aînés › Plan canicule'], ['action-sociale.html#aines/repas','Nos aînés › Portage des repas'],
+      ['action-sociale.html#aines/lien','Nos aînés › Visites & lien social'], ['action-sociale.html#aines/retraite','Nos aînés › Retraite'], ['action-sociale.html#aide','Aide au quotidien']
+    ]]);
+    g.push(['Rubriques des services', D.services.map(function(r){ return ['services.html#'+r.id, r.title]; })]);
+    g.push(['Actualités', D.actus.slice().sort(function(a,b){ return a.date < b.date ? 1 : -1; }).map(function(a){ return ['actualites.html#'+a.slug, a.title + ' · ' + a.dateLabel]; })]);
+    g.push(['Événements de l\'agenda', D.agenda.slice().sort(function(a,b){ return a.start < b.start ? 1 : -1; }).map(function(e){ return ['agenda.html#'+e.slug, e.title + ' · ' + e.dayLabel]; })]);
+    g.push(['Séances du conseil municipal', D.conseil.seances.map(function(s){ return ['conseil-municipal.html#seance-'+s.id, s.titre]; })]);
+    return g;
+  }
+  /* champ « lien » : une page du site, ou une adresse web, ou rien */
+  function champLien(nom, valeur, facultatif){
+    var interne = false, opts = destinations().map(function(gr){
+      return '<optgroup label="'+esc(gr[0])+'">' + gr[1].map(function(o){
+        var sel = o[0] === valeur ; if(sel) interne = true;
+        return '<option value="'+esc(o[0])+'"'+(sel ? ' selected' : '')+'>'+esc(o[1])+'</option>';
+      }).join('') + '</optgroup>';
+    }).join('');
+    var mode = !valeur ? (facultatif === false ? 'site' : 'aucun') : interne ? 'site' : 'web';
+    return '<div class="lien-f" data-lien="'+nom+'">'+
+      '<div class="seg3" style="align-self:start">'+
+        (facultatif !== false ? '<label><input type="radio" name="mode-'+nom+'" value="aucun"'+(mode==='aucun'?' checked':'')+'><span>Pas de lien</span></label>' : '')+
+        '<label><input type="radio" name="mode-'+nom+'" value="site"'+(mode==='site'?' checked':'')+'><span>Une page du site</span></label>'+
+        '<label><input type="radio" name="mode-'+nom+'" value="web"'+(mode==='web'?' checked':'')+'><span>Un site internet</span></label>'+
+      '</div>'+
+      '<label class="field" data-m="site"'+(mode==='site'?'':' hidden')+'><span>Page de destination</span><select data-k="site">'+opts+'</select></label>'+
+      '<label class="field" data-m="web"'+(mode==='web'?'':' hidden')+'><span>Adresse du site</span><input type="url" data-k="web" placeholder="https://…" value="'+(mode==='web' ? esc(valeur) : '')+'"></label>'+
+      '<div class="dest" data-dest></div>'+
+    '</div>';
+  }
+  function lireLien(racine, nom){
+    var b = racine.querySelector('[data-lien="'+nom+'"]');
+    var m = b.querySelector('input[name="mode-'+nom+'"]:checked');
+    m = m ? m.value : 'site';
+    if(m === 'site') return b.querySelector('[data-k=site]').value;
+    if(m === 'web'){ var v = b.querySelector('[data-k=web]').value.trim(); return v && !/^(https?:|mailto:|tel:)/.test(v) ? 'https://' + v : v; }
+    return '';
+  }
+  function brancherLiens(racine, onChange){
+    racine.querySelectorAll('[data-lien]').forEach(function(b){
+      var nom = b.dataset.lien;
+      function maj(){
+        var m = (b.querySelector('input[name="mode-'+nom+'"]:checked') || {}).value || 'site';
+        b.querySelectorAll('[data-m]').forEach(function(x){ x.hidden = x.dataset.m !== m; });
+        var v = lireLien(racine, nom);
+        b.querySelector('[data-dest]').innerHTML = v ? 'Destination : <a href="'+esc(v)+'" target="_blank" rel="noopener">'+esc(v)+'</a> (s\'ouvre dans un nouvel onglet)' : '';
+        if(onChange) onChange();
+      }
+      b.addEventListener('change', maj); b.addEventListener('input', maj); maj();
+    });
+  }
+
+  /* ============================================================
+     BRIQUES DE FORMULAIRE
+     ============================================================ */
+  function champ(label, html, aide){ return '<label class="field"><span>'+label+'</span>'+html+(aide ? '<small>'+aide+'</small>' : '')+'</label>'; }
+  function inp(k, v, attrs){ return '<input data-k="'+k+'" value="'+esc(v == null ? '' : v)+'" '+(attrs || '')+'>'; }
+  function txt(k, v, attrs){ return '<textarea data-k="'+k+'" '+(attrs || '')+'>'+esc(v || '')+'</textarea>'; }
+  function sel(k, v, options){ return '<select data-k="'+k+'">'+options.map(function(o){ return '<option value="'+esc(o[0])+'"'+(String(o[0]) === String(v) ? ' selected' : '')+'>'+esc(o[1])+'</option>'; }).join('')+'</select>'; }
+  function val(racine, k){ var e = racine.querySelector('[data-k="'+k+'"]'); return e ? e.value.trim() : ''; }
+
+  function editeur(k, html){
+    return '<div class="editeur" data-editeur="'+k+'">'+
+      '<div class="ed-outils">'+
+        '<button type="button" data-cmd="bold" title="Gras"><b>G</b></button>'+
+        '<button type="button" data-cmd="italic" title="Italique"><i>I</i></button>'+
+        '<button type="button" data-cmd="h3" title="Intertitre">Titre</button>'+
+        '<button type="button" data-cmd="p" title="Paragraphe normal">¶</button>'+
+        '<span class="sep"></span>'+
+        '<button type="button" data-cmd="insertUnorderedList" title="Liste à puces">• Liste</button>'+
+        '<button type="button" data-cmd="lien" title="Ajouter un lien">'+ico('link')+'Lien</button>'+
+        '<button type="button" data-cmd="unlink" title="Retirer le lien">Retirer le lien</button>'+
+      '</div>'+
+      '<div class="ed-zone" contenteditable="true">'+(html || '<p><br></p>')+'</div>'+
+    '</div>';
+  }
+  function brancherEditeurs(racine){
+    racine.querySelectorAll('[data-editeur]').forEach(function(ed){
+      var zone = ed.querySelector('.ed-zone'), plage = null;
+      document.execCommand('defaultParagraphSeparator', false, 'p');
+      zone.addEventListener('blur', function(){ var s = getSelection(); if(s.rangeCount) plage = s.getRangeAt(0); });
+      ed.querySelector('.ed-outils').addEventListener('mousedown', function(e){ if(e.target.closest('button')) e.preventDefault(); });
+      ed.querySelector('.ed-outils').addEventListener('click', function(e){
+        var b = e.target.closest('button'); if(!b) return;
+        var c = b.dataset.cmd;
+        if(c === 'h3' || c === 'p'){ document.execCommand('formatBlock', false, c); return; }
+        if(c !== 'lien'){ document.execCommand(c); return; }
+        var s = getSelection(), r = s.rangeCount && zone.contains(s.anchorNode) ? s.getRangeAt(0) : plage;
+        if(!r || r.collapsed){ toast('Sélectionnez d\'abord le texte à transformer en lien'); return; }
+        var m = modal('<h3>Ajouter un lien</h3><p style="color:var(--ink-soft);margin:.5rem 0 1rem">Sur « '+esc(r.toString().slice(0,80))+' »</p>'+champLien('ed', '', false)+
+          '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-solid" data-ok>Ajouter le lien</button></div>');
+        brancherLiens(m.el);
+        m.el.querySelector('[data-ok]').addEventListener('click', function(){
+          var url = lireLien(m.el, 'ed'); if(!url){ toast('Choisissez une destination'); return; }
+          m.fermer(); zone.focus(); s.removeAllRanges(); s.addRange(r);
+          document.execCommand('createLink', false, url);
+          zone.querySelectorAll('a[href]').forEach(function(a){ if(/^https?:/.test(a.getAttribute('href'))){ a.target = '_blank'; a.rel = 'noopener'; } });
+        });
+      });
+    });
+  }
+  function lireEditeur(racine, k){
+    var z = racine.querySelector('[data-editeur="'+k+'"] .ed-zone');
+    var h = z.innerHTML.replace(/<p><br><\/p>/g, '').replace(/\sstyle="[^"]*"/g, '').trim();
+    return texteBrut(h) ? h : '';
+  }
+
+  function champImage(k, url){
+    return '<div class="media" data-image="'+k+'">'+
+      '<img class="apercu" src="'+esc(url || 'assets/site/brume.webp')+'" alt="">'+
+      '<div class="pile" style="gap:8px">'+
+        '<button type="button" class="btn btn-glass btn-sm" data-choisir style="justify-self:start">'+ico('camera')+'Choisir une image sur l\'ordinateur</button>'+
+        '<label class="field"><span>ou adresse de l\'image</span><input data-k="'+k+'" value="'+esc(url || '')+'" placeholder="assets/…/image.webp"></label>'+
+        '<small class="muted" style="font-size:.76rem">Formats : webp, jpg, png. Sans image, un visuel neutre est utilisé.</small>'+
+      '</div></div>';
+  }
+  function brancherImages(racine){
+    racine.querySelectorAll('[data-image]').forEach(function(b){
+      var k = b.dataset.image, input = b.querySelector('[data-k="'+k+'"]'), img = b.querySelector('.apercu');
+      input.addEventListener('input', function(){ img.src = input.value || 'assets/site/brume.webp'; });
+      b.querySelector('[data-choisir]').addEventListener('click', function(){
+        deposer('image/*').then(function(j){ input.value = j.url ; img.src = j.url ; toast('Image ajoutée'); }).catch(function(){});
+      });
+    });
+  }
+  /* document PDF : URL + taille + date de publication */
+  function champDoc(prefixe, d){
+    d = d || {};
+    return '<div class="fichier" data-doc="'+prefixe+'">'+
+      '<button type="button" class="btn btn-glass btn-sm" data-choisir>'+ico('doc')+'Choisir un PDF</button>'+
+      '<input type="text" data-k="'+prefixe+'-url" value="'+esc(d.url || '')+'" placeholder="ou adresse du document (https://…)" style="padding:.6rem .8rem;border-radius:10px;border:1px solid rgba(11,26,36,.12);background:rgba(255,255,255,.66)">'+
+      '<input type="hidden" data-k="'+prefixe+'-taille" value="'+esc(d.taille || '')+'">'+
+      '<span class="etiq" data-etiq>'+(d.url ? '<a href="'+esc(d.url)+'" target="_blank" rel="noopener" style="color:var(--brand)">ouvrir</a>'+(d.taille ? ' · '+esc(d.taille) : '') : 'aucun fichier')+'</span>'+
+    '</div>';
+  }
+  function brancherDocs(racine){
+    racine.addEventListener('click', function(e){
+      var b = e.target.closest('[data-doc] [data-choisir]'); if(!b) return;
+      var bloc = b.closest('[data-doc]'), p = bloc.dataset.doc;
+      deposer('application/pdf,image/*').then(function(j){
+        bloc.querySelector('[data-k="'+p+'-url"]').value = j.url;
+        bloc.querySelector('[data-k="'+p+'-taille"]').value = j.taille;
+        bloc.querySelector('[data-etiq]').innerHTML = '<a href="'+j.url+'" target="_blank" style="color:var(--brand)">ouvrir</a> · ' + j.taille;
+        toast('Document ajouté');
+      }).catch(function(){});
+    });
+  }
+  function lireDoc(racine, p){
+    var u = val(racine, p + '-url'); if(!u) return null;
+    return {url:u, taille:val(racine, p + '-taille')};
+  }
+
+  function champTags(k, choisis, tous){
+    choisis = choisis || [];
+    var liste = tous.concat(choisis).filter(function(t, i, a){ return a.indexOf(t) === i; }).sort();
+    return '<div data-tags="'+k+'"><div class="checks">'+liste.map(function(t){
+      return '<label class="check-pill"><input type="checkbox" value="'+esc(t)+'"'+(choisis.indexOf(t) > -1 ? ' checked' : '')+'>'+esc(t.replace(/-/g, ' '))+'</label>';
+    }).join('')+'</div><div class="tags-new field"><input placeholder="Nouvelle catégorie…" data-nouveau><button type="button" class="btn btn-glass btn-sm" data-ajout-tag>'+ico('plus')+'Ajouter</button></div></div>';
+  }
+  function brancherTags(racine){
+    racine.querySelectorAll('[data-tags]').forEach(function(b){
+      function ajouter(){
+        var i = b.querySelector('[data-nouveau]'), t = slugifier(i.value); if(!i.value.trim()) return;
+        b.querySelector('.checks').insertAdjacentHTML('beforeend', '<label class="check-pill"><input type="checkbox" value="'+esc(t)+'" checked>'+esc(t.replace(/-/g, ' '))+'</label>');
+        i.value = '';
+      }
+      b.querySelector('[data-ajout-tag]').addEventListener('click', ajouter);
+      b.querySelector('[data-nouveau]').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); ajouter(); } });
+    });
+  }
+  function lireTags(racine, k){ return [].map.call(racine.querySelectorAll('[data-tags="'+k+'"] input[type=checkbox]:checked'), function(i){ return i.value; }); }
+
+  function barreBas(info, voir){
+    return '<div class="barre-bas"><div class="wrap"><span class="info">'+info+'</span>'+
+      (voir ? '<a class="btn btn-glass" href="'+voir+'" target="_blank" rel="noopener">'+ico('eye')+'Voir sur le site</a>' : '')+
+      '<button type="button" class="btn btn-glass" data-annuler>Annuler</button>'+
+      '<button class="btn btn-solid" data-enregistrer>'+ico('save')+'Enregistrer</button></div></div>';
+  }
+  function exiger(racine, champs){
+    var manque = [];
+    racine.querySelectorAll('.field.error').forEach(function(f){ f.classList.remove('error'); });
+    champs.forEach(function(c){
+      var e = racine.querySelector('[data-k="'+c[0]+'"]');
+      if(e && !e.value.trim()){ manque.push(c[1]); e.closest('.field') && e.closest('.field').classList.add('error'); }
+    });
+    if(manque.length){ toast('À compléter : ' + manque.join(', ')); return false; }
+    return true;
+  }
+  function confirmer(titre, texte, bouton){
+    return new Promise(function(resolve){
+      var m = modal('<h3>'+titre+'</h3><p style="margin-top:.7rem;color:var(--ink-soft)">'+texte+'</p>'+
+        '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-danger" data-ok>'+ico('trash')+(bouton || 'Supprimer')+'</button></div>');
+      m.el.querySelector('[data-ok]').addEventListener('click', function(){ m.fermer(); resolve(); });
+    });
+  }
+  function enTete(sur, titre, texte, bouton){
+    return '<div class="h-row"><div><div class="eyebrow">'+sur+'</div><h1>'+titre+'</h1>'+(texte ? '<p>'+texte+'</p>' : '')+'</div>'+(bouton || '')+'</div>';
+  }
+  function boutonAjout(href, label){ return '<a class="btn btn-solid" href="'+href+'">'+ico('plus')+label+'</a>'; }
+  function actionsLigne(modifier, voir, id){
+    return '<div class="actions">'+
+      (voir ? '<a class="ib" href="'+voir+'" target="_blank" rel="noopener" title="Voir sur le site" aria-label="Voir sur le site">'+ico('eye')+'</a>' : '')+
+      '<a class="ib" href="'+modifier+'" title="Modifier" aria-label="Modifier">'+ico('pen')+'</a>'+
+      '<button class="ib del" data-suppr="'+esc(id)+'" title="Supprimer" aria-label="Supprimer">'+ico('trash')+'</button></div>';
+  }
+  function filtrerListe(racine){
+    var r = racine.querySelector('[data-recherche]'); if(!r) return;
+    r.addEventListener('input', function(){
+      var q = slugifier(r.value).replace(/-/g, ' ');
+      racine.querySelectorAll('.ligne').forEach(function(l){ l.hidden = q && slugifier(l.textContent).replace(/-/g, ' ').indexOf(q) === -1; });
+    });
+  }
+  var RECH = '<label class="recherche glass">'+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'+'<input data-recherche placeholder="Rechercher…"></label>';
+
+  /* ============================================================
+     TABLEAU DE BORD
+     ============================================================ */
+  function vueAccueil(){
+    var futurs = D.agenda.filter(function(e){ return e.end >= TODAY; }).length;
+    var nbCartes = D.cartes.zones.reduce(function(n, z){ return n + z.cartes.length; }, 0);
+    var nbServ = D.services.reduce(function(n, r){ return n + r.subs.length; }, 0);
+    var tuiles = [
+      ['cal','#2dd4bf','#0f766e', D.agenda.length, 'Agenda', futurs + ' événement(s) à venir', '#agenda', '#agenda/nouveau', 'Ajouter un événement'],
+      ['chat','#60a5fa','#2563eb', D.actus.length, 'Actualités', 'Dernière : ' + (D.actus.slice().sort(function(a,b){ return a.date < b.date ? 1 : -1; })[0] || {}).dateLabel, '#actus', '#actus/nouveau', 'Publier une actualité'],
+      ['hall','#fbbf6b','#9e5527', D.conseil.seances.length, 'Conseil municipal', 'Séances, ordres du jour, votes', '#conseil', '#conseil/nouveau', 'Ajouter une séance'],
+      ['hands','#a78bfa','#6d28d9', D.ccas.seances.length, 'Réunions du CCAS', 'Convocations, délibérations, PV', '#ccas', '#ccas/nouveau', 'Ajouter une réunion'],
+      ['hall','#14b8a6','#0f766e', D.vie.magazines.length + D.vie.kiosque.length + D.vie.offres.length + D.vie.marches.length, 'Vie municipale', D.vie.offres.filter(function(o){ return o.statut === 'ouverte'; }).length + ' offre(s) d\'emploi · ' + D.vie.marches.filter(function(o){ return o.statut === 'en-cours'; }).length + ' marché(s) en cours', '#vie', '#vie/offres', 'Publier une offre'],
+      ['cap','#60a5fa','#2563eb', D.enfance.menus.length, 'Enfance & Éducation', 'Menus, dossiers d\'inscription, programmes, caisse des écoles', '#enfance', '#enfance/menus', 'Ajouter un menu'],
+      ['map','#4ade80','#15803d', D.urbanisme.arretes.length, 'Environnement & Urbanisme', 'Arrêtés, projets, pièces du PLU', '#urbanisme', '#urbanisme/arretes', 'Publier un arrêté'],
+      ['home','#fbbf6b','#9e5527', D.vivre.commerces.length + D.vivre.sante.length, 'Vivre à Margency', 'Commerces, santé, tarifs des salles', '#vivre', '#vivre/commerces', 'Ajouter un commerce'],
+      ['music','#f472b6','#be185d', D.culture.associations.length, 'Sport, Loisirs & Culture', 'Associations et bibliothèque · les événements passent par l\'Agenda', '#culture', '#culture/associations', 'Ajouter une association'],
+      ['mail','#fb923c','#c2410c', '<span id="nbDem">…</span>', 'Demandes des habitants', 'Rendez-vous, réservations de salle, messages', '#demandes', '#demandes', 'Traiter les demandes'],
+      ['link','#f472b6','#be185d', nbCartes, 'Cartes & liens', D.cartes.zones.length + ' emplacements sur les pages', '#cartes', '#cartes', 'Gérer les cartes'],
+      ['grid','#4ade80','#15803d', nbServ, 'Services', D.services.length + ' rubriques', '#services', '#services', 'Modifier les liens']
+    ];
+    app.innerHTML = '<div class="view">'+
+      enTete('Gestion du site', 'Bonjour, que voulez-vous <em style="font-family:\'Instrument Serif\',serif;font-weight:400">publier</em> ?', 'Ajoutez un événement, une réunion, une actualité ou un lien : tout apparaît immédiatement sur le site.')+
+      '<div class="dash">'+tuiles.map(function(t){
+        return '<div class="tuile glass"><div class="t-top"><span class="pastille" style="--c1:'+t[1]+';--c2:'+t[2]+'">'+ico(t[0])+'</span><b class="n">'+t[3]+'</b></div>'+
+          '<h3>'+t[4]+'</h3><p>'+esc(t[5])+'</p>'+
+          '<div class="t-act"><a class="btn btn-solid btn-sm" href="'+t[7]+'">'+ico('plus')+t[8]+'</a><a class="btn btn-glass btn-sm" href="'+t[6]+'">Voir la liste</a></div></div>';
+      }).join('')+'</div>'+
+      '<div class="bloc glass"><h2>Dernières modifications</h2><div class="histo" id="histo"><span class="muted">'+(serveurOk ? 'Chargement…' : 'Disponible quand le serveur de gestion est lancé.')+'</span></div></div>'+
+    '</div>';
+    if(serveurOk) fetch('/api/demandes', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){
+      var n = j.demandes.filter(function(d){ return d.statut === 'nouvelle'; }).length, el = document.getElementById('nbDem');
+      if(el) el.textContent = n ; majBadge(n);
+    }).catch(function(){});
+    else { var nd = document.getElementById('nbDem'); if(nd) nd.textContent = '–'; }
+    if(serveurOk) fetch('/api/historique', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){
+      var NOMS = {agenda:'Agenda', actus:'Actualités', conseil:'Conseil municipal', ccas:'CCAS', cartes:'Cartes & liens', services:'Services'};
+      var h = document.getElementById('histo'); if(!h) return;
+      h.innerHTML = j.versions.length ? j.versions.slice(0, 8).map(function(v){
+        var m = v.match(/^(\w+)-(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/);
+        return m ? '<div><b>'+(NOMS[m[1]] || m[1])+'</b><span>modifié le '+m[4]+'/'+m[3]+'/'+m[2]+' à '+m[5]+'h'+m[6]+'</span></div>' : '';
+      }).join('') : '<span class="muted">Aucune modification pour l\'instant.</span>';
+    }).catch(function(){});
+  }
+
+  /* ============================================================
+     AGENDA
+     ============================================================ */
+  function tousTags(liste){ return liste.reduce(function(a, x){ return a.concat(x.tags || []); }, []).filter(function(t, i, a){ return a.indexOf(t) === i; }); }
+
+  function vueAgendaListe(){
+    var filtre = sessionStorage.getItem('g-agenda') || 'avenir';
+    var ev = D.agenda.slice().filter(function(e){ return filtre === 'tous' || (filtre === 'avenir' ? e.end >= TODAY : e.end < TODAY); })
+      .sort(function(a, b){ return filtre === 'passes' ? (a.start < b.start ? 1 : -1) : (a.start < b.start ? -1 : 1); });
+    app.innerHTML = '<div class="view">'+
+      enTete('Agenda', 'Les événements', 'Ils s\'affichent dans le calendrier de la page Agenda et, pour les 4 prochains, sur l\'accueil.', boutonAjout('#agenda/nouveau', 'Ajouter un événement'))+
+      '<div class="outils">'+RECH+'<div class="filtre glass" data-filtre>'+[['avenir','À venir'],['passes','Passés'],['tous','Tous']].map(function(f){ return '<button data-f="'+f[0]+'" class="'+(f[0]===filtre?'on':'')+'">'+f[1]+'</button>'; }).join('')+'</div></div>'+
+      '<div class="liste">'+(ev.length ? ev.map(function(e){
+        var passe = e.end < TODAY;
+        return '<div class="ligne glass">'+'<img class="vign" src="'+esc(e.cover)+'" alt="" loading="lazy">'+
+          '<div><h3>'+esc(e.title)+(passe ? '<span class="badge passe">passé</span>' : '<span class="badge">à venir</span>')+'</h3><small>'+esc(e.dateLabel)+(e.tags && e.tags.length ? ' · '+esc(e.tags.join(', ')) : '')+'</small></div>'+
+          actionsLigne('#agenda/'+e.id, 'agenda.html#'+e.slug, e.id)+'</div>';
+      }).join('') : '<div class="vide glass">Aucun événement ici.</div>')+'</div></div>';
+    filtrerListe(app);
+    app.querySelector('[data-filtre]').addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return ; sessionStorage.setItem('g-agenda', b.dataset.f); route(); });
+    brancherSuppression('agenda', function(id){ return D.agenda.filter(function(e){ return String(e.id) === id; })[0]; }, function(x){ return x.title; }, function(id){ D.agenda = D.agenda.filter(function(e){ return String(e.id) !== id; }); }, route);
+  }
+
+  function brancherSuppression(fichier, trouver, nom, retirer, rerendre){
+    app.addEventListener('click', function gestion(e){
+      var b = e.target.closest('[data-suppr]'); if(!b) return;
+      var x = trouver(b.dataset.suppr); if(!x) return;
+      confirmer('Supprimer « '+esc(nom(x))+' » ?', 'L\'élément disparaîtra du site. L\'ancienne version reste récupérable dans data/historique.').then(function(){
+        var avant = copie(D[fichier]);
+        retirer(b.dataset.suppr);
+        enregistrer(fichier, avant).then(function(){ toast('Supprimé'); rerendre(); }).catch(function(){ rerendre(); });
+      });
+    });
+  }
+
+  function vueAgendaForm(id){
+    var nouveau = id === 'nouveau';
+    var e = nouveau ? {title:'', start:TODAY, end:TODAY, tags:[], cover:'', excerpt:'', body:''} : D.agenda.filter(function(x){ return String(x.id) === id; })[0];
+    if(!e){ location.hash = 'agenda'; return; }
+    app.innerHTML = '<div class="view">'+
+      enTete('Agenda', nouveau ? 'Nouvel événement' : 'Modifier l\'événement', nouveau ? 'Remplissez au minimum le titre et la date.' : esc(e.title))+
+      '<div class="form"><div>'+
+        '<div class="carte-f glass"><h2><i>1</i>L\'essentiel</h2><div class="pile">'+
+          champ('Titre <span class="req">*</span>', inp('title', e.title, 'placeholder="Ex. : Concert de printemps"'))+
+          '<div class="grid-2">'+champ('Date de début <span class="req">*</span>', inp('start', e.start, 'type="date"'))+champ('Date de fin', inp('end', e.end, 'type="date"'), 'Identique au début pour un événement d\'un jour')+'</div>'+
+          champ('Catégories', champTags('tags', e.tags, tousTags(D.agenda)), 'Sur la page Sport, Loisirs & Culture : « ceremonie » → Cérémonies · « culture », « concert », « exposition »… → Événements culturels · « sport » → Événements sportifs · « fete » → Fêtes municipales.')+
+        '</div></div>'+
+        '<div class="carte-f glass"><h2><i>2</i>La description</h2><p class="aide">Horaires, lieu, tarifs, inscription… Sélectionnez un mot puis « Lien » pour renvoyer vers une page.</p>'+
+          editeur('body', e.body)+
+          '<div style="margin-top:14px">'+champ('Résumé <i>(facultatif)</i>', txt('excerpt', e.excerpt, 'rows="3" placeholder="Laissé vide, il est tiré du début de la description."'))+'</div>'+
+        '</div>'+
+      '</div><div>'+
+        '<div class="carte-f glass"><h2><i>3</i>L\'affiche</h2>'+champImage('cover', e.cover)+'</div>'+
+      '</div></div>'+
+      barreBas(nouveau ? 'Nouvel événement' : 'Modification en cours', nouveau ? '' : 'agenda.html#'+e.slug)+
+    '</div>';
+    brancherEditeurs(app); brancherImages(app); brancherTags(app);
+    app.querySelector('[data-annuler]').addEventListener('click', function(ev){ ev.preventDefault(); location.hash = 'agenda'; });
+    app.querySelector('[data-enregistrer]').addEventListener('click', function(){
+      if(!exiger(app, [['title','le titre'],['start','la date de début']])) return;
+      var start = val(app, 'start'), end = val(app, 'end') || start;
+      if(end < start){ toast('La date de fin est avant la date de début'); return; }
+      var body = lireEditeur(app, 'body'), avant = copie(D.agenda);
+      var x = nouveau ? {id:nouvelId(D.agenda)} : e;
+      x.title = val(app, 'title');
+      x.slug = nouveau || x.title !== e.title ? slugUnique(x.title, D.agenda, e.slug) : e.slug;
+      x.start = start ; x.end = end;
+      x.dateLabel = start === end ? 'Le ' + dateTexte(start, true) : 'Du ' + dateTexte(start, true) + ' au ' + dateTexte(end, true);
+      x.dayLabel = dateTexte(start);
+      x.cover = val(app, 'cover') || 'assets/site/brume.webp';
+      x.tags = lireTags(app, 'tags');
+      x.excerpt = val(app, 'excerpt') || extrait(body);
+      x.body = body;
+      if(nouveau) D.agenda.push(x);
+      D.agenda.sort(function(a, b){ return a.start < b.start ? -1 : 1; });
+      enregistrer('agenda', avant).then(function(){ publie('Événement enregistré', 'agenda.html#' + x.slug, '#agenda'); }).catch(function(){});
+    });
+  }
+
+  /* message après publication */
+  function publie(titre, voir, retour){
+    location.hash = retour;
+    var m = modal('<h3 style="display:flex;align-items:center;gap:.6rem"><span class="pastille sm" style="--c1:#4ade80;--c2:#15803d">'+ico('check')+'</span>'+titre+'</h3>'+
+      '<p style="margin-top:.8rem;color:var(--ink-soft)">C\'est en ligne sur le site.</p>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Continuer</button><a class="btn btn-solid" href="'+voir+'" target="_blank" rel="noopener">'+ico('eye')+'Voir sur le site</a></div>');
+    m.el.querySelector('a').addEventListener('click', function(){ m.fermer(); });
+  }
+
+  /* ============================================================
+     ACTUALITÉS
+     ============================================================ */
+  function vueActusListe(){
+    var ac = D.actus.slice().sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+    app.innerHTML = '<div class="view">'+
+      enTete('Actualités', 'Les actualités', 'Les 3 plus récentes s\'affichent sur l\'accueil.', boutonAjout('#actus/nouveau', 'Publier une actualité'))+
+      '<div class="outils">'+RECH+'</div>'+
+      '<div class="liste">'+ac.map(function(a){
+        return '<div class="ligne glass"><img class="vign" src="'+esc(a.cover)+'" alt="" loading="lazy">'+
+          '<div><h3>'+esc(a.title)+'</h3><small>'+esc(a.dateLabel)+(a.tags && a.tags.length ? ' · '+esc(a.tags.join(', ')) : '')+'</small></div>'+
+          actionsLigne('#actus/'+a.id, 'actualites.html#'+a.slug, a.id)+'</div>';
+      }).join('')+'</div></div>';
+    filtrerListe(app);
+    brancherSuppression('actus', function(id){ return D.actus.filter(function(a){ return String(a.id) === id; })[0]; }, function(x){ return x.title; }, function(id){ D.actus = D.actus.filter(function(a){ return String(a.id) !== id; }); }, route);
+  }
+
+  function vueActusForm(id){
+    var nouveau = id === 'nouveau';
+    var a = nouveau ? {title:'', date:TODAY, tags:[], cover:'', event:'', period:'', excerpt:'', body:''} : D.actus.filter(function(x){ return String(x.id) === id; })[0];
+    if(!a){ location.hash = 'actus'; return; }
+    app.innerHTML = '<div class="view">'+
+      enTete('Actualités', nouveau ? 'Nouvelle actualité' : 'Modifier l\'actualité', nouveau ? 'Remplissez au minimum le titre, la date et le texte.' : esc(a.title))+
+      '<div class="form"><div>'+
+        '<div class="carte-f glass"><h2><i>1</i>L\'essentiel</h2><div class="pile">'+
+          champ('Titre <span class="req">*</span>', inp('title', a.title, 'placeholder="Ex. : Fermeture exceptionnelle de la mairie"'))+
+          '<div class="grid-2">'+champ('Date de publication <span class="req">*</span>', inp('date', a.date, 'type="date"'))+champ('Période concernée <i>(facultatif)</i>', inp('period', a.period, 'placeholder="Ex. : du 3 au 28 août"'))+'</div>'+
+          champ('Rendez-vous associé <i>(facultatif)</i>', inp('event', a.event, 'placeholder="Ex. : Samedi 5 septembre, 10h – parc du tennis"'), 'Affiché avec une icône calendrier sur la carte de l\'actualité')+
+          champ('Catégories', champTags('tags', a.tags, tousTags(D.actus)))+
+        '</div></div>'+
+        '<div class="carte-f glass"><h2><i>2</i>Le texte</h2><p class="aide">Sélectionnez un mot puis « Lien » pour renvoyer vers une page du site ou un site internet.</p>'+
+          editeur('body', a.body)+
+          '<div style="margin-top:14px">'+champ('Chapô <i>(facultatif)</i>', txt('excerpt', a.excerpt, 'rows="3" placeholder="Laissé vide, il est tiré du début du texte."'))+'</div>'+
+        '</div>'+
+      '</div><div><div class="carte-f glass"><h2><i>3</i>L\'image</h2>'+champImage('cover', a.cover)+'</div></div></div>'+
+      barreBas(nouveau ? 'Nouvelle actualité' : 'Modification en cours', nouveau ? '' : 'actualites.html#'+a.slug)+
+    '</div>';
+    brancherEditeurs(app); brancherImages(app); brancherTags(app);
+    app.querySelector('[data-annuler]').addEventListener('click', function(ev){ ev.preventDefault(); location.hash = 'actus'; });
+    app.querySelector('[data-enregistrer]').addEventListener('click', function(){
+      if(!exiger(app, [['title','le titre'],['date','la date']])) return;
+      var body = lireEditeur(app, 'body');
+      if(!body){ toast('À compléter : le texte'); return; }
+      var avant = copie(D.actus), x = nouveau ? {id:nouvelId(D.actus)} : a;
+      x.title = val(app, 'title');
+      x.slug = nouveau || x.title !== a.title ? slugUnique(x.title, D.actus, a.slug) : a.slug;
+      x.date = val(app, 'date'); x.dateLabel = dateTexte(x.date);
+      x.cover = val(app, 'cover') || 'assets/site/brume.webp';
+      x.event = val(app, 'event'); x.period = val(app, 'period');
+      x.tags = lireTags(app, 'tags');
+      x.excerpt = val(app, 'excerpt') || extrait(body);
+      x.body = body;
+      if(nouveau) D.actus.push(x);
+      D.actus.sort(function(p, q){ return p.date < q.date ? 1 : -1; });
+      enregistrer('actus', avant).then(function(){ publie('Actualité publiée', 'actualites.html#' + x.slug, '#actus'); }).catch(function(){});
+    });
+  }
+
+  /* ============================================================
+     CONSEIL MUNICIPAL
+     ============================================================ */
+  var THEMES = ['Institution','Finances','Associations','Personnel','Environnement','Urbanisme','Solidarité','Patrimoine','Enfance','Sécurité'];
+  var RESULTATS = [['unanimite','Adoptée à l\'unanimité'],['acte','Prend acte'],['reportee','Reportée']];
+  function tousElus(){ var E = D.conseil.elus ; return [E.maire].concat(E.adjoints, E.delegues, E.conseillers); }
+
+  function vueConseilListe(){
+    var s = D.conseil.seances.slice().sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+    app.innerHTML = '<div class="view">'+
+      enTete('Conseil municipal', 'Les séances', 'Annoncez une séance à venir (elle s\'affiche sur l\'accueil), puis complétez-la après le vote : délibérations, présences, procès-verbal.', boutonAjout('#conseil/nouveau', 'Ajouter une séance'))+
+      '<div class="liste">'+s.map(function(x){
+        return '<div class="ligne glass">'+datePastille(x.date)+
+          '<div><h3>'+esc(x.titre)+(x.date >= TODAY ? '<span class="badge">à venir</span>' : '')+'</h3><small>'+esc(x.debut || '')+(x.lieu ? ' · '+esc(x.lieu) : '')+' · '+x.points.length+' point(s) à l\'ordre du jour</small></div>'+
+          actionsLigne('#conseil/'+x.id, 'conseil-municipal.html#seance-'+x.id, x.id)+'</div>';
+      }).join('')+'</div></div>';
+    brancherSuppression('conseil', function(id){ return D.conseil.seances.filter(function(x){ return x.id === id; })[0]; }, function(x){ return x.titre; }, function(id){ D.conseil.seances = D.conseil.seances.filter(function(x){ return x.id !== id; }); }, route);
+  }
+
+  function blocPoint(p, i){
+    p = p || {};
+    return '<div class="rep-item" data-point>'+
+      '<div class="rep-head"><b>Point '+(i + 1)+'</b><div class="actions">'+
+        '<button type="button" class="ib" data-monter title="Monter">'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 19V5M6 11l6-6 6 6')+'</button>'+
+        '<button type="button" class="ib del" data-retirer title="Retirer">'+ico('trash')+'</button></div></div>'+
+      '<div class="pile" style="gap:10px">'+
+        champ('Intitulé', inp('p-titre', p.titre, 'placeholder="Ex. : Vote du budget primitif 2027"'))+
+        '<div class="grid-2">'+champ('Thème', sel('p-theme', p.theme || 'Institution', THEMES.map(function(t){ return [t, t]; })))+champ('Résultat', sel('p-resultat', p.resultat || 'unanimite', RESULTATS))+'</div>'+
+        champ('Résumé pour les habitants', txt('p-resume', p.resume, 'rows="2"'))+
+        '<div class="field"><span>Délibération (PDF)</span>'+champDoc('p-doc', p.doc)+'</div>'+
+      '</div></div>';
+  }
+  function blocInfo(x){
+    x = x || {};
+    return '<div class="rep-item" data-info><div class="rep-head"><b>Point d\'information</b><div class="actions"><button type="button" class="ib del" data-retirer title="Retirer">'+ico('trash')+'</button></div></div>'+
+      '<div class="pile" style="gap:10px">'+champ('Titre', inp('i-titre', x.titre))+champ('Texte', txt('i-texte', x.texte, 'rows="2"'))+'</div></div>';
+  }
+  function renumeroter(racine){ racine.querySelectorAll('[data-point]').forEach(function(p, i){ p.querySelector('.rep-head b').textContent = 'Point ' + (i + 1); }); }
+
+  function vueConseilForm(id){
+    var nouveau = id === 'nouveau';
+    var s = nouveau ? {date:'', debut:'19h00', fin:'', lieu:'En mairie', convocation:1, secretaire:'', presences:{presents:[], pouvoirs:[], absents:[]}, documents:{}, infos:[], annonce:'', points:[]}
+                    : D.conseil.seances.filter(function(x){ return x.id === id; })[0];
+    if(!s){ location.hash = 'conseil'; return; }
+    var elus = tousElus(), P = s.presences;
+    function statut(nom){
+      if(P.presents.indexOf(nom) > -1) return ['present'];
+      var pv = P.pouvoirs.filter(function(x){ return x[0] === nom; })[0]; if(pv) return ['pouvoir', pv[1]];
+      if(P.absents.indexOf(nom) > -1) return ['absent'];
+      return [nouveau ? 'present' : 'absent'];
+    }
+    var h = function(v){ return (v || '').replace('h', ':'); };
+    app.innerHTML = '<div class="view">'+
+      enTete('Conseil municipal', nouveau ? 'Nouvelle séance' : 'Modifier la séance', nouveau ? 'Avant la séance : date, heure, lieu et ordre du jour suffisent. Le reste se complète après.' : esc(s.titre))+
+      '<div class="form"><div>'+
+        '<div class="carte-f glass"><h2><i>1</i>La séance</h2><div class="pile">'+
+          '<div class="grid-3">'+champ('Date <span class="req">*</span>', inp('date', s.date, 'type="date"'))+champ('Début <span class="req">*</span>', inp('debut', h(s.debut), 'type="time"'))+champ('Fin', inp('fin', h(s.fin), 'type="time"'), 'À remplir après la séance')+'</div>'+
+          '<div class="grid-2">'+champ('Lieu', inp('lieu', s.lieu))+champ('Convocation', sel('convocation', s.convocation || 1, [[1,'1ʳᵉ convocation'],[2,'2ᵉ convocation (quorum non atteint)']]))+'</div>'+
+          champ('Secrétaire de séance', sel('secretaire', s.secretaire, [['','— à désigner —']].concat(elus.map(function(e){ return [e.nom, e.nom]; }))))+
+        '</div></div>'+
+        '<div class="carte-f glass"><h2><i>2</i>Ordre du jour et votes</h2><p class="aide">Un bloc par délibération. Joignez le PDF quand il est publié.</p>'+
+          '<div class="rep" id="points">'+s.points.map(blocPoint).join('')+'</div>'+
+          '<button type="button" class="ajouter" id="ajoutPoint" style="margin-top:10px;width:100%">'+ico('plus')+'Ajouter un point</button>'+
+        '</div>'+
+        '<div class="carte-f glass"><h2><i>3</i>Informations et annonces</h2>'+
+          '<div class="rep" id="infos">'+(s.infos || []).map(blocInfo).join('')+'</div>'+
+          '<button type="button" class="ajouter" id="ajoutInfo" style="margin:10px 0 14px;width:100%">'+ico('plus')+'Ajouter un point d\'information</button>'+
+          champ('Annonce du maire <i>(facultatif)</i>', txt('annonce', s.annonce, 'rows="2"'))+
+        '</div>'+
+      '</div><div>'+
+        '<div class="carte-f glass"><h2><i>4</i>Documents officiels</h2><div class="pile">'+
+          [['convocation','Convocation'],['liste','Liste des délibérations'],['pv','Procès-verbal']].map(function(d){
+            var doc = (s.documents || {})[d[0]];
+            return '<div class="field"><span>'+d[1]+'</span>'+champDoc('d-'+d[0], doc)+'</div>';
+          }).join('')+
+        '</div></div>'+
+        '<div class="carte-f glass"><h2><i>5</i>Présences</h2><p class="aide">Pour un élu représenté, choisissez à qui il a donné pouvoir.</p><div class="pres">'+
+          elus.map(function(e, i){
+            var st = statut(e.nom);
+            return '<div class="pres-l" data-elu="'+esc(e.nom)+'"><span>'+esc(e.nom)+'<br><small>'+esc(e.role || '')+'</small></span>'+
+              '<div class="seg3">'+[['present','Présent'],['pouvoir','Représenté'],['absent','Absent']].map(function(o){
+                return '<label><input type="radio" name="pr-'+i+'" value="'+o[0]+'"'+(st[0] === o[0] ? ' checked' : '')+'><span>'+o[1]+'</span></label>'; }).join('')+'</div>'+
+              '<div class="pouvoir"'+(st[0] === 'pouvoir' ? '' : ' hidden')+'>Pouvoir donné à <select aria-label="'+esc(e.nom)+' a donné pouvoir à">'+elus.filter(function(x){ return x.nom !== e.nom; }).map(function(x){
+                return '<option'+(st[1] === x.nom ? ' selected' : '')+'>'+esc(x.nom)+'</option>'; }).join('')+'</select></div></div>';
+          }).join('')+
+        '</div></div>'+
+      '</div></div>'+
+      barreBas(nouveau ? 'Nouvelle séance' : 'Modification en cours', nouveau ? '' : 'conseil-municipal.html#seance-'+s.id)+
+    '</div>';
+    brancherDocs(app);
+    var pts = document.getElementById('points'), infos = document.getElementById('infos');
+    document.getElementById('ajoutPoint').addEventListener('click', function(){ pts.insertAdjacentHTML('beforeend', blocPoint(null, pts.children.length)); pts.lastElementChild.querySelector('input').focus(); });
+    document.getElementById('ajoutInfo').addEventListener('click', function(){ infos.insertAdjacentHTML('beforeend', blocInfo()); });
+    app.addEventListener('click', function(e){
+      var r = e.target.closest('[data-retirer]'); if(r){ r.closest('.rep-item').remove(); renumeroter(app); }
+      var m = e.target.closest('[data-monter]'); if(m){ var it = m.closest('.rep-item'); if(it.previousElementSibling) it.parentNode.insertBefore(it, it.previousElementSibling); renumeroter(app); }
+    });
+    app.querySelectorAll('.pres-l').forEach(function(l){
+      l.addEventListener('change', function(){ l.querySelector('.pouvoir').hidden = l.querySelector('input:checked').value !== 'pouvoir'; });
+    });
+    app.querySelector('[data-annuler]').addEventListener('click', function(ev){ ev.preventDefault(); location.hash = 'conseil'; });
+    app.querySelector('[data-enregistrer]').addEventListener('click', function(){
+      if(!exiger(app, [['date','la date'],['debut','l\'heure de début']])) return;
+      var date = val(app, 'date');
+      if(D.conseil.seances.some(function(x){ return x.id === date && x !== s; })){ toast('Une séance existe déjà à cette date'); return; }
+      var avant = copie(D.conseil), x = nouveau ? {} : s;
+      var hh = function(t){ return t ? t.replace(':', 'h') : ''; };
+      x.id = date ; x.date = date;
+      x.titre = 'Conseil municipal du ' + dateTexte(date);
+      x.debut = hh(val(app, 'debut')); x.fin = hh(val(app, 'fin'));
+      x.lieu = val(app, 'lieu') || 'En mairie';
+      x.convocation = +val(app, 'convocation') || 1;
+      x.secretaire = val(app, 'secretaire');
+      x.points = [].map.call(app.querySelectorAll('[data-point]'), function(b, i){
+        var p = {n:String(i + 1), titre:val(b, 'p-titre'), theme:val(b, 'p-theme'), resultat:val(b, 'p-resultat'), resume:val(b, 'p-resume')};
+        var d = lireDoc(b, 'p-doc'); if(d){ d.publie = d.publie || fr(TODAY); p.doc = d; }
+        return p;
+      }).filter(function(p){ return p.titre; });
+      x.infos = [].map.call(app.querySelectorAll('[data-info]'), function(b){ return {titre:val(b, 'i-titre'), texte:val(b, 'i-texte')}; }).filter(function(i){ return i.titre || i.texte; });
+      x.annonce = val(app, 'annonce');
+      var anciens = s.documents || {};
+      x.documents = {};
+      ['convocation','liste','pv'].forEach(function(k){
+        var d = lireDoc(app, 'd-' + k);
+        if(d){ d.publie = anciens[k] && anciens[k].url === d.url ? anciens[k].publie : fr(TODAY); x.documents[k] = d; }
+      });
+      x.presences = {presents:[], pouvoirs:[], absents:[]};
+      app.querySelectorAll('.pres-l').forEach(function(l){
+        var nom = l.dataset.elu, st = l.querySelector('input:checked').value;
+        if(st === 'present') x.presences.presents.push(nom);
+        else if(st === 'pouvoir') x.presences.pouvoirs.push([nom, l.querySelector('.pouvoir select').value]);
+        else x.presences.absents.push(nom);
+      });
+      if(nouveau) D.conseil.seances.push(x);
+      D.conseil.seances.sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+      enregistrer('conseil', avant).then(function(){ publie('Séance enregistrée', 'conseil-municipal.html#seance-' + x.id, '#conseil'); }).catch(function(){});
+    });
+  }
+  function fr(iso){ var p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+
+  /* ============================================================
+     CCAS
+     ============================================================ */
+  var TYPES_DOC = [['convocation','Convocation'],['deliberation','Délibération'],['liste','Liste des délibérations'],['pv','Procès-verbal'],['autre','Autre document']];
+
+  function vueCcasListe(){
+    var s = D.ccas.seances.slice().sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+    app.innerHTML = '<div class="view">'+
+      enTete('CCAS', 'Les réunions du conseil d\'administration', 'Affichées dans l\'onglet « Délibérations » de la page Action sociale.', boutonAjout('#ccas/nouveau', 'Ajouter une réunion'))+
+      '<div class="outils">'+RECH+'</div>'+
+      '<div class="liste">'+s.map(function(x){
+        var nb = (x.documents || []).length;
+        return '<div class="ligne glass">'+datePastille(x.date, 'vi')+
+          '<div><h3>'+esc(x.titre || 'Conseil d\'administration du ' + dateTexte(x.date))+(x.date >= TODAY ? '<span class="badge">à venir</span>' : '')+'</h3><small>'+nb+' document'+(nb > 1 ? 's' : '')+'</small></div>'+
+          actionsLigne('#ccas/'+x.id, 'action-sociale.html#deliberations', x.id)+'</div>';
+      }).join('')+'</div></div>';
+    filtrerListe(app);
+    brancherSuppression('ccas', function(id){ return D.ccas.seances.filter(function(x){ return x.id === id; })[0]; }, function(x){ return 'la réunion du ' + dateTexte(x.date); }, function(id){ D.ccas.seances = D.ccas.seances.filter(function(x){ return x.id !== id; }); }, route);
+  }
+  function blocDocCcas(d, i){
+    d = d || {type:'deliberation'};
+    return '<div class="rep-item" data-dcc>'+
+      '<div class="rep-head"><b>Document</b><div class="actions"><button type="button" class="ib" data-monter title="Monter">'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 19V5M6 11l6-6 6 6')+'</button><button type="button" class="ib del" data-retirer title="Retirer">'+ico('trash')+'</button></div></div>'+
+      '<div class="pile" style="gap:10px"><div class="grid-2">'+champ('Type', sel('type', d.type, TYPES_DOC))+champ('Intitulé', inp('titre', d.titre, 'placeholder="Ex. : DEL 1 — Vote du budget 2027"'))+'</div>'+
+      champDoc('f'+(i == null ? Date.now() : i), d)+'</div></div>';
+  }
+  function vueCcasForm(id){
+    var nouveau = id === 'nouveau';
+    var s = nouveau ? {date:'', heure:'', lieu:'En mairie', titre:'', resume:'', documents:[]} : D.ccas.seances.filter(function(x){ return x.id === id; })[0];
+    if(!s){ location.hash = 'ccas'; return; }
+    app.innerHTML = '<div class="view">'+
+      enTete('CCAS', nouveau ? 'Nouvelle réunion' : 'Modifier la réunion', 'Annoncez la réunion, puis ajoutez convocation, délibérations et procès-verbal au fur et à mesure.')+
+      '<div class="form"><div>'+
+        '<div class="carte-f glass"><h2><i>1</i>La réunion</h2><div class="pile">'+
+          '<div class="grid-3">'+champ('Date <span class="req">*</span>', inp('date', s.date, 'type="date"'))+champ('Heure', inp('heure', (s.heure || '').replace('h', ':'), 'type="time"'))+champ('Lieu', inp('lieu', s.lieu))+'</div>'+
+          champ('Titre <i>(facultatif)</i>', inp('titre', s.titre, 'placeholder="Par défaut : Conseil d\'administration du …"'))+
+          champ('Résumé <i>(facultatif)</i>', txt('resume', s.resume, 'rows="3" placeholder="Ce qui a été décidé, en quelques mots."'))+
+        '</div></div>'+
+      '</div><div>'+
+        '<div class="carte-f glass"><h2><i>2</i>Documents</h2><div class="rep" id="docs">'+(s.documents || []).map(blocDocCcas).join('')+'</div>'+
+        '<button type="button" class="ajouter" id="ajoutDoc" style="margin-top:10px;width:100%">'+ico('plus')+'Ajouter un document</button></div>'+
+      '</div></div>'+
+      barreBas(nouveau ? 'Nouvelle réunion' : 'Modification en cours', 'action-sociale.html#deliberations')+
+    '</div>';
+    brancherDocs(app);
+    var docs = document.getElementById('docs');
+    document.getElementById('ajoutDoc').addEventListener('click', function(){ docs.insertAdjacentHTML('beforeend', blocDocCcas()); });
+    app.addEventListener('click', function(e){
+      var r = e.target.closest('[data-retirer]'); if(r) r.closest('.rep-item').remove();
+      var m = e.target.closest('[data-monter]'); if(m){ var it = m.closest('.rep-item'); if(it.previousElementSibling) it.parentNode.insertBefore(it, it.previousElementSibling); }
+    });
+    app.querySelector('[data-annuler]').addEventListener('click', function(ev){ ev.preventDefault(); location.hash = 'ccas'; });
+    app.querySelector('[data-enregistrer]').addEventListener('click', function(){
+      if(!exiger(app, [['date','la date']])) return;
+      var date = val(app, 'date');
+      if(D.ccas.seances.some(function(x){ return x.id === date && x !== s; })){ toast('Une réunion existe déjà à cette date'); return; }
+      var avant = copie(D.ccas), x = nouveau ? {} : s;
+      x.id = date ; x.date = date;
+      x.heure = val(app, 'heure').replace(':', 'h'); x.lieu = val(app, 'lieu');
+      x.titre = val(app, 'titre'); x.resume = val(app, 'resume');
+      x.documents = [].map.call(app.querySelectorAll('[data-dcc]'), function(b){
+        var p = b.querySelector('[data-doc]').dataset.doc, d = lireDoc(b, p); if(!d) return null;
+        var type = val(b, 'type');
+        return {type:type, titre:val(b, 'titre') || TYPES_DOC.filter(function(t){ return t[0] === type; })[0][1], taille:d.taille, url:d.url};
+      }).filter(Boolean);
+      if(nouveau) D.ccas.seances.push(x);
+      D.ccas.seances.sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+      enregistrer('ccas', avant).then(function(){ publie('Réunion enregistrée', 'action-sociale.html#deliberations', '#ccas'); }).catch(function(){});
+    });
+  }
+
+  /* ============================================================
+     CARTES & LIENS
+     ============================================================ */
+  var CHAMPS_ZONE = {
+    cartes:    {aide:'Des cartes avec icône, titre, texte et un lien « … → ».', champs:['icone','couleur','titre','texte','lien','libelle','telephone']},
+    guide:     {aide:'Des lignes « besoin → service → téléphone ».', champs:['icone','couleur','titre','texte','lien','libelle','telephone']},
+    documents: {aide:'Des boutons qui ouvrent un document ou une page.', champs:['titre','lien']}
+  };
+  function vueCartes(zoneId){
+    var zones = D.cartes.zones, z = zones.filter(function(x){ return x.id === zoneId; })[0] || zones[0];
+    var parPage = {};
+    zones.forEach(function(x){ (parPage[x.page.split(' › ')[0]] = parPage[x.page.split(' › ')[0]] || []).push(x); });
+    var voir = z.id.indexOf('ccas') === 0 ? 'action-sociale.html#ccas' : z.id.indexOf('emploi') === 0 ? 'action-sociale.html#emploi' : z.id.indexOf('aines-retraite') === 0 ? 'action-sociale.html#aines/retraite' : z.id.indexOf('aines-menus') === 0 ? 'action-sociale.html#aines/repas' : 'action-sociale.html#aide';
+    app.innerHTML = '<div class="view">'+
+      enTete('Cartes & liens', 'Les cartes « Découvrir → »', 'Choisissez un emplacement, puis ajoutez, modifiez ou réordonnez ses cartes. Chaque carte peut renvoyer vers une page du site ou un site internet.')+
+      '<div class="zones"><nav class="zone-nav glass">'+Object.keys(parPage).map(function(p){
+        return '<h4>'+esc(p)+'</h4>'+parPage[p].map(function(x){
+          return '<button class="'+(x === z ? 'on' : '')+'" data-zone="'+x.id+'"><b>'+esc(x.nom)+'</b><small>'+esc(x.page.split(' › ')[1] || '')+' · '+x.cartes.length+' élément(s)</small></button>';
+        }).join('');
+      }).join('')+'</nav>'+
+      '<div><div class="h-row" style="margin-bottom:12px"><div><h2 style="font-size:1.3rem">'+esc(z.nom)+'</h2><p style="font-size:.88rem">'+esc(z.page)+' — '+CHAMPS_ZONE[z.type].aide+'</p></div>'+
+        '<div style="display:flex;gap:.5rem;flex-wrap:wrap"><a class="btn btn-glass" href="'+voir+'" target="_blank" rel="noopener">'+ico('eye')+'Voir sur le site</a><button class="btn btn-solid" data-nouvelle>'+ico('plus')+'Ajouter une carte</button></div></div>'+
+        '<div class="liste">'+(z.cartes.length ? z.cartes.map(function(c, i){
+          var t = TEINTES[c.couleur] || TEINTES.violet;
+          return '<div class="ligne glass"><span class="pastille sm" style="--c1:'+t[0]+';--c2:'+t[1]+'">'+ico(c.icone || 'doc')+'</span>'+
+            '<div><h3>'+esc(c.titre)+'</h3><small>'+(c.lien ? '→ '+esc(c.lien) : c.telephone ? '☎ '+esc(c.telephone) : 'sans lien')+'</small></div>'+
+            '<div class="actions">'+
+              '<button class="ib" data-haut="'+i+'" title="Monter"'+(i === 0 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 19V5M6 11l6-6 6 6')+'</button>'+
+              '<button class="ib" data-bas="'+i+'" title="Descendre"'+(i === z.cartes.length - 1 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 5v14M6 13l6 6 6-6')+'</button>'+
+              '<button class="ib" data-modif="'+i+'" title="Modifier">'+ico('pen')+'</button>'+
+              '<button class="ib del" data-sup="'+i+'" title="Supprimer">'+ico('trash')+'</button></div></div>';
+        }).join('') : '<div class="vide glass">Aucune carte pour l\'instant.</div>')+'</div></div></div></div>';
+
+    app.querySelector('.zone-nav').addEventListener('click', function(e){ var b = e.target.closest('[data-zone]'); if(b) location.hash = 'cartes/' + b.dataset.zone; });
+    app.querySelector('[data-nouvelle]').addEventListener('click', function(){ formCarte(z, -1); });
+    app.querySelector('.liste').addEventListener('click', function(e){
+      var b = e.target.closest('button'); if(!b || b.disabled) return;
+      var avant = copie(D.cartes), zz = D.cartes.zones.filter(function(x){ return x.id === z.id; })[0];
+      if(b.dataset.modif != null){ formCarte(z, +b.dataset.modif); return; }
+      if(b.dataset.sup != null){
+        var c = z.cartes[+b.dataset.sup];
+        confirmer('Supprimer « '+esc(c.titre)+' » ?', 'La carte disparaîtra de la page.').then(function(){
+          zz.cartes.splice(+b.dataset.sup, 1);
+          enregistrer('cartes', avant).then(function(){ toast('Carte supprimée'); vueCartes(z.id); }).catch(function(){ vueCartes(z.id); });
+        });
+        return;
+      }
+      var i = +(b.dataset.haut != null ? b.dataset.haut : b.dataset.bas), j = b.dataset.haut != null ? i - 1 : i + 1;
+      var tmp = zz.cartes[i]; zz.cartes[i] = zz.cartes[j]; zz.cartes[j] = tmp;
+      enregistrer('cartes', avant).then(function(){ vueCartes(z.id); }).catch(function(){ vueCartes(z.id); });
+    });
+  }
+
+  function choixIcone(v){
+    return '<div class="icones" data-icones>'+Object.keys(ICONES).map(function(n){
+      return '<button type="button" data-v="'+n+'" class="'+(n === v ? 'on' : '')+'" title="'+n+'">'+ico(n)+'</button>'; }).join('')+'</div>';
+  }
+  function choixTeinte(v){
+    return '<div class="teintes" data-teintes>'+Object.keys(TEINTES).map(function(n){
+      return '<button type="button" data-v="'+n+'" class="'+(n === v ? 'on' : '')+'" title="'+n+'" style="--c1:'+TEINTES[n][0]+';--c2:'+TEINTES[n][1]+'"></button>'; }).join('')+'</div>';
+  }
+  function brancherChoix(racine, onChange){
+    racine.addEventListener('click', function(e){
+      var b = e.target.closest('[data-icones] button, [data-teintes] button'); if(!b) return;
+      b.parentNode.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      onChange();
+    });
+  }
+
+  function formCarte(z, index){
+    var c = index > -1 ? z.cartes[index] : {icone:'doc', couleur:'violet', titre:'', texte:'', lien:'', libelle:'En savoir plus', telephone:''};
+    var ch = CHAMPS_ZONE[z.type].champs, a = function(k){ return ch.indexOf(k) > -1; };
+    var m = modal('<h3>'+(index > -1 ? 'Modifier la carte' : 'Nouvelle carte')+'</h3><p style="color:var(--ink-soft);margin:.3rem 0 1.2rem;font-size:.9rem">'+esc(z.nom)+'</p>'+
+      '<div class="pile">'+
+        (a('icone') ? '<div class="apercu-carte" id="apercu"></div>' : '')+
+        champ('Titre <span class="req">*</span>', inp('titre', c.titre))+
+        (a('texte') ? champ('Texte', txt('texte', c.texte, 'rows="2"')) : '')+
+        (a('icone') ? '<div class="field"><span>Icône</span>'+choixIcone(c.icone)+'</div><div class="field"><span>Couleur</span>'+choixTeinte(c.couleur)+'</div>' : '')+
+        '<div class="field"><span>Lien</span>'+champLien('lien', c.lien, z.type !== 'documents')+'</div>'+
+        (z.type === 'documents' ? '<div class="field"><span>ou déposer un PDF</span>'+champDoc('pdf', null)+'</div>' : '')+
+        (a('libelle') ? champ('Texte du lien', inp('libelle', c.libelle, 'placeholder="Découvrir"'), 'Affiché en violet, suivi d\'une flèche') : '')+
+        (a('telephone') ? champ('Téléphone <i>(facultatif)</i>', inp('telephone', c.telephone, 'placeholder="01 34 27 40 40"')) : '')+
+      '</div>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-solid" data-ok>'+ico('save')+'Enregistrer</button></div>');
+    m.el.querySelector('.modal-card').style.width = 'min(100%, 720px)';
+    function lire(){
+      var ic = m.el.querySelector('[data-icones] .on'), te = m.el.querySelector('[data-teintes] .on');
+      var pdf = z.type === 'documents' ? lireDoc(m.el, 'pdf') : null;
+      return {icone:ic ? ic.dataset.v : c.icone || 'doc', couleur:te ? te.dataset.v : c.couleur || 'violet', titre:val(m.el, 'titre'), texte:val(m.el, 'texte'),
+        lien:pdf ? pdf.url : lireLien(m.el, 'lien'), libelle:val(m.el, 'libelle'), telephone:val(m.el, 'telephone')};
+    }
+    function apercu(){
+      var el = m.el.querySelector('#apercu'); if(!el) return;
+      var x = lire(), t = TEINTES[x.couleur];
+      el.innerHTML = '<span class="pastille sm" style="--c1:'+t[0]+';--c2:'+t[1]+'">'+ico(x.icone)+'</span><div><b>'+esc(x.titre || 'Titre de la carte')+'</b>'+(x.texte ? '<span class="t">'+esc(x.texte)+'</span>' : '')+
+        (x.lien ? '<span class="go">'+esc(x.libelle || 'En savoir plus')+' →</span>' : x.telephone ? '<span class="go">'+esc(x.telephone)+'</span>' : '')+'</div>';
+    }
+    brancherLiens(m.el, apercu); brancherChoix(m.el, apercu); brancherDocs(m.el);
+    m.el.addEventListener('input', apercu); apercu();
+    m.el.querySelector('[data-ok]').addEventListener('click', function(){
+      var x = lire();
+      if(!x.titre){ toast('Donnez un titre à la carte'); return; }
+      if(z.type === 'documents' && !x.lien){ toast('Choisissez un lien ou un PDF'); return; }
+      var avant = copie(D.cartes), zz = D.cartes.zones.filter(function(y){ return y.id === z.id; })[0];
+      var propre = {icone:x.icone, couleur:x.couleur, titre:x.titre, texte:x.texte, lien:x.lien, libelle:x.lien ? x.libelle : '', telephone:x.telephone};
+      if(index > -1) zz.cartes[index] = propre ; else zz.cartes.push(propre);
+      enregistrer('cartes', avant).then(function(){ m.fermer(); toast('Carte enregistrée'); vueCartes(z.id); }).catch(function(){});
+    });
+  }
+
+  /* ============================================================
+     SERVICES
+     ============================================================ */
+  function vueServices(rubId){
+    var R = D.services, r = R.filter(function(x){ return x.id === rubId; })[0] || R[0];
+    app.innerHTML = '<div class="view">'+
+      enTete('Services', 'Les rubriques et leurs liens', 'Chaque carte de la page « Tous les services » peut renvoyer vers une page du site ou un site internet. Sans lien, la carte ne mène nulle part.')+
+      '<div class="zones"><nav class="zone-nav glass"><h4>Rubriques</h4>'+R.map(function(x){
+        var sans = x.subs.filter(function(s){ return !s.href; }).length;
+        return '<button class="'+(x === r ? 'on' : '')+'" data-rub="'+x.id+'"><b>'+esc(x.title)+'</b><small>'+x.subs.length+' services'+(sans ? ' · '+sans+' sans lien' : ' · tous reliés')+'</small></button>';
+      }).join('')+'</nav>'+
+      '<div><div class="carte-f glass" style="margin-bottom:14px"><div class="pile">'+
+        champ('Présentation de la rubrique', txt('desc', r.desc, 'rows="2"'))+
+        '<div style="display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap"><a class="btn btn-glass btn-sm" href="services.html#'+r.id+'" target="_blank" rel="noopener">'+ico('eye')+'Voir sur le site</a><button class="btn btn-glass btn-sm" data-desc>'+ico('save')+'Enregistrer la présentation</button><button class="btn btn-solid btn-sm" data-nouveau>'+ico('plus')+'Ajouter un service</button></div>'+
+      '</div></div>'+
+      '<div class="liste">'+r.subs.map(function(s, i){
+        return '<div class="ligne glass"><span class="pastille sm" style="--c1:'+r.c1+';--c2:'+r.c2+'">'+ico(s.i || 'doc')+'</span>'+
+          '<div><h3>'+esc(s.t)+(s.href ? '' : '<span class="badge passe">sans lien</span>')+'</h3><small>'+esc(s.d)+(s.href ? ' · → '+esc(s.href) : '')+'</small></div>'+
+          '<div class="actions">'+
+            '<button class="ib" data-haut="'+i+'" title="Monter"'+(i === 0 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 19V5M6 11l6-6 6 6')+'</button>'+
+            '<button class="ib" data-bas="'+i+'" title="Descendre"'+(i === r.subs.length - 1 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 5v14M6 13l6 6 6-6')+'</button>'+
+            '<button class="ib" data-modif="'+i+'" title="Modifier">'+ico('pen')+'</button>'+
+            '<button class="ib del" data-sup="'+i+'" title="Supprimer">'+ico('trash')+'</button></div></div>';
+      }).join('')+'</div></div></div></div>';
+
+    app.querySelector('.zone-nav').addEventListener('click', function(e){ var b = e.target.closest('[data-rub]'); if(b) location.hash = 'services/' + b.dataset.rub; });
+    app.querySelector('[data-desc]').addEventListener('click', function(){
+      var avant = copie(D.services); r.desc = val(app, 'desc');
+      enregistrer('services', avant).then(function(){ toast('Présentation enregistrée'); }).catch(function(){});
+    });
+    app.querySelector('[data-nouveau]').addEventListener('click', function(){ formService(r, -1); });
+    app.querySelector('.liste').addEventListener('click', function(e){
+      var b = e.target.closest('button'); if(!b || b.disabled) return;
+      var avant = copie(D.services);
+      if(b.dataset.modif != null){ formService(r, +b.dataset.modif); return; }
+      if(b.dataset.sup != null){
+        var s = r.subs[+b.dataset.sup];
+        confirmer('Supprimer « '+esc(s.t)+' » ?', 'Le service disparaîtra de la rubrique.').then(function(){
+          r.subs.splice(+b.dataset.sup, 1);
+          enregistrer('services', avant).then(function(){ toast('Service supprimé'); vueServices(r.id); }).catch(function(){ vueServices(r.id); });
+        });
+        return;
+      }
+      var i = +(b.dataset.haut != null ? b.dataset.haut : b.dataset.bas), j = b.dataset.haut != null ? i - 1 : i + 1;
+      var tmp = r.subs[i]; r.subs[i] = r.subs[j]; r.subs[j] = tmp;
+      enregistrer('services', avant).then(function(){ vueServices(r.id); }).catch(function(){ vueServices(r.id); });
+    });
+  }
+  function formService(r, index){
+    var s = index > -1 ? r.subs[index] : {t:'', d:'', i:'doc', href:''};
+    var m = modal('<h3>'+(index > -1 ? 'Modifier le service' : 'Nouveau service')+'</h3><p style="color:var(--ink-soft);margin:.3rem 0 1.2rem;font-size:.9rem">Rubrique « '+esc(r.title)+' »</p>'+
+      '<div class="pile">'+
+        champ('Nom du service <span class="req">*</span>', inp('t', s.t))+
+        champ('Description courte', inp('d', s.d, 'placeholder="Ex. : Horaires, contacts, inscriptions"'))+
+        '<div class="field"><span>Icône</span>'+choixIcone(s.i)+'</div>'+
+        '<div class="field"><span>Où mène la carte ?</span>'+champLien('href', s.href)+'</div>'+
+      '</div>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-solid" data-ok>'+ico('save')+'Enregistrer</button></div>');
+    m.el.querySelector('.modal-card').style.width = 'min(100%, 720px)';
+    m.el.querySelector('[data-icones]').style.setProperty('--c1', r.c1); m.el.querySelector('[data-icones]').style.setProperty('--c2', r.c2);
+    brancherLiens(m.el); brancherChoix(m.el, function(){});
+    m.el.querySelector('[data-ok]').addEventListener('click', function(){
+      if(!val(m.el, 't')){ toast('Donnez un nom au service'); return; }
+      var avant = copie(D.services), ic = m.el.querySelector('[data-icones] .on');
+      var x = {t:val(m.el, 't'), d:val(m.el, 'd'), i:ic ? ic.dataset.v : 'doc'};
+      var h = lireLien(m.el, 'href'); if(h) x.href = h;
+      if(index > -1) r.subs[index] = x ; else r.subs.push(x);
+      enregistrer('services', avant).then(function(){ m.fermer(); toast('Service enregistré'); vueServices(r.id); }).catch(function(){});
+    });
+  }
+
+  /* ============================================================
+     VIE MUNICIPALE (data/vie-municipale.js)
+     ============================================================ */
+  var OPT_KIOSQUE = [['Agenda trimestriel','Agenda trimestriel'],['Bulletin du patrimoine','Bulletin du patrimoine'],['Autre publication','Autre publication']];
+  var COLLECTIONS = {
+    magazines: {nom:'Magazines municipaux', icone:'book', teinte:['#60a5fa','#2563eb'], ajout:'Ajouter un numéro', voir:'vie-municipale.html#magazines', tri:'publie',
+      aide:'Le plus récent est mis en avant avec sa couverture ; les autres forment les archives.',
+      titre:function(x){ return x.titre; }, sous:function(x){ return 'publié le ' + dateTexte(x.publie) + (x.taille ? ' · ' + x.taille : ''); },
+      champs:[['titre','Titre','texte',1,"À l'écoute de Margency — Juin 2026"],['publie','Date de publication','date',1],['fichier','Magazine (PDF)','doc',1],['liseuse','Lien pour feuilleter en ligne (Calaméo…)','url'],['couverture','Couverture','image']]},
+    kiosque: {nom:'Kiosque', icone:'scroll', teinte:['#a78bfa','#6d28d9'], ajout:'Ajouter une publication', voir:'vie-municipale.html#kiosque', tri:'publie',
+      aide:'Agendas trimestriels, bulletins du patrimoine… regroupés par rubrique.',
+      titre:function(x){ return x.titre; }, sous:function(x){ return x.rubrique + ' · publié le ' + dateTexte(x.publie); },
+      champs:[['rubrique','Rubrique','liste',1,OPT_KIOSQUE],['titre','Titre','texte',1,'Agenda 2026 — 3ᵉ trimestre'],['publie','Date de publication','date',1],['fichier','Document (PDF)','doc',1],['couverture','Couverture','image']]},
+    budgets: {nom:'Budgets', icone:'money', teinte:['#fbbf6b','#9e5527'], ajout:'Ajouter une année', voir:'vie-municipale.html#budgets', tri:'annee',
+      aide:'L\'année la plus récente est présentée en tête, avec sa date de vote.',
+      titre:function(x){ return 'Budget ' + x.annee; }, sous:function(x){ return x.titre; },
+      champs:[['annee','Année','texte',1,'2027'],['titre','Intitulé du document','texte',1,'Note de présentation brève et synthétique — budget primitif 2027'],['vote','Date du vote en conseil municipal','date'],['publie','Date de mise en ligne','date',1],['fichier','Document (PDF)','doc',1]]},
+    marches: {nom:'Marchés publics', icone:'scroll', teinte:['#94a3b8','#475569'], ajout:'Publier une consultation', voir:'vie-municipale.html#marches', tri:'publie',
+      aide:'Les consultations « en cours » apparaissent en premier, avec leur date limite.',
+      titre:function(x){ return x.objet; }, sous:function(x){ return (x.type || '') + ' · ' + ({'en-cours':'en cours','attribue':'attribué','infructueux':'infructueux'}[x.statut] || '') + (x.limite ? ' · limite le ' + dateTexte(x.limite) : ''); },
+      champs:[['objet','Objet du marché','texte',1,'Ex. : Réfection de la toiture de l\'école maternelle'],['type','Type','liste',1,[['Travaux','Travaux'],['Fournitures','Fournitures'],['Services','Services']]],['procedure','Procédure','texte',0,'Ex. : Procédure adaptée (MAPA)'],
+        ['publie','Date de publication','date',1],['limite','Date limite de remise des offres','date'],['statut','Statut','liste',1,[['en-cours','En cours'],['attribue','Attribué'],['infructueux','Infructueux']]],['url','Dossier de consultation (lien ou PDF)','doc']]},
+    offres: {nom:'Offres d\'emploi', icone:'users', teinte:['#f472b6','#be185d'], ajout:'Publier une offre', voir:'vie-municipale.html#recrutement', tri:'publie',
+      aide:'Passez une offre en « pourvue » pour la garder visible sans bouton « Postuler », ou supprimez-la.',
+      titre:function(x){ return x.titre; }, sous:function(x){ return (x.statut === 'ouverte' ? 'ouverte' : 'pourvue') + (x.lieu ? ' · ' + x.lieu : '') + ' · publiée le ' + dateTexte(x.publie); },
+      champs:[['titre','Intitulé du poste','texte',1,'Ex. : Agent d\'entretien des espaces verts'],['lieu','Lieu / service','texte',0,'Ex. : Services techniques'],['contrat','Type de contrat','texte',0,'Ex. : CDD de 6 mois, temps complet'],
+        ['debut','Prise de poste','texte',0,'Ex. : dès que possible'],['horaires','Horaires','texte'],['missions','Missions (une par ligne)','zone'],['profil','Profil recherché (un point par ligne)','zone'],
+        ['publie','Date de publication','date',1],['statut','Statut','liste',1,[['ouverte','Ouverte — les candidats peuvent postuler'],['pourvue','Pourvue']]],['image','Image','image']]},
+    services: {nom:'Services municipaux', icone:'briefcase', teinte:['#2dd4bf','#0f766e'], ajout:'Ajouter un service', voir:'vie-municipale.html#services', ordre:true,
+      aide:'L\'ordre de la liste est celui de la page. La touche alimente le récapitulatif du standard.',
+      titre:function(x){ return x.nom; }, sous:function(x){ return [x.responsable, x.telephone, x.touche ? 'touche ' + x.touche : ''].filter(Boolean).join(' · '); },
+      champs:[['nom','Nom du service','texte',1],['responsable','Responsable(s)','texte'],['telephone','Téléphone','texte',0,'01 34 27 40 40'],['touche','Touche au standard','texte',0,'Ex. : 3'],['email','E-mail','texte'],['precision','Précision','texte',0,'Ex. : Inscriptions, cantine, centre de loisirs']]}
+  };
+
+  /* ---------- Enfance & Éducation (data/enfance.js) ---------- */
+  var OPT_INSCR = ['Scolaire','Maternelle','Élémentaire','Périscolaire','Espace Ados','Règlements'].map(function(c){ return [c, c]; });
+  function docSimple(nom, ajout, voir, aide, extra){
+    return {nom:nom, icone:'doc', teinte:['#60a5fa','#2563eb'], ajout:ajout, voir:voir, tri:'publie', aide:aide,
+      titre:function(x){ return x.titre; }, sous:function(x){ return (x.categorie ? x.categorie + ' · ' : '') + 'publié le ' + dateTexte(x.publie) + (x.taille ? ' · ' + x.taille : ''); },
+      champs:(extra || []).concat([['titre','Titre','texte',1],['publie','Date de publication','date',1],['fichier','Document (PDF ou Word)','doc',1]])};
+  }
+  var COL_ENFANCE = {
+    menus: {nom:'Menus de la cantine', icone:'fork', teinte:['#4ade80','#15803d'], ajout:'Ajouter un menu', voir:'enfance-education.html#cantine', ordre:true,
+      aide:'Écrivez le titre sous la forme « Semaine 42 - 12 au 16 octobre » : la semaine en cours est alors mise en avant automatiquement. Sans numéro de semaine, le menu apparaît comme « menu spécial ».',
+      titre:function(x){ return x.titre; }, sous:function(x){ return 'publié le ' + dateTexte(x.publie) + (x.taille ? ' · ' + x.taille : ''); },
+      champs:[['titre','Titre','texte',1,'Semaine 42 - 12 au 16 octobre'],['publie','Date de publication','date',1],['fichier','Menu (PDF)','doc',1]]},
+    inscriptions : docSimple('Dossiers d\'inscription', 'Ajouter un document', 'enfance-education.html#inscriptions', 'Dossiers et règlements, regroupés par catégorie. Mettez l\'année scolaire dans le titre (ex. « 2027-2028 ») pour que les anciens soient grisés.', [['categorie','Catégorie','liste',1,OPT_INSCR]]),
+    fournitures : docSimple('Listes de fournitures', 'Ajouter une liste', 'enfance-education.html#elementaire', 'Affichées sur l\'onglet de l\'école élémentaire.'),
+    mercredis : docSimple('Programmes des mercredis', 'Ajouter un programme', 'enfance-education.html#loisirs', 'Centre de loisirs Les Marcyens.'),
+    vacances : docSimple('Programmes des vacances', 'Ajouter un programme', 'enfance-education.html#loisirs', 'Centre de loisirs Les Marcyens.'),
+    ados : docSimple('Programmes de l\'Espace Ados', 'Ajouter un programme', 'enfance-education.html#ados', 'Un programme par période de vacances.'),
+    caisse: {nom:'Caisse des écoles', icone:'money', teinte:['#fbbf6b','#9e5527'], ajout:'Ajouter une séance', voir:'enfance-education.html#caisse', tri:'date', parDate:true,
+      aide:'Annoncez la séance, puis ajoutez convocation, délibérations et compte rendu au fur et à mesure.',
+      titre:function(x){ return 'Comité du ' + dateTexte(x.date); }, sous:function(x){ return (x.documents || []).length + ' document(s)'; },
+      champs:[['date','Date de la séance','date',1],['documents','Documents','docs']]}
+  };
+  var COL_CULTURE = {
+    associations: {nom:'Associations', icone:'users', teinte:['#f472b6','#be185d'], ajout:'Ajouter une association', voir:'sport-loisirs-culture.html#associations', tri:null,
+      aide:'Classées par ordre alphabétique sur le site, avec un filtre par catégorie. Un logo carré rend mieux.',
+      titre:function(x){ return x.nom; }, sous:function(x){ return x.categorie + (x.adresse ? ' · ' + x.adresse : ''); },
+      champs:[['nom','Nom','texte',1],['categorie','Catégorie','liste',1,[['Culture & loisirs','Culture & loisirs'],['Sport','Sport'],['Solidarité','Solidarité']]],
+        ['description','Présentation','zone'],['adresse','Adresse ou lieu d\'activité','texte'],['telephone','Téléphone','texte',0,'06 12 34 56 78'],['email','E-mail','texte'],['site','Site internet','url'],['logo','Logo','image']]}
+  };
+  var COL_VIVRE = {
+    commerces: {nom:'Commerces & artisans', icone:'cart', teinte:['#fbbf6b','#9e5527'], ajout:'Ajouter un commerce', voir:'vivre-a-margency.html#commerces', tri:null,
+      aide:'Classés par ordre alphabétique sur le site, avec un filtre par catégorie. Ils apparaissent aussi dans l\'annuaire général.',
+      titre:function(x){ return x.nom; }, sous:function(x){ return x.categorie + (x.activite ? ' · ' + x.activite : ''); },
+      champs:[['nom','Nom','texte',1],['categorie','Catégorie','liste',1,[['Commerces & services','Commerces & services'],['Commerces itinérants','Commerces itinérants'],['Entreprises & artisans','Entreprises & artisans']]],
+        ['activite','Activité','texte',0,'Ex. : Boulangerie'],['description','Présentation','zone'],['horaires','Horaires','texte',0,'Ex. : Du mardi au samedi 8h–19h'],['adresse','Adresse','texte'],['telephone','Téléphone','texte'],['email','E-mail','texte'],['site','Site internet','url'],['logo','Logo ou photo','image']]},
+    sante: {nom:'Professions de santé', icone:'heart', teinte:['#f87171','#b91c1c'], ajout:'Ajouter un professionnel', voir:'vivre-a-margency.html#sante', tri:null,
+      aide:'Regroupés par spécialité sur le site. Laissez les coordonnées GPS vides si vous ne les connaissez pas : le bouton « Itinéraire » sera simplement masqué.',
+      titre:function(x){ return x.nom; }, sous:function(x){ return x.categorie + ' · ' + x.adresse; },
+      champs:[['nom','Nom','texte',1,'Ex. : Dr Martin'],['categorie','Spécialité','texte',1,'Ex. : Médecin généraliste'],['adresse','Adresse','texte',1],['telephone','Téléphone','texte'],['email','E-mail','texte'],['site','Site ou prise de rendez-vous','url'],['lat','Latitude (facultatif)','texte'],['lng','Longitude (facultatif)','texte']]}
+  };
+  var COL_URBA = {
+    arretes: {nom:'Arrêtés municipaux', icone:'scroll', teinte:['#4ade80','#15803d'], ajout:'Publier un arrêté', voir:'environnement-urbanisme.html#arretes', tri:'publie',
+      aide:'Du plus récent au plus ancien sur le site, avec une recherche et des filtres par type et par année.',
+      titre:function(x){ return (x.numero ? x.numero + ' · ' : '') + x.titre; }, sous:function(x){ return ({temporaire:'Temporaire',permanent:'Permanent',prefectoral:'Préfectoral'}[x.type] || '') + ' · publié le ' + dateTexte(x.publie); },
+      champs:[['numero','Numéro','texte',0,'Ex. : 2026-061'],['titre','Objet','texte',1,'Ex. : Fermeture de la rue Henri-Dunant pour travaux'],['description','Précision (facultatif)','texte'],
+        ['type','Type','liste',1,[['temporaire','Temporaire'],['permanent','Permanent'],['prefectoral','Préfectoral']]],['publie','Date de publication','date',1],['fichier','Arrêté (PDF)','doc',1]]},
+    projets: {nom:'Travaux & Projets', icone:'tools', teinte:['#fbbf6b','#9e5527'], ajout:'Ajouter un projet', voir:'environnement-urbanisme.html#projets', ordre:true,
+      aide:'Chaque projet a une photo, un statut et une chronologie.',
+      titre:function(x){ return x.titre; }, sous:function(x){ return x.statut + ' · ' + x.lieu; },
+      champs:[['titre','Nom du projet','texte',1],['lieu','Lieu','texte',1],['statut','Statut','texte',1,'Ex. : Travaux en cours'],['resume','Présentation','zone',1],['image','Photo principale','image'],['photos','Autres photos','images'],['etapes','Étapes','etapes']]},
+    logements: {nom:'Programmes de logements', icone:'build', teinte:['#60a5fa','#2563eb'], ajout:'Ajouter un programme', voir:'environnement-urbanisme.html#logements', ordre:true,
+      aide:'Résidences en construction ou en commercialisation.',
+      titre:function(x){ return x.nom; }, sous:function(x){ return x.lieu; },
+      champs:[['nom','Nom de la résidence','texte',1],['lieu','Adresse','texte',1],['description','Présentation','zone',1],['formules','Prix et formules','zone'],['contact','Contact (organisme)','texte'],['telephone','Téléphone','texte'],['site','Site internet','url'],['image','Photo','image'],['photos','Autres photos','images']]},
+    dossierPLU: {nom:'Pièces du PLU', chemin:['plu','dossier'], icone:'map', teinte:['#4ade80','#15803d'], ajout:'Ajouter une pièce', voir:'environnement-urbanisme.html#plu', ordre:true,
+      aide:'Commencez le titre par le code de la pièce (P1…, P5, P6A…) pour qu\'elle soit rangée dans le bon groupe. Les pièces « Règlement » (P5), « Zonage » (P6A), « PADD » (P3) et « OAP » (P4) apparaissent en accès rapide.',
+      titre:function(x){ return x.titre; }, sous:function(x){ return (x.taille || '') + (x.publie ? ' · publié le ' + dateTexte(x.publie) : ''); },
+      champs:[['titre','Titre','texte',1,'Ex. : P5 - Règlement'],['publie','Date de publication','date',1],['fichier','Document (PDF)','doc',1]]},
+    procedurePLU: {nom:'Procédure de révision', chemin:['plu','procedure'], icone:'cal', teinte:['#a78bfa','#6d28d9'], ajout:'Ajouter un document', voir:'environnement-urbanisme.html#revision', tri:'publie',
+      aide:'Délibérations, avis et documents d\'enquête publique : ils sont placés automatiquement dans la chronologie selon leur titre.',
+      titre:function(x){ return x.titre; }, sous:function(x){ return 'publié le ' + dateTexte(x.publie); },
+      champs:[['titre','Titre','texte',1],['publie','Date de publication','date',1],['fichier','Document (PDF)','doc',1]]}
+  };
+  var ESPACES = {
+    vie: {fichier:'vie-municipale', d:'vie', cols:COLLECTIONS, sur:'Vie municipale', titre:'Publications, budgets, emplois…', texte:'Tout ce qui change régulièrement sur la page Vie municipale.',
+          reglage:['Collectes & rendez-vous','Encombrants, calendriers, créneaux du Maire'], defaut:'magazines'},
+    enfance: {fichier:'enfance', d:'enfance', cols:COL_ENFANCE, sur:'Enfance & Éducation', titre:'Menus, inscriptions, programmes…', texte:'Tout ce qui change régulièrement sur la page Enfance & Éducation.',
+          reglage:['Liens & Conseil des jeunes','Portail Famille, assistantes maternelles, CMJ'], defaut:'menus'},
+    vivre: {fichier:'vivre', d:'vivre', cols:COL_VIVRE, sur:'Vivre à Margency', titre:'Commerces, santé, salles…', texte:'Les contenus pratiques de la page Vivre à Margency. Les demandes de réservation de salle arrivent dans l\'onglet Demandes.',
+          reglage:['Salles, police, cimetière','Tarifs et capacités des salles, horaires'], defaut:'commerces'},
+    urbanisme: {fichier:'urbanisme', d:'urbanisme', cols:COL_URBA, sur:'Environnement & Urbanisme', titre:'Arrêtés, projets, PLU…', texte:'Les contenus de la page Environnement & Urbanisme.',
+          reglage:['PLU et service urbanisme','Date d\'approbation, contacts, horaires'], defaut:'arretes'},
+    culture: {fichier:'culture', d:'culture', cols:COL_CULTURE, sur:'Sport, Loisirs & Culture', titre:'Associations et bibliothèque', texte:'Les cérémonies, événements culturels, sportifs et fêtes se publient dans l\'Agenda : choisissez la bonne catégorie et ils apparaissent dans le bon onglet.',
+          reglage:['Bibliothèque','Horaires, contacts, appel à bénévoles'], defaut:'associations'}
+  };
+
+  function listeCol(ES, cle){
+    var C = ES.cols[cle], o = D[ES.d];
+    (C.chemin || [cle]).forEach(function(k){ o = o[k]; });
+    return o;
+  }
+  function vueEspace(espace, sub){
+    var ES = ESPACES[espace], COLS = ES.cols, V = D[ES.d], cle = COLS[sub] ? sub : sub === 'reglages' ? 'reglages' : ES.defaut;
+    var nav = '<nav class="zone-nav glass"><h4>Contenus</h4>'+Object.keys(COLS).map(function(k){
+      return '<button class="'+(k === cle ? 'on' : '')+'" data-col="'+k+'"><b>'+COLS[k].nom+'</b><small>'+listeCol(ES, k).length+' élément(s)</small></button>'; }).join('')+
+      '<h4>Réglages</h4><button class="'+(cle === 'reglages' ? 'on' : '')+'" data-col="reglages"><b>'+ES.reglage[0]+'</b><small>'+ES.reglage[1]+'</small></button></nav>';
+    app.innerHTML = '<div class="view">'+enTete(ES.sur, ES.titre, ES.texte)+'<div class="zones">'+nav+'<div id="vieCorps"></div></div></div>';
+    app.querySelector('.zone-nav').addEventListener('click', function(e){ var b = e.target.closest('[data-col]'); if(b) location.hash = espace + '/' + b.dataset.col; });
+    if(cle === 'reglages') return espace === 'vie' ? vueCollectes() : espace === 'enfance' ? vueReglagesEnfance() : espace === 'vivre' ? vueReglagesVivre() : espace === 'urbanisme' ? vueReglagesUrba() : vueReglagesBiblio();
+    var C = COLS[cle], corps = document.getElementById('vieCorps');
+    function rendre(){
+      V = D[ES.d];
+      var liste = listeCol(ES, cle).map(function(x, i){ return [x, i]; });
+      if(C.tri) liste.sort(function(a, b){ return (a[0][C.tri] || '') < (b[0][C.tri] || '') ? 1 : -1; });
+      else if(!C.ordre) liste.sort(function(a, b){ return C.titre(a[0]).localeCompare(C.titre(b[0]), 'fr'); });
+      corps.innerHTML = '<div class="h-row" style="margin-bottom:12px"><div><h2 style="font-size:1.3rem">'+C.nom+'</h2><p style="font-size:.88rem">'+C.aide+'</p></div>'+
+        '<div style="display:flex;gap:.5rem;flex-wrap:wrap"><a class="btn btn-glass" href="'+C.voir+'" target="_blank" rel="noopener">'+ico('eye')+'Voir sur le site</a><button class="btn btn-solid" data-nouveau>'+ico('plus')+C.ajout+'</button></div></div>'+
+        '<div class="liste">'+(liste.length ? liste.map(function(p, n){
+          var x = p[0], i = p[1], vis = x.couverture || x.image;
+          return '<div class="ligne glass">'+(vis ? '<img class="vign" src="'+esc(vis)+'" alt="" loading="lazy">' : C.parDate ? datePastille(x.date) : '<span class="pastille sm" style="--c1:'+C.teinte[0]+';--c2:'+C.teinte[1]+'">'+ico(C.icone)+'</span>')+
+            '<div><h3>'+esc(C.titre(x))+'</h3><small>'+esc(C.sous(x))+'</small></div><div class="actions">'+
+            (C.ordre ? '<button class="ib" data-haut="'+i+'" title="Monter"'+(n === 0 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 19V5M6 11l6-6 6 6')+'</button>'+
+                       '<button class="ib" data-bas="'+i+'" title="Descendre"'+(n === liste.length - 1 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 5v14M6 13l6 6 6-6')+'</button>' : '')+
+            (x.url ? '<a class="ib" href="'+esc(x.url)+'" target="_blank" rel="noopener" title="Ouvrir le document">'+ico('doc')+'</a>' : '')+
+            '<button class="ib" data-modif="'+i+'" title="Modifier">'+ico('pen')+'</button><button class="ib del" data-sup="'+i+'" title="Supprimer">'+ico('trash')+'</button></div></div>';
+        }).join('') : '<div class="vide glass">Rien pour l\'instant. La page affiche un message adapté.</div>')+'</div>';
+    }
+    rendre();
+    corps.addEventListener('click', function(e){
+      var b = e.target.closest('button'); if(!b || b.disabled) return;
+      if(b.dataset.nouveau != null) return formCol(espace, cle, -1, rendre);
+      if(b.dataset.modif != null) return formCol(espace, cle, +b.dataset.modif, rendre);
+      var avant = copie(D[ES.d]);
+      if(b.dataset.sup != null){
+        var x = listeCol(ES, cle)[+b.dataset.sup];
+        confirmer('Supprimer « '+esc(C.titre(x))+' » ?', 'L\'élément disparaîtra de la page '+ES.sur+'.').then(function(){
+          listeCol(ES, cle).splice(+b.dataset.sup, 1);
+          enregistrer(ES.fichier, avant).then(function(){ toast('Supprimé'); rendre(); }).catch(rendre);
+        });
+        return;
+      }
+      var i = +(b.dataset.haut != null ? b.dataset.haut : b.dataset.bas), j = b.dataset.haut != null ? i - 1 : i + 1, l = listeCol(ES, cle);
+      var tmp = l[i]; l[i] = l[j]; l[j] = tmp;
+      enregistrer(ES.fichier, avant).then(rendre).catch(rendre);
+    });
+  }
+  function vueVie(sub){ return vueEspace('vie', sub === 'collectes' ? 'reglages' : sub); }
+
+  function formCol(espace, cle, index, apres){
+    var ES = ESPACES[espace], C = ES.cols[cle], x = index > -1 ? listeCol(ES, cle)[index] : {};
+    if(index === -1){ C.champs.forEach(function(c){ if(c[2] === 'date' && c[3]) x[c[0]] = TODAY ; if(c[2] === 'liste') x[c[0]] = c[4][0][0]; }); }
+    var html = C.champs.map(function(c){
+      var k = c[0], label = c[1] + (c[3] ? ' <span class="req">*</span>' : '');
+      switch(c[2]){
+        case 'date':  return champ(label, inp(k, x[k], 'type="date"'));
+        case 'url':   return champ(label, inp(k, x[k], 'type="url" placeholder="https://…"'));
+        case 'liste': return champ(label, sel(k, x[k], c[4]));
+        case 'zone':  return champ(label, txt(k, x[k], 'rows="4"'));
+        case 'etapes': return champ(label, txt(k, (x[k] || []).map(function(e){ return e[0] + ' = ' + e[1]; }).join('\n'), 'rows="6" placeholder="Mars 2027 = Début des travaux"'), 'Une étape par ligne : période = ce qui se passe');
+        case 'images': return champ(label, txt(k, (x[k] || []).join('\n'), 'rows="2" placeholder="assets/…/photo.jpg"'), 'Une adresse d\'image par ligne (ou déposez-les avec le champ image puis copiez l\'adresse)');
+        case 'image': return '<div class="field"><span>'+label+'</span>'+champImage(k, x[k])+'</div>';
+        case 'doc':   var u = k === 'fichier' ? {url:x.url, taille:x.taille} : {url:x[k]}; return '<div class="field"><span>'+label+'</span>'+champDoc('d-'+k, u)+'</div>';
+        case 'docs':  return '<div class="field"><span>'+label+'</span><div class="rep" data-docs>'+(x[k] || []).map(blocDocCcas).join('')+'</div>'+
+                        '<button type="button" class="ajouter" data-ajout-doc style="margin-top:8px">'+ico('plus')+'Ajouter un document</button></div>';
+        default:      return champ(label, inp(k, x[k], c[4] ? 'placeholder="'+esc(c[4])+'"' : ''));
+      }
+    }).join('');
+    var m = modal('<h3>'+(index > -1 ? 'Modifier' : C.ajout)+'</h3><p style="color:var(--ink-soft);margin:.3rem 0 1.2rem;font-size:.9rem">'+C.nom+'</p><div class="pile">'+html+'</div>'+
+      '<div class="modal-actions"><button class="btn btn-glass" data-close>Annuler</button><button class="btn btn-solid" data-ok>'+ico('save')+'Enregistrer</button></div>');
+    m.el.querySelector('.modal-card').style.width = 'min(100%, 760px)';
+    m.el.querySelectorAll('.media').forEach(function(me){ me.style.gridTemplateColumns = '140px 1fr'; });
+    brancherImages(m.el); brancherDocs(m.el);
+    m.el.addEventListener('click', function(e){
+      if(e.target.closest('[data-ajout-doc]')) m.el.querySelector('[data-docs]').insertAdjacentHTML('beforeend', blocDocCcas());
+      var r = e.target.closest('[data-retirer]'); if(r) r.closest('.rep-item').remove();
+      var mo = e.target.closest('[data-monter]'); if(mo){ var it = mo.closest('.rep-item'); if(it.previousElementSibling) it.parentNode.insertBefore(it, it.previousElementSibling); }
+    });
+    m.el.querySelector('[data-ok]').addEventListener('click', function(){
+      var manque = [], y = index > -1 ? copie(x) : {};
+      C.champs.forEach(function(c){
+        var k = c[0], v;
+        if(c[2] === 'doc'){
+          var d = lireDoc(m.el, 'd-' + k);
+          if(k === 'fichier'){ y.url = d ? d.url : ''; y.taille = d ? d.taille : ''; v = y.url; }
+          else { y[k] = d ? d.url : ''; v = y[k]; }
+        } else if(c[2] === 'docs'){
+          y[k] = [].map.call(m.el.querySelectorAll('[data-docs] [data-dcc]'), function(b){
+            var pr = b.querySelector('[data-doc]').dataset.doc, dd = lireDoc(b, pr); if(!dd) return null;
+            var type = val(b, 'type');
+            return {type:type, titre:val(b, 'titre') || TYPES_DOC.filter(function(t){ return t[0] === type; })[0][1], taille:dd.taille, url:dd.url};
+          }).filter(Boolean);
+          v = 'ok';
+        } else if(c[2] === 'etapes'){
+          y[k] = val(m.el, k).split('\n').map(function(l){ var p = l.split('='); return p.length > 1 ? [p[0].trim(), p.slice(1).join('=').trim()] : null; }).filter(Boolean); v = y[k].length ? 'ok' : '';
+        } else if(c[2] === 'images'){
+          y[k] = val(m.el, k).split('\n').map(function(l){ return l.trim(); }).filter(Boolean); v = 'ok';
+        } else { v = val(m.el, k); y[k] = v; }
+        if(c[3] && !v) manque.push(c[1].toLowerCase());
+      });
+      if(manque.length){ toast('À compléter : ' + manque.join(', ')); return; }
+      if(C.parDate){
+        y.id = y.date;
+        if(listeCol(ES, cle).some(function(s, n){ return s.id === y.id && n !== index; })){ toast('Une séance existe déjà à cette date'); return; }
+      }
+      var avant = copie(D[ES.d]);
+      if(index > -1) listeCol(ES, cle)[index] = y ; else listeCol(ES, cle).push(y);
+      enregistrer(ES.fichier, avant).then(function(){ m.fermer(); toast('Enregistré'); apres(); }).catch(function(){});
+    });
+  }
+
+  function vueReglagesUrba(){
+    var U = D.urbanisme, S = U.service, corps = document.getElementById('vieCorps');
+    corps.innerHTML = '<div class="carte-f glass"><h2><i>1</i>Plan Local d\'Urbanisme</h2><div class="pile">'+
+        champ('Date d\'approbation du PLU en vigueur', inp('u-appro', U.plu.approbation, 'type="date"'), 'Affichée sur la page : « En vigueur depuis le … »')+
+        '<div class="field"><span>Délibération d\'approbation</span>'+champDoc('d-delib', {url:U.plu.deliberation})+'</div>'+
+        champ('Lien Géoportail de l\'urbanisme', inp('u-geo', U.plu.geoportail, 'type="url"'))+'</div></div>'+
+      '<div class="carte-f glass"><h2><i>2</i>Service urbanisme</h2><div class="pile">'+
+        champ('Responsable', inp('u-resp', S.responsable))+
+        '<div class="grid-2">'+champ('Téléphone', inp('u-tel', S.telephone))+champ('E-mail', inp('u-email', S.email))+'</div>'+
+        champ('Horaires (une ligne par créneau : jours = heures)', txt('u-hor', S.horaires.map(function(h){ return h[0] + ' = ' + h[1]; }).join('\n'), 'rows="2"'))+'</div></div>'+
+      '<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn btn-solid" id="saveUrba">'+ico('save')+'Enregistrer</button></div>';
+    brancherDocs(corps);
+    document.getElementById('saveUrba').addEventListener('click', function(){
+      var avant = copie(D.urbanisme);
+      D.urbanisme.plu.approbation = val(corps, 'u-appro'); D.urbanisme.plu.deliberation = (lireDoc(corps, 'd-delib') || {}).url || ''; D.urbanisme.plu.geoportail = val(corps, 'u-geo');
+      D.urbanisme.service = {responsable:val(corps, 'u-resp'), telephone:val(corps, 'u-tel'), email:val(corps, 'u-email'),
+        horaires:val(corps, 'u-hor').split('\n').map(function(l){ var p = l.split('='); return p.length > 1 ? [p[0].trim(), p.slice(1).join('=').trim()] : null; }).filter(Boolean)};
+      enregistrer('urbanisme', avant).then(function(){ toast('Réglages enregistrés'); }).catch(function(){});
+    });
+  }
+
+  function vueReglagesVivre(){
+    var W = D.vivre, corps = document.getElementById('vieCorps');
+    var LIG = [['semaine','Jour en semaine'],['jour','Journée le week-end'],['weekend','Week-end / férié'],['ag','AG copropriété'],['caution','Caution']];
+    function grille(s, prof, cuis){
+      var t = s.tarifs[prof][cuis];
+      return '<div><b style="font-size:.8rem">'+(prof === 'margenceens' ? 'Margencéens' : 'Hors Margency')+' · '+(cuis === 'avec' ? 'avec' : 'sans')+' cuisine</b>'+
+        LIG.map(function(l){ return '<label class="field" style="margin-top:.4rem"><span>'+l[1]+' (€)</span><input type="number" min="0" data-t="'+s.id+'|'+prof+'|'+cuis+'|'+l[0]+'" value="'+(t[l[0]] == null ? '' : t[l[0]])+'" placeholder="non proposé"></label>'; }).join('')+'</div>';
+    }
+    corps.innerHTML = W.salles.map(function(s, n){
+      return '<div class="carte-f glass"><h2><i>'+(n + 1)+'</i>Salle '+esc(s.nom)+'</h2><div class="pile">'+
+        '<div class="grid-3">'+champ('Lieu', inp('s-'+s.id+'-lieu', s.lieu))+champ('Capacité (personnes)', inp('s-'+s.id+'-capacite', s.capacite, 'type="number" min="1"'))+champ('Surface (m²)', inp('s-'+s.id+'-surface', s.surface, 'type="number" min="1"'))+'</div>'+
+        champ('Usage', inp('s-'+s.id+'-usage', s.usage))+
+        '<label class="check-pill" style="justify-self:start"><input type="checkbox" data-restreinte="'+s.id+'"'+(s.restreinte ? ' checked' : '')+'>Usage limité : pas d\'événement festif</label>'+
+        champ('Tarif associations', txt('s-'+s.id+'-assoc', s.associations, 'rows="2"'))+
+        '<p class="aide" style="margin:0">Tarifs : laissez une case vide si la formule n\'est pas proposée pour cette salle.</p>'+
+        '<div class="grid-2" style="gap:18px">'+grille(s,'margenceens','sans')+grille(s,'margenceens','avec')+grille(s,'exterieurs','sans')+grille(s,'exterieurs','avec')+'</div>'+
+      '</div></div>';
+    }).join('')+
+      '<div class="carte-f glass"><h2><i>+</i>Réservation, police municipale, cimetière</h2><div class="pile">'+
+        '<div class="grid-2">'+champ('Téléphone location des salles', inp('r-tel', W.reservation.telephone))+champ('E-mail location des salles', inp('r-email', W.reservation.email))+'</div>'+
+        '<div class="field"><span>Règlement d\'utilisation des salles</span>'+champDoc('d-reglement', {url:W.reservation.reglement})+'</div>'+
+        '<div class="field"><span>Grille des tarifs et pénalités (PDF)</span>'+champDoc('d-tarifs', {url:W.reservation.tarifsPdf})+'</div>'+
+        champ('Téléphone de la police municipale', inp('p-tel', W.police.telephone))+
+        champ('Horaires de la police municipale (une ligne par créneau : jours = heures)', txt('p-hor', W.police.horaires.map(function(h){ return h[0] + ' = ' + h[1]; }).join('\n'), 'rows="3"'))+
+        '<div class="field"><span>Fiche Opération Tranquillité Vacances</span>'+champDoc('d-otv', {url:W.police.otv})+'</div>'+
+        champ('Horaires du cimetière (une ligne par saison : saison = heures)', txt('c-hor', W.cimetiere.horaires.map(function(h){ return h[0] + ' = ' + h[1]; }).join('\n'), 'rows="2"'))+
+        champ('Tarifs du cimetière (une ligne par prestation : prestation = tarif)', txt('c-tar', W.cimetiere.tarifs.map(function(h){ return h[0] + ' = ' + h[1]; }).join('\n'), 'rows="6"'))+
+      '</div></div>'+
+      '<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn btn-solid" id="saveVivre">'+ico('save')+'Enregistrer les réglages</button></div>';
+    brancherDocs(corps);
+    function paires(k){ return val(corps, k).split('\n').map(function(l){ var p = l.split('='); return p.length > 1 ? [p[0].trim(), p.slice(1).join('=').trim()] : null; }).filter(Boolean); }
+    document.getElementById('saveVivre').addEventListener('click', function(){
+      var avant = copie(D.vivre);
+      D.vivre.salles.forEach(function(s){
+        s.lieu = val(corps, 's-'+s.id+'-lieu'); s.capacite = +val(corps, 's-'+s.id+'-capacite') || s.capacite ; s.surface = +val(corps, 's-'+s.id+'-surface') || s.surface;
+        s.usage = val(corps, 's-'+s.id+'-usage'); s.associations = val(corps, 's-'+s.id+'-assoc');
+        s.restreinte = corps.querySelector('[data-restreinte="'+s.id+'"]').checked;
+      });
+      corps.querySelectorAll('[data-t]').forEach(function(i){
+        var k = i.dataset.t.split('|'), s = D.vivre.salles.filter(function(x){ return x.id === k[0]; })[0];
+        s.tarifs[k[1]][k[2]][k[3]] = i.value === '' ? null : +i.value;
+      });
+      D.vivre.reservation.telephone = val(corps, 'r-tel'); D.vivre.reservation.email = val(corps, 'r-email');
+      D.vivre.reservation.reglement = (lireDoc(corps, 'd-reglement') || {}).url || ''; D.vivre.reservation.tarifsPdf = (lireDoc(corps, 'd-tarifs') || {}).url || '';
+      D.vivre.police.telephone = val(corps, 'p-tel'); D.vivre.police.horaires = paires('p-hor'); D.vivre.police.otv = (lireDoc(corps, 'd-otv') || {}).url || '';
+      D.vivre.cimetiere.horaires = paires('c-hor'); D.vivre.cimetiere.tarifs = paires('c-tar');
+      enregistrer('vivre', avant).then(function(){ toast('Réglages enregistrés'); }).catch(function(){});
+    });
+  }
+
+  function vueReglagesBiblio(){
+    var B = D.culture.bibliotheque, corps = document.getElementById('vieCorps');
+    var h = {}; B.horaires.forEach(function(x){ h[x[0]] = x[1]; });
+    var JOURS = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+    corps.innerHTML =
+      '<div class="carte-f glass"><h2><i>1</i>Horaires d\'ouverture</h2><p class="aide">Format : « 10h–12h · 15h–18h30 ». Laissez vide si la bibliothèque est fermée ce jour-là. Le statut « ouverte / fermée » est calculé à partir de ces horaires.</p><div class="grid-2">'+
+        JOURS.map(function(j){ return champ(j.charAt(0).toUpperCase() + j.slice(1), inp('h-' + j, h[j] || '', 'placeholder="Fermé"')); }).join('')+'</div></div>'+
+      '<div class="carte-f glass"><h2><i>2</i>Coordonnées</h2><div class="pile">'+
+        champ('Nom', inp('b-nom', B.nom))+champ('Adresse', inp('b-adresse', B.adresse))+
+        '<div class="grid-2">'+champ('Téléphone', inp('b-tel', B.telephone))+champ('E-mail', inp('b-email', B.email))+'</div>'+
+        champ('Catalogue en ligne (réseau Plaine Vallée)', inp('b-reseau', B.reseau, 'type="url"'))+
+        '<div class="field"><span>Règlement intérieur</span>'+champDoc('d-regl', {url:B.reglement})+'</div></div></div>'+
+      '<div class="carte-f glass"><h2><i>3</i>Appel à bénévoles</h2><div class="pile">'+
+        '<label class="check-pill" style="justify-self:start"><input type="checkbox" id="b-benevolat"'+(B.benevolat ? ' checked' : '')+'>Afficher l\'appel à bénévoles</label>'+
+        champ('Nombre d\'adhérents', inp('b-adherents', B.adherents, 'type="number" min="0"'))+'</div></div>'+
+      '<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn btn-solid" id="saveBiblio">'+ico('save')+'Enregistrer</button></div>';
+    brancherDocs(corps);
+    document.getElementById('saveBiblio').addEventListener('click', function(){
+      var avant = copie(D.culture);
+      D.culture.bibliotheque = {nom:val(corps, 'b-nom'), adresse:val(corps, 'b-adresse'), telephone:val(corps, 'b-tel'), email:val(corps, 'b-email'),
+        horaires:JOURS.map(function(j){ return [j, val(corps, 'h-' + j)]; }).filter(function(x){ return x[1]; }),
+        adherents:+val(corps, 'b-adherents') || 0, benevolat:document.getElementById('b-benevolat').checked,
+        reglement:(lireDoc(corps, 'd-regl') || {}).url || '', reseau:val(corps, 'b-reseau')};
+      enregistrer('culture', avant).then(function(){ toast('Bibliothèque enregistrée'); }).catch(function(){});
+    });
+  }
+
+  function vueReglagesEnfance(){
+    var E = D.enfance, corps = document.getElementById('vieCorps'), cm = E.cmj || {};
+    corps.innerHTML =
+      '<div class="carte-f glass"><h2><i>1</i>Portail Famille</h2><div class="pile">'+
+        champ('Adresse du portail (connexion / inscription)', inp('portailUrl', E.portail.url, 'type="url"'))+
+        '<div class="field"><span>Guide du Portail Famille</span>'+champDoc('d-guide', {url:E.portail.guide})+'</div></div></div>'+
+      '<div class="carte-f glass"><h2><i>2</i>Petite enfance</h2><div class="pile">'+
+        '<div class="field"><span>Liste des assistantes maternelles</span>'+champDoc('d-assmat', {url:E.petiteEnfance.assistantesListe})+'</div>'+
+        champ('Date de mise à jour de la liste', inp('assmatMaj', E.petiteEnfance.assistantesMaj, 'type="date"'))+
+        '<div class="field"><span>Fiche d\'urgence et d\'autorisation chirurgicale</span>'+champDoc('d-fiche', {url:E.petiteEnfance.ficheUrgence})+'</div></div></div>'+
+      '<div class="carte-f glass"><h2><i>3</i>Conseil municipal des jeunes</h2><p class="aide">Sans élus renseignés, la page invite à se renseigner auprès du service scolaire.</p><div class="pile">'+
+        champ('Mandat', inp('cmjMandat', cm.mandat, 'placeholder="Ex. : 2026-2028"'))+
+        champ('Texte d\'actualité', txt('cmjTexte', cm.texte, 'rows="3" placeholder="Ex. : Les élections auront lieu le 15 octobre dans les écoles."'))+
+        champ('Prénoms des élus (un par ligne)', txt('cmjElus', (cm.elus || []).join('\n'), 'rows="5"'), 'Pour des mineurs, indiquez seulement le prénom et l\'initiale du nom.')+'</div></div>'+
+      '<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn btn-solid" id="saveEnfance">'+ico('save')+'Enregistrer les réglages</button></div>';
+    brancherDocs(corps);
+    document.getElementById('saveEnfance').addEventListener('click', function(){
+      var avant = copie(D.enfance), u = function(p){ return (lireDoc(corps, p) || {}).url || ''; };
+      D.enfance.portail = {url:val(corps, 'portailUrl'), guide:u('d-guide')};
+      D.enfance.petiteEnfance = {assistantesListe:u('d-assmat'), assistantesMaj:val(corps, 'assmatMaj'), ficheUrgence:u('d-fiche')};
+      D.enfance.cmj = {mandat:val(corps, 'cmjMandat'), texte:val(corps, 'cmjTexte'), elus:val(corps, 'cmjElus').split('\n').map(function(l){ return l.trim(); }).filter(Boolean)};
+      enregistrer('enfance', avant).then(function(){ toast('Réglages enregistrés'); }).catch(function(){});
+    });
+  }
+
+  function vueCollectes(){
+    var V = D.vie, corps = document.getElementById('vieCorps');
+    corps.innerHTML =
+      '<div class="carte-f glass"><h2><i>1</i>Dates des encombrants</h2><p class="aide">La prochaine date s\'affiche en grand sur la page Déchets.</p>'+
+        '<div class="checks" id="encList"></div>'+
+        '<div class="tags-new field" style="max-width:360px"><input type="date" id="encDate"><button type="button" class="btn btn-glass btn-sm" id="encAjout">'+ico('plus')+'Ajouter</button></div></div>'+
+      '<div class="carte-f glass"><h2><i>2</i>Documents des collectes</h2><div class="pile">'+
+        champ('Intitulé du calendrier', inp('calendrierTitre', V.dechets.calendrierTitre))+
+        '<div class="field"><span>Calendrier annuel (PDF ou lien)</span>'+champDoc('d-cal', {url:V.dechets.calendrier})+'</div>'+
+        '<div class="field"><span>Calendrier Démétox (PDF ou lien)</span>'+champDoc('d-demetox', {url:V.dechets.demetox})+'</div>'+
+        champ('Dates Démétox (une date AAAA-MM-JJ par ligne)', txt('demetoxDates', (V.dechets.demetoxDates || []).join('\n'), 'rows="4"'))+
+        champ('Dates de la déchèterie mobile d\'Eaubonne (une par ligne)', txt('mobileDates', (V.dechets.mobileEaubonne || []).join('\n'), 'rows="4"'))+'</div></div>'+
+      '<div class="carte-f glass"><h2><i>3</i>Créneaux de rendez-vous avec le Maire</h2><p class="aide">Séparez les heures par des virgules.</p><div class="grid-2">'+
+        champ('Du lundi au vendredi', inp('rdvSemaine', V.rendezvous.semaine.join(', ')))+champ('Le samedi', inp('rdvSamedi', V.rendezvous.samedi.join(', ')))+'</div></div>'+
+      '<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn btn-solid" id="saveCollectes">'+ico('save')+'Enregistrer les réglages</button></div>';
+    var dates = V.encombrants.slice().sort();
+    function rendreDates(){
+      document.getElementById('encList').innerHTML = dates.length ? dates.map(function(d, i){
+        return '<span class="check-pill"'+(d < TODAY ? ' style="opacity:.55"' : '')+'>'+esc(dateTexte(d))+'<button type="button" data-i="'+i+'" aria-label="Retirer" style="border:0;background:none;cursor:pointer;color:var(--danger);font-weight:700;padding:0 0 0 .3rem">×</button></span>'; }).join('')
+        : '<span class="muted" style="font-size:.86rem">Aucune date.</span>';
+    }
+    rendreDates();
+    document.getElementById('encList').addEventListener('click', function(e){ var b = e.target.closest('[data-i]'); if(b){ dates.splice(+b.dataset.i, 1); rendreDates(); } });
+    document.getElementById('encAjout').addEventListener('click', function(){
+      var v = document.getElementById('encDate').value ; if(!v || dates.indexOf(v) > -1) return;
+      dates.push(v); dates.sort(); rendreDates(); document.getElementById('encDate').value = '';
+    });
+    brancherDocs(corps);
+    document.getElementById('saveCollectes').addEventListener('click', function(){
+      var heures = function(k){ return val(corps, k).split(',').map(function(h){ return h.trim(); }).filter(Boolean); };
+      var avant = copie(D.vie);
+      D.vie.encombrants = dates.slice();
+      var joursListe = function(k){ return val(corps, k).split('\n').map(function(l){ return l.trim(); }).filter(function(l){ return /^\d{4}-\d{2}-\d{2}$/.test(l); }).sort(); };
+      D.vie.dechets = Object.assign({}, D.vie.dechets, {calendrierTitre:val(corps, 'calendrierTitre'), calendrier:(lireDoc(corps, 'd-cal') || {}).url || '', demetox:(lireDoc(corps, 'd-demetox') || {}).url || '',
+        demetoxDates:joursListe('demetoxDates'), mobileEaubonne:joursListe('mobileDates')});
+      D.vie.rendezvous = {semaine:heures('rdvSemaine'), samedi:heures('rdvSamedi')};
+      enregistrer('vie-municipale', avant).then(function(){ toast('Réglages enregistrés'); }).catch(function(){});
+    });
+  }
+
+  /* ============================================================
+     DEMANDES DE RENDEZ-VOUS (data/demandes.json, via le serveur)
+     ============================================================ */
+  var STATUTS = {nouvelle:['Nouvelle','#2563eb','rgba(59,130,246,.13)'], confirmee:['Confirmée','#15803d','rgba(34,197,94,.14)'], refusee:['Refusée','#b91c1c','rgba(239,68,68,.12)'], traitee:['Traitée','#475569','rgba(11,26,36,.07)']};
+  var TYPES_DEM = {
+    maire:{nom:'Rendez-vous avec le Maire', court:'RDV Maire', c:['#fb923c','#c2410c'], sujet:'Votre rendez-vous avec le Maire de Margency',
+      corps:function(d){ return 'Nous vous confirmons votre rendez-vous avec Monsieur le Maire le '+jourSemaine(d.date)+' '+dateTexte(d.date)+' à '+d.creneau+', en mairie (5 avenue Georges-Pompidou).\n\nCordialement,\nLe secrétariat du Maire\n01 34 27 40 40'; }},
+    salle:{nom:'Réservation de salle', court:'Salle', c:['#fbbf6b','#b45309'], sujet:'Votre demande de réservation de salle',
+      corps:function(d){ return 'Nous avons bien reçu votre demande pour la '+d.objet.toLowerCase()+' le '+jourSemaine(d.date)+' '+dateTexte(d.date)+' ('+d.creneau.toLowerCase()+').\n\nLa salle est disponible à cette date. Vous trouverez ci-joint le devis ; la réservation sera validée après le paiement des arrhes, dans les 8 jours suivant sa réception.\n\nCordialement,\nLe service location des salles\n01 34 27 40 41'; }},
+    message:{nom:'Message', court:'Message', c:['#60a5fa','#2563eb'], sujet:'',
+      corps:function(d){ return '\n\n\nCordialement,\nMairie de Margency\n01 34 27 40 40'; }}
+  };
+  function jourSemaine(iso){ return ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'][new Date(iso + 'T12:00:00').getDay()]; }
+  function vueDemandes(){
+    app.innerHTML = '<div class="view">'+enTete('Demandes des habitants', 'Rendez-vous, salles et messages', 'Tout ce qui arrive depuis les formulaires du site : rendez-vous avec le Maire, réservations de salle et messages « Écrire à la mairie ».')+'<div id="dem"><div class="vide glass">Chargement…</div></div></div>';
+    var zone = document.getElementById('dem');
+    if(!serveurOk){ zone.innerHTML = '<div class="vide glass">Les demandes sont disponibles quand le serveur de gestion est lancé.</div>'; return; }
+    var filtre = sessionStorage.getItem('g-dem') || 'a-traiter', type = sessionStorage.getItem('g-dem-type') || 'tous';
+    function charger(){
+      fetch('/api/demandes', {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(j){
+        var l = j.demandes.map(function(d){ d.type = TYPES_DEM[d.type] ? d.type : 'maire'; return d; });
+        var a = l.filter(function(d){ return d.statut === 'nouvelle'; });
+        majBadge(a.length);
+        var vis = l.filter(function(d){ return (type === 'tous' || d.type === type) && (filtre === 'toutes' || (filtre === 'a-traiter' ? d.statut === 'nouvelle' : d.statut !== 'nouvelle')); });
+        zone.innerHTML = '<div class="outils"><div class="filtre glass">'+[['a-traiter','À traiter · '+a.length],['traitees','Traitées'],['toutes','Toutes · '+l.length]].map(function(f){
+            return '<button data-f="'+f[0]+'" class="'+(f[0] === filtre ? 'on' : '')+'">'+f[1]+'</button>'; }).join('')+'</div>'+
+          '<div class="filtre glass">'+[['tous','Tous types']].concat(Object.keys(TYPES_DEM).map(function(k){ return [k, TYPES_DEM[k].court + ' · ' + l.filter(function(d){ return d.type === k && d.statut === 'nouvelle'; }).length]; })).map(function(f){
+            return '<button data-ty="'+f[0]+'" class="'+(f[0] === type ? 'on' : '')+'">'+f[1]+'</button>'; }).join('')+'</div></div>'+
+          '<div class="liste">'+(vis.length ? vis.map(function(d){
+            var s = STATUTS[d.statut] || STATUTS.nouvelle, T = TYPES_DEM[d.type];
+            var corps = encodeURIComponent('Bonjour '+d.prenom+' '+d.nom+',\n\n'+T.corps(d));
+            var sujet = encodeURIComponent(T.sujet || 'Re : ' + d.objet);
+            var pastille = d.date ? datePastille(d.date) : '<span class="pastille sm" style="--c1:'+T.c[0]+';--c2:'+T.c[1]+'">'+ico('mail')+'</span>';
+            return '<div class="ligne glass" style="grid-template-columns:auto minmax(0,1fr) auto;align-items:start">'+pastille+
+              '<div><h3>'+esc(d.prenom+' '+d.nom)+'<span class="badge" style="color:'+T.c[1]+';background:rgba(11,26,36,.06)">'+T.court+'</span><span class="badge" style="color:'+s[1]+';background:'+s[2]+'">'+s[0]+'</span></h3>'+
+                '<small>'+(d.type === 'message' ? 'Pour : '+esc(d.creneau)+' · « '+esc(d.objet)+' »' : esc(d.objet)+' · '+esc(d.creneau)+(d.date ? ' · '+esc(jourSemaine(d.date)+' '+dateTexte(d.date)) : ''))+'</small>'+
+                '<small>Reçue le '+esc(dateTexte(d.recue.slice(0,10)))+' à '+esc(d.recue.slice(11))+' · <a class="lnk" href="mailto:'+esc(d.email)+'">'+esc(d.email)+'</a>'+(d.telephone ? ' · '+esc(d.telephone) : '')+'</small>'+
+                (d.message ? '<p style="font-size:.88rem;color:var(--ink-soft);margin-top:.5rem;white-space:pre-wrap">'+esc(d.message)+'</p>' : '')+
+                '<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.7rem">'+
+                  (d.type !== 'message' && d.statut !== 'confirmee' ? '<button class="btn btn-solid btn-sm" data-st="confirmee" data-id="'+d.id+'">'+ico('check')+'Confirmer</button>' : '')+
+                  '<a class="btn btn-glass btn-sm" href="mailto:'+esc(d.email)+'?subject='+sujet+'&body='+corps+'">'+ico('mail')+'Répondre</a>'+
+                  (d.type !== 'message' && d.statut !== 'refusee' ? '<button class="btn btn-glass btn-sm" data-st="refusee" data-id="'+d.id+'">Refuser</button>' : '')+
+                  (d.statut !== 'traitee' ? '<button class="btn btn-glass btn-sm" data-st="traitee" data-id="'+d.id+'">Marquer traitée</button>' : '')+
+                '</div></div>'+
+              '<div class="actions"><button class="ib del" data-del="'+d.id+'" title="Supprimer">'+ico('trash')+'</button></div></div>';
+          }).join('') : '<div class="vide glass">Aucune demande ici.</div>')+'</div>';
+      }).catch(function(){ zone.innerHTML = '<div class="vide glass">Impossible de charger les demandes.</div>'; });
+    }
+    zone.addEventListener('click', function(e){
+      var f = e.target.closest('[data-f]'); if(f){ filtre = f.dataset.f ; sessionStorage.setItem('g-dem', filtre); return charger(); }
+      var t = e.target.closest('[data-ty]'); if(t){ type = t.dataset.ty ; sessionStorage.setItem('g-dem-type', type); return charger(); }
+      var b = e.target.closest('[data-st],[data-del]'); if(!b) return;
+      var envoyer = function(corps){ return fetch('/api/demande-statut', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(corps)}).then(charger); };
+      if(b.dataset.del) confirmer('Supprimer cette demande ?', 'Les coordonnées de la personne seront effacées définitivement.').then(function(){ envoyer({id:b.dataset.del, supprimer:true}).then(function(){ toast('Demande supprimée'); }); });
+      else envoyer({id:b.dataset.id, statut:b.dataset.st}).then(function(){ toast('Statut mis à jour'); });
+    });
+    charger();
+  }
+  function majBadge(n){
+    var t = document.querySelector('.tab[data-tab="demandes"] span'); if(!t) return;
+    t.innerHTML = 'Demandes' + (n ? ' <b style="display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 .3rem;border-radius:9px;background:#c81e1e;color:#fff;font-size:.68rem">'+n+'</b>' : '');
+  }
+
+  /* ============================================================
+     NAVIGATION
+     ============================================================ */
+  var ONGLETS = [['accueil','grid','Tableau de bord'],['ecran','home','Écran d\'accueil'],['agenda','cal','Agenda'],['actus','chat','Actualités'],['conseil','hall','Conseil municipal'],['ccas','hands','CCAS'],['vie','hall','Vie municipale'],['enfance','cap','Enfance'],['culture','music','Sport & Culture'],['vivre','home','Vivre'],['urbanisme','map','Urbanisme'],['demandes','mail','Demandes'],['cartes','link','Cartes & liens'],['services','list','Services'],['site','eye','Voir le site']];
+  document.getElementById('tabs').innerHTML = ONGLETS.map(function(o){
+    return o[0] === 'site' ? '<a class="tab" href="index.html" target="_blank" rel="noopener">'+ico(o[1])+'<span>'+o[2]+'</span></a>'
+      : '<a class="tab" data-tab="'+o[0]+'" href="#'+o[0]+'">'+ico(o[1])+'<span>'+o[2]+'</span></a>';
+  }).join('');
+
+
+  /* ============ écran d'accueil : les informations importantes ============ */
+  function infosAccueil(){
+    if(!D.accueil || typeof D.accueil !== 'object') D.accueil = {infos:[]};
+    if(!Array.isArray(D.accueil.infos)) D.accueil.infos = [];
+    return D.accueil.infos;
+  }
+  function etatInfo(i){
+    if(i.debut && i.debut > TODAY) return ['a-venir', 'programmée pour le ' + dateTexte(i.debut)];
+    if(i.fin && i.fin < TODAY)     return ['passe',   'terminée le ' + dateTexte(i.fin)];
+    if(i.fin)                      return ['en-cours', "à l'écran jusqu'au " + dateTexte(i.fin)];
+    return ['en-cours', "à l'écran en permanence"];
+  }
+
+  function vueEcranListe(){
+    var infos = infosAccueil();
+    var visibles = infos.filter(function(i){ return etatInfo(i)[0] === 'en-cours'; }).length;
+    app.innerHTML = '<div class="view">'+
+      enTete("Écran d'accueil", 'Les informations importantes',
+        "Elles s'affichent dans l'encadré, à droite de la photo de la mairie. Sans information active, aucun encadré n'apparaît : on ne voit que la photo.",
+        '<div style="display:flex;gap:.5rem;flex-wrap:wrap">'+
+          '<a class="btn btn-glass" href="index.html" target="_blank" rel="noopener">'+ico('eye')+'Voir le site</a>'+
+          boutonAjout('#ecran/nouvelle', 'Ajouter une information')+'</div>')+
+      '<div class="bandeau glass" style="margin-bottom:14px">'+ico('info')+
+        '<span>'+(visibles ? '<b>'+visibles+'</b> information'+(visibles > 1 ? 's' : '')+' actuellement à l\'écran.'
+                           : 'Aucune information à l\'écran : les visiteurs voient la photo seule.')+'</span></div>'+
+      '<label class="field" style="max-width:460px;margin-bottom:16px"><span>Titre de l\'encadré</span>'+
+        '<input id="ecranTitre" value="'+esc(D.accueil.titre || '')+'" placeholder="À retenir">'+
+        '<small>Le petit intitulé au-dessus des informations. Laissé vide, « À retenir » est utilisé.</small></label>'+
+      '<div class="liste">'+(infos.length ? infos.map(function(i, n){
+        var e = etatInfo(i);
+        return '<div class="ligne glass">'+
+          '<span class="pastille sm" style="--c1:'+(e[0] === 'en-cours' ? '#14b8a6' : e[0] === 'a-venir' ? '#60a5fa' : '#94a3b8')+';--c2:'+
+            (e[0] === 'en-cours' ? '#0f766e' : e[0] === 'a-venir' ? '#2563eb' : '#475569')+'">'+ico('info')+'</span>'+
+          '<div><h3>'+esc(i.titre)+(e[0] === 'en-cours' ? '<span class="badge">à l\'écran</span>' : '<span class="badge passe">'+(e[0] === 'a-venir' ? 'programmée' : 'terminée')+'</span>')+'</h3>'+
+            '<small>'+esc(e[1])+(i.lien ? ' · → ' + esc(i.lien) : '')+'</small></div>'+
+          '<div class="actions">'+
+            '<button class="ib" data-haut="'+n+'" title="Monter"'+(n === 0 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 19V5M6 11l6-6 6 6')+'</button>'+
+            '<button class="ib" data-bas="'+n+'" title="Descendre"'+(n === infos.length - 1 ? ' disabled' : '')+'>'+ico('back').replace('M19 12H5M11 18l-6-6 6-6','M12 5v14M6 13l6 6 6-6')+'</button>'+
+            '<button class="ib" data-modif="'+n+'" title="Modifier">'+ico('pen')+'</button>'+
+            '<button class="ib del" data-sup="'+n+'" title="Supprimer">'+ico('trash')+'</button></div></div>';
+      }).join('') : '<div class="vide glass">Aucune information pour l\'instant. Les visiteurs voient la photo de la mairie, sans encadré.</div>')+'</div></div>';
+
+    var champTitre = app.querySelector('#ecranTitre');
+    champTitre.addEventListener('change', function(){
+      var avant = copie(D.accueil);
+      D.accueil.titre = champTitre.value.trim();
+      enregistrer('accueil', avant).then(function(){ toast('Titre de l\'encadré enregistré'); }).catch(function(){});
+    });
+
+    app.querySelector('.liste').addEventListener('click', function(ev){
+      var b = ev.target.closest('button'); if(!b || b.disabled) return;
+      if(b.dataset.modif != null){ location.hash = 'ecran/' + b.dataset.modif; return; }
+      var avant = copie(D.accueil), L = infosAccueil();
+      if(b.dataset.sup != null){
+        var i = L[+b.dataset.sup];
+        confirmer('Supprimer « '+esc(i.titre)+' » ?', "L'information disparaîtra de l'écran d'accueil.").then(function(){
+          L.splice(+b.dataset.sup, 1);
+          enregistrer('accueil', avant).then(function(){ toast('Information supprimée'); route(); }).catch(route);
+        });
+        return;
+      }
+      var de = b.dataset.haut != null ? +b.dataset.haut : +b.dataset.bas;
+      var vers = b.dataset.haut != null ? de - 1 : de + 1;
+      L.splice(vers, 0, L.splice(de, 1)[0]);
+      enregistrer('accueil', avant).then(route).catch(route);
+    });
+  }
+
+  function vueEcranForm(id){
+    var nouvelle = id === 'nouvelle';
+    var L = infosAccueil();
+    var i = nouvelle ? {titre:'', texte:'', debut:'', fin:'', lien:'', libelle:''} : L[+id];
+    if(!i) return vueEcranListe();
+
+    app.innerHTML = '<div class="view">'+
+      enTete("Écran d'accueil", nouvelle ? 'Nouvelle information' : 'Modifier l\'information',
+        "Seul le titre est obligatoire. Une information sans date reste affichée jusqu'à ce que vous la retiriez.")+
+      '<div class="form"><div>'+
+        '<div class="carte-f glass"><h2><i>1</i>Le message</h2>'+
+          champ('Titre <b style="color:var(--danger)">*</b>', inp('titre', i.titre, 'placeholder="Ex. : Coupure d\'eau mardi 14 octobre"'))+
+          champ('Précision', txt('texte', i.texte, 'placeholder="Une ou deux phrases. Rue concernée, horaires, qui contacter…"'),
+            'Facultatif. Gardez-le court : l\'encadré est lu en un coup d\'œil.')+
+        '</div>'+
+        '<div class="carte-f glass"><h2><i>2</i>Période d\'affichage</h2>'+
+          '<div class="grid-2">'+
+            champ('À partir du', inp('debut', i.debut, 'type="date"'), 'Vide : tout de suite.')+
+            champ('Jusqu\'au', inp('fin', i.fin, 'type="date"'), 'Vide : jusqu\'à ce que vous la retiriez.')+
+          '</div>'+
+          '<p class="aide">L\'information apparaît et disparaît toute seule aux dates indiquées. Une information terminée reste ici, mais n\'est plus visible sur le site.</p>'+
+        '</div>'+
+      '</div><div>'+
+        '<div class="carte-f glass"><h2><i>3</i>Lien</h2>'+
+          champLien('lien', i.lien, true)+
+          champ('Texte du lien', inp('libelle', i.libelle, 'placeholder="En savoir plus"'), 'Laissé vide, « En savoir plus » est utilisé.')+
+        '</div>'+
+      '</div></div>'+
+      barreBas(nouvelle ? 'Nouvelle information' : 'Modification en cours', 'index.html')+'</div>';
+
+    brancherLiens(app);
+    app.querySelector('[data-annuler]').addEventListener('click', function(ev){ ev.preventDefault(); location.hash = 'ecran'; });
+    app.querySelector('[data-enregistrer]').addEventListener('click', function(){
+      if(!exiger(app, [['titre', 'le titre']])) return;
+      var avant = copie(D.accueil);
+      var x = nouvelle ? {} : L[+id];
+      x.titre = val(app, 'titre'); x.texte = val(app, 'texte');
+      x.debut = val(app, 'debut'); x.fin = val(app, 'fin');
+      x.lien = lireLien(app, 'lien'); x.libelle = val(app, 'libelle');
+      if(nouvelle) L.push(x);
+      enregistrer('accueil', avant)
+        .then(function(){ toast(nouvelle ? 'Information ajoutée' : 'Information modifiée'); location.hash = 'ecran'; })
+        .catch(function(){});
+    });
+  }
+
+  function route(){
+    var h = location.hash.replace('#', '').split('/'), v = h[0] || 'accueil', id = h[1];
+    document.querySelectorAll('.tab[data-tab]').forEach(function(t){ t.classList.toggle('on', t.dataset.tab === v); });
+    var nouvelApp = app.cloneNode(false); app.parentNode.replaceChild(nouvelApp, app); app = nouvelApp;   /* repart sans écouteurs */
+    window.scrollTo(0, 0);
+    switch(v){
+      case 'ecran':    return id ? vueEcranForm(id) : vueEcranListe();
+      case 'agenda':   return id ? vueAgendaForm(id) : vueAgendaListe();
+      case 'actus':    return id ? vueActusForm(id) : vueActusListe();
+      case 'conseil':  return id ? vueConseilForm(id) : vueConseilListe();
+      case 'ccas':     return id ? vueCcasForm(id) : vueCcasListe();
+      case 'cartes':   return vueCartes(id);
+      case 'services': return vueServices(id);
+      case 'vie':      return vueVie(id);
+      case 'enfance':  return vueEspace('enfance', id);
+      case 'culture':  return vueEspace('culture', id);
+      case 'vivre':    return vueEspace('vivre', id);
+      case 'urbanisme':return vueEspace('urbanisme', id);
+      case 'demandes': return vueDemandes();
+      default:         return vueAccueil();
+    }
+  }
+  window.addEventListener('hashchange', route);
+  MD.chrome();
+  verifierServeur().then(function(){
+    route();
+    if(serveurOk && location.hash.replace('#', '') && location.hash !== '#accueil') fetch('/api/demandes', {cache:'no-store'}).then(function(r){ return r.json(); })
+      .then(function(j){ majBadge(j.demandes.filter(function(d){ return d.statut === 'nouvelle'; }).length); }).catch(function(){});
+  });
+})();
+</script>
+</body>
+</html>

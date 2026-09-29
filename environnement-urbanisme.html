@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Environnement &amp ; Urbanisme — Mairie de Margency</title>
+<meta name="description" content="Environnement et urbanisme à Margency (95580) : Plan Local d'Urbanisme, autorisations de travaux, arrêtés municipaux, logements, projets, révision du PLU, voies privées et énergies renouvelables.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/site/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/site/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=2">
+<style>
+.muted{color:var(--ink-mute)}
+.view{animation:viewIn .5s var(--ease) both}
+@keyframes viewIn{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+.views{padding-bottom:60px}
+:root{--vm1:#14b8a6; --vm2:#0f766e}
+
+/* ---------- onglets ---------- */
+.seg{display:flex; flex-wrap:wrap; gap:4px; padding:5px; border-radius:var(--r-lg); margin-top:1.6rem}
+.seg a{display:flex; align-items:center; gap:.45rem; padding:.58rem .95rem; border-radius:var(--r-pill); white-space:nowrap;
+  font-size:.87rem; font-weight:600; color:var(--ink-soft); transition:background .3s, color .3s, box-shadow .3s}
+.seg a svg{width:16px;height:16px}
+.seg a:hover{color:var(--ink)}
+.seg a.on{background:#fff; color:var(--ink); box-shadow:0 6px 18px rgba(9,42,54,.12)}
+.seg a.on svg{color:var(--vm2)}
+.seg a.ext{color:var(--ink-mute); font-weight:500}
+.seg a.ext::after{content:"↗"; font-size:.75rem; opacity:.7}
+.seg .sep{width:1px; background:rgba(11,26,36,.1); margin:6px 4px}
+
+/* ---------- briques communes ---------- */
+.panel{padding:30px 32px; border-radius:var(--r-xl); margin-bottom:22px; scroll-margin-top:120px}
+.panel > h2, .panel .h2{font-size:clamp(1.3rem,2.1vw,1.7rem); letter-spacing:-.03em; display:flex; align-items:center; gap:.8rem}
+.panel > p{color:var(--ink-soft); margin-top:.7rem; max-width:72ch}
+.panel h3{font-size:.76rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); margin:1.6rem 0 .8rem}
+.eyebrow.vm{color:var(--vm2)}
+.ic{width:46px;height:46px;border-radius:15px;flex:none;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,var(--c1,var(--vm1)),var(--c2,var(--vm2)));
+  box-shadow:0 8px 20px rgba(9,42,54,.18), inset 0 1px 0 rgba(255,255,255,.35)}
+.ic svg{width:22px;height:22px}
+.ic.sm{width:38px;height:38px;border-radius:12px}
+.ic.sm svg{width:18px;height:18px}
+.two{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px}
+.three{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.box{padding:18px; border-radius:18px; background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.8)}
+.box h4{font-size:.95rem; margin-bottom:.4rem}
+.box p{font-size:.88rem; color:var(--ink-soft); line-height:1.6}
+.cta{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.2rem}
+.chips{display:flex; flex-wrap:wrap; gap:.45rem}
+.chip{display:inline-flex; align-items:center; gap:.4rem; padding:.36rem .78rem; border-radius:var(--r-pill);
+  font-size:.8rem; font-weight:600; color:var(--ink-soft); background:rgba(255,255,255,.6); border:1px solid rgba(255,255,255,.8)}
+.chip svg{width:14px;height:14px; color:var(--vm2)}
+ul.clean{list-style:none; margin:0; padding:0; display:grid; gap:7px}
+ul.clean li{display:block; position:relative; padding-left:1.6rem; font-size:.9rem; color:var(--ink-soft); line-height:1.55}
+ul.clean li::before{content:""; width:7px; height:7px; border-radius:50%; flex:none; margin-top:.55rem; background:linear-gradient(145deg,var(--vm1),var(--vm2))}
+ul.clean li b{color:var(--ink)}
+.note{display:flex; gap:.9rem; align-items:flex-start; padding:16px 20px; border-radius:var(--r-md); margin-top:14px;
+  background:rgba(255,255,255,.45); border:1px solid rgba(255,255,255,.75)}
+.note svg{width:22px;height:22px;flex:none;color:var(--vm2);margin-top:.1rem}
+.note b{display:block}
+.note span{font-size:.88rem; color:var(--ink-soft)}
+.note.warn{background:rgba(254,243,199,.6); border-color:rgba(217,119,6,.2)}
+.note.warn svg{color:#d97706}
+.vide{padding:34px; text-align:center; border-radius:var(--r-lg); color:var(--ink-soft)}
+.vide svg{width:34px;height:34px;color:var(--vm2);margin:0 auto .6rem;display:block}
+.lnk{color:var(--brand); font-weight:600}
+.lnk:hover{text-decoration:underline}
+
+/* documents PDF */
+.docs{display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:8px}
+.doc{display:flex; align-items:center; gap:.75rem; padding:10px 12px; border-radius:14px; background:rgba(255,255,255,.62);
+  border:1px solid rgba(11,26,36,.06); transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .3s}
+.doc:hover{transform:translateY(-3px); background:#fff; box-shadow:0 10px 22px rgba(9,42,54,.1)}
+.doc .pdf{width:36px;height:42px;border-radius:9px;flex:none;display:grid;place-items:center;color:#fff;font-size:.6rem;font-weight:800;
+  background:linear-gradient(160deg,#f87171,#b91c1c); box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.doc b{display:block; font-size:.86rem; line-height:1.3}
+.doc small{display:block; font-size:.74rem; color:var(--ink-mute); margin-top:.1rem}
+
+/* ============ LA MAIRIE ============ */
+.mairie{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:0; padding:0; overflow:hidden}
+.mairie .photo{position:relative; min-height:360px; background:#cfe6e3 center/cover no-repeat}
+.mairie .photo::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(9,42,54,0) 55%,rgba(9,42,54,.55))}
+.mairie .photo .leg{position:absolute; left:22px; bottom:18px; z-index:2; color:#fff; font-weight:600; text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.mairie .infos{padding:30px 32px}
+.statut{display:inline-flex; align-items:center; gap:.55rem; padding:.45rem .9rem; border-radius:var(--r-pill); font-size:.86rem; font-weight:700; margin-bottom:1rem}
+.statut i{width:9px;height:9px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px color-mix(in srgb,currentColor 20%,transparent)}
+.statut.ouvert{color:#15803d; background:rgba(34,197,94,.14)}
+.statut.ferme{color:#b91c1c; background:rgba(239,68,68,.12)}
+.horaires{width:100%; border-collapse:collapse; font-size:.9rem}
+.horaires td{padding:.5rem .2rem; border-bottom:1px solid rgba(11,26,36,.06)}
+.horaires td:first-child{font-weight:600; text-transform:capitalize; width:32%}
+.horaires td:last-child{text-align:right; color:var(--ink-soft)}
+.horaires tr.auj td{color:var(--vm2); font-weight:700}
+.horaires tr.auj td:first-child::after{content:" · aujourd'hui"; font-weight:500; font-size:.76rem; text-transform:none}
+.coord{display:grid; gap:10px; margin-top:1.2rem}
+.coord a, .coord div{display:flex; align-items:center; gap:.7rem; font-size:.92rem}
+.coord svg{width:18px;height:18px;color:var(--vm2);flex:none}
+.carte-geo{border:0; width:100%; height:320px; border-radius:22px; display:block; filter:saturate(.9)}
+
+/* ============ SERVICES ============ */
+.svc-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px}
+.svc{display:flex; flex-direction:column; gap:.2rem; padding:20px; border-radius:var(--r-md); transition:transform .4s var(--ease), box-shadow .4s var(--ease)}
+.svc:hover{transform:translateY(-5px)}
+.svc .top{display:flex; gap:.9rem; align-items:center; margin-bottom:.6rem}
+.svc h4{font-size:1rem; line-height:1.3}
+.svc .resp{font-size:.84rem; color:var(--ink-soft)}
+.svc .prec{font-size:.8rem; color:var(--ink-mute); margin-top:.3rem}
+.svc .acts{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:auto; padding-top:.9rem}
+.touche{display:inline-grid; place-items:center; min-width:24px; height:24px; padding:0 .35rem; border-radius:7px; font-size:.78rem; font-weight:800;
+  color:#fff; background:linear-gradient(145deg,var(--vm1),var(--vm2)); margin-right:.3rem}
+.standard{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-top:1rem}
+.standard div{display:flex; align-items:center; gap:.5rem; padding:9px 11px; border-radius:12px; background:rgba(255,255,255,.55); font-size:.84rem}
+.recherche{display:flex; align-items:center; gap:.6rem; padding:.2rem .4rem .2rem 1rem; border-radius:var(--r-pill); margin-bottom:14px}
+.recherche svg{width:17px;height:17px;color:var(--ink-mute);flex:none}
+.recherche input{flex:1; border:0; background:transparent; padding:.7rem 0; font-size:.95rem; outline:none}
+
+/* ============ DÉMARCHES ============ */
+.acc{display:grid; gap:8px}
+.acc details{border-radius:18px; background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.8); transition:background .3s, box-shadow .35s var(--ease)}
+.acc details[open]{background:rgba(255,255,255,.82); box-shadow:0 14px 32px rgba(9,42,54,.1)}
+.acc summary{list-style:none; display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:.9rem; align-items:center; padding:14px 16px; cursor:pointer}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary b{display:block; font-size:.98rem}
+.acc summary small{display:block; font-size:.8rem; color:var(--ink-mute)}
+.acc summary .chev{transition:transform .35s var(--ease); color:var(--ink-mute)}
+.acc summary .chev svg{width:18px;height:18px}
+.acc details[open] .chev{transform:rotate(180deg)}
+.acc .corps{padding:0 18px 18px 70px; animation:viewIn .35s var(--ease) both}
+.acc .corps h5{font-size:.76rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); margin:1rem 0 .5rem}
+.acc .corps p{font-size:.9rem; color:var(--ink-soft); line-height:1.6}
+.tarifs{display:flex; flex-wrap:wrap; gap:8px; margin-top:.4rem}
+.tarifs div{padding:.55rem .9rem; border-radius:12px; background:rgba(15,118,110,.08); font-size:.84rem}
+.tarifs b{font-size:1.05rem; color:var(--vm2); margin-right:.3rem}
+.porte{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:22px}
+.porte a{display:flex; flex-direction:column; gap:.4rem; padding:22px; border-radius:var(--r-md); transition:transform .4s var(--ease)}
+.porte a:hover{transform:translateY(-6px)}
+.porte b{font-size:1.05rem; margin-top:.6rem}
+.porte span{font-size:.86rem; color:var(--ink-soft)}
+.porte .go{color:var(--vm2); font-weight:600; margin-top:auto; padding-top:.5rem}
+
+/* ============ DÉCHETS ============ */
+.bacs{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+.bac{padding:18px; border-radius:20px; background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.8); display:flex; flex-direction:column; gap:.3rem}
+.bac .couv{width:100%; height:12px; border-radius:6px 6px 3px 3px; background:var(--bc); margin-bottom:.7rem; box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.bac b{font-size:.98rem}
+.bac .jour{font-size:.86rem; font-weight:700; color:var(--vm2)}
+.bac p{font-size:.82rem; color:var(--ink-soft); line-height:1.5}
+.prochain{display:flex; align-items:center; gap:1.2rem; padding:20px 24px; border-radius:var(--r-lg); color:#fff;
+  background:linear-gradient(150deg,#14b8a6,#0f766e 60%,#0d4a55); box-shadow:0 18px 38px rgba(15,118,110,.3)}
+.prochain .d{text-align:center; padding:10px 16px; border-radius:16px; background:rgba(255,255,255,.18)}
+.prochain .d b{display:block; font-size:2.1rem; line-height:1}
+.prochain .d span{font-size:.78rem; font-weight:600}
+.prochain small{opacity:.8; font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700}
+.prochain h4{font-size:1.2rem; margin:.2rem 0}
+.prochain p{font-size:.86rem; opacity:.9}
+.dates{display:flex; flex-wrap:wrap; gap:6px; margin-top:.8rem}
+.dates span{padding:.35rem .7rem; border-radius:var(--r-pill); font-size:.8rem; background:rgba(255,255,255,.6); border:1px solid rgba(255,255,255,.8)}
+.dates span.passe{opacity:.45; text-decoration:line-through}
+.dates span.next{background:linear-gradient(145deg,var(--vm1),var(--vm2)); color:#fff; font-weight:700; border-color:transparent}
+
+/* ============ PUBLICATIONS ============ */
+.une{display:grid; grid-template-columns:220px minmax(0,1fr); gap:28px; align-items:center}
+.couv{width:100%; aspect-ratio:3/4.1; object-fit:cover; border-radius:16px; box-shadow:0 22px 44px rgba(9,42,54,.26), inset 0 0 0 1px rgba(255,255,255,.6); background:linear-gradient(160deg,#cfe6e3,#7fb9b3)}
+.couv-vide{display:grid; place-items:center; color:#fff; font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:1.5rem; text-align:center; padding:1rem}
+.une h2{font-size:clamp(1.4rem,2.4vw,2rem); letter-spacing:-.03em}
+.une p{color:var(--ink-soft); margin-top:.6rem}
+.archives{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:16px}
+.arch{display:flex; flex-direction:column; gap:.5rem; transition:transform .4s var(--ease)}
+.arch:hover{transform:translateY(-6px)}
+.arch .couv{box-shadow:0 12px 26px rgba(9,42,54,.18)}
+.arch b{font-size:.84rem; line-height:1.3}
+.arch small{font-size:.74rem; color:var(--ink-mute)}
+
+/* ============ BUDGETS ============ */
+.annees{display:grid; gap:10px}
+.an{display:grid; grid-template-columns:90px minmax(0,1fr) auto; gap:1.2rem; align-items:center; padding:14px 18px; border-radius:18px;
+  background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.8); transition:transform .35s var(--ease), background .3s}
+.an:hover{transform:translateX(6px); background:rgba(255,255,255,.85)}
+.an .y{font-size:1.6rem; font-weight:700; letter-spacing:-.04em; color:var(--vm2)}
+.an b{display:block; font-size:.9rem; line-height:1.4}
+.an small{font-size:.76rem; color:var(--ink-mute)}
+.an .dl{display:flex; align-items:center; gap:.4rem; font-size:.82rem; font-weight:600; color:var(--brand); white-space:nowrap}
+.an .dl svg{width:16px;height:16px}
+.flux{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px}
+.flux .box h4{display:flex; align-items:center; gap:.5rem}
+.flux .rec h4{color:#15803d}
+.flux .dep h4{color:#b91c1c}
+.principes{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+.principes div{padding:14px 16px; border-radius:16px; background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.8)}
+.principes b{display:block; font-size:.92rem; color:var(--vm2)}
+.principes span{font-size:.82rem; color:var(--ink-soft); line-height:1.5}
+
+/* ============ MARCHÉS & RECRUTEMENT ============ */
+.consult{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:1.2rem; align-items:center; padding:18px 20px; border-radius:var(--r-md); margin-bottom:10px}
+.consult h4{font-size:1rem}
+.consult small{display:block; font-size:.8rem; color:var(--ink-mute); margin-top:.2rem}
+.limite{text-align:right; font-size:.8rem; color:var(--ink-mute)}
+.limite b{display:block; font-size:1rem; color:var(--ink)}
+.etat{display:inline-block; font-size:.7rem; font-weight:700; padding:.15rem .55rem; border-radius:var(--r-pill); margin-left:.4rem; vertical-align:middle}
+.etat.en-cours{background:rgba(34,197,94,.14); color:#15803d}
+.etat.attribue{background:rgba(59,130,246,.13); color:#1d4ed8}
+.etat.infructueux, .etat.pourvue{background:rgba(11,26,36,.07); color:var(--ink-mute)}
+.offre{display:grid; grid-template-columns:260px minmax(0,1fr); gap:0; padding:0; border-radius:var(--r-xl); margin-bottom:18px; overflow:hidden}
+.offre img{width:100%; height:100%; min-height:240px; object-fit:cover}
+.offre .c{padding:26px 30px}
+.offre h2{font-size:1.45rem; letter-spacing:-.03em}
+.offre .meta{display:flex; flex-wrap:wrap; gap:.45rem; margin:.8rem 0 1rem}
+.offre .cols{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px}
+.offre h5{font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:.5rem}
+
+/* ============ CONTACT ============ */
+.rdv{display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:22px; align-items:start}
+.form-rdv .grid-2{margin-bottom:14px}
+.form-rdv .field{margin-bottom:14px}
+.form-rdv h3{margin-top:.4rem}
+.creneaux{display:flex; flex-wrap:wrap; gap:6px}
+.creneaux label{cursor:pointer}
+.creneaux input{position:absolute; opacity:0; pointer-events:none}
+.creneaux span{display:block; padding:.5rem .9rem; border-radius:var(--r-pill); font-size:.86rem; font-weight:600; background:rgba(255,255,255,.66); border:1px solid rgba(11,26,36,.12); transition:.2s}
+.creneaux input:checked + span{background:linear-gradient(140deg,#14867d,#0b5f58); color:#fff; border-color:transparent}
+.creneaux input:focus-visible + span{outline:2px solid var(--brand); outline-offset:2px}
+.creneaux .vide-c{font-size:.84rem; color:var(--ink-mute)}
+.rgpd{display:flex; gap:.6rem; align-items:flex-start; font-size:.8rem; color:var(--ink-soft); margin:.4rem 0 1.2rem}
+.rgpd input{margin-top:.2rem; accent-color:var(--brand)}
+.merci{text-align:center; padding:30px 10px}
+.merci .ic{margin:0 auto 1rem; width:64px; height:64px; border-radius:22px}
+.merci .ic svg{width:30px;height:30px}
+.merci h3{font-size:1.4rem; text-transform:none; letter-spacing:-.02em; color:var(--ink)}
+.merci p{color:var(--ink-soft); margin-top:.6rem}
+
+@media (max-width:1100px){
+  .mairie, .rdv{grid-template-columns:minmax(0,1fr)}
+  .bacs, .standard{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .three, .principes, .porte{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .panel{padding:22px 20px}
+  .mairie .infos{padding:22px 20px}
+  .two, .flux, .three, .principes, .porte, .offre .cols{grid-template-columns:minmax(0,1fr)}
+  .une, .offre{grid-template-columns:minmax(0,1fr)}
+  .une .couv{max-width:200px}
+  .offre img{max-height:200px; min-height:0}
+  .an{grid-template-columns:minmax(0,1fr); gap:.4rem}
+  .consult{grid-template-columns:minmax(0,1fr)}
+  .limite{text-align:left}
+  .acc .corps{padding:0 16px 16px}
+  .seg a{flex:1 1 44%; justify-content:center; padding:.55rem .6rem; font-size:.82rem}
+  .seg .sep{display:none}
+}
+
+/* ====== Environnement & Urbanisme : teinte verte ====== */
+:root{--vm1:#4ade80; --vm2:#15803d}
+.page-head h1 em{background:linear-gradient(120deg,#15803d,#0ea5a2); -webkit-background-clip:text; background-clip:text}
+.lnk{color:#15803d}
+.btn-vert{background:linear-gradient(140deg,#22c55e,#15803d); color:#fff; box-shadow:0 8px 26px rgba(21,128,61,.35), inset 0 1px 0 rgba(255,255,255,.32)}
+.btn-vert:hover{box-shadow:0 14px 38px rgba(21,128,61,.45), inset 0 1px 0 rgba(255,255,255,.32)}
+.outils{display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin-bottom:16px}
+.outils .recherche{flex:1; min-width:240px; margin:0}
+.filtre{display:flex; gap:4px; padding:4px; border-radius:var(--r-lg); flex-wrap:wrap}
+.filtre button{border:0; background:transparent; padding:.5rem .9rem; border-radius:var(--r-pill); font-size:.84rem; font-weight:600; color:var(--ink-soft); cursor:pointer}
+.filtre button.on{background:#fff; color:var(--ink); box-shadow:0 4px 12px rgba(9,42,54,.1)}
+.filtre button b{font-size:.72rem; margin-left:.3rem; color:var(--ink-mute)}
+.compte{font-size:.84rem; color:var(--ink-mute); margin:-4px 0 12px}
+
+/* bandeau statut PLU */
+.plu-hero{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:0; padding:0; overflow:hidden}
+.plu-hero .c{padding:30px 32px}
+.plu-hero .photo{min-height:320px; background:#dcfce7 center/cover}
+.en-vigueur{display:inline-flex; align-items:center; gap:.55rem; padding:.45rem .9rem; border-radius:var(--r-pill); font-size:.84rem; font-weight:700; color:#15803d; background:rgba(34,197,94,.14)}
+.en-vigueur i{width:9px;height:9px;border-radius:50%;background:currentColor}
+.cles{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:1.3rem}
+.cle{display:flex; flex-direction:column; gap:.3rem; padding:14px; border-radius:16px; background:rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.85); transition:transform .35s var(--ease), box-shadow .35s var(--ease)}
+.cle:hover{transform:translateY(-4px); background:#fff; box-shadow:0 12px 26px rgba(9,42,54,.1)}
+.cle b{font-size:.92rem}
+.cle small{font-size:.76rem; color:var(--ink-mute)}
+.cle .ic{width:34px;height:34px;border-radius:11px}
+.cle .ic svg{width:17px;height:17px}
+.groupe-docs + .groupe-docs{margin-top:1.3rem}
+.docs.compact{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.doc .code{min-width:44px; height:42px; padding:0 .3rem; border-radius:9px; flex:none; display:grid; place-items:center; color:#fff; font-size:.72rem; font-weight:800;
+  background:linear-gradient(160deg,#4ade80,#15803d)}
+.objectifs{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px 18px}
+
+/* assistant autorisation */
+.assistant{display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start}
+.projets-types{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px}
+.projets-types label{cursor:pointer; position:relative}
+.plu-hero > *, .projet > *, .assistant > *{min-width:0}
+.projets-types input{position:absolute; opacity:0; pointer-events:none}
+.projets-types span{display:flex; flex-direction:column; gap:.35rem; align-items:flex-start; padding:12px; border-radius:14px; height:100%;
+  background:rgba(255,255,255,.62); border:1px solid rgba(11,26,36,.1); font-size:.84rem; font-weight:600; transition:.2s}
+.projets-types span svg{width:20px;height:20px;color:var(--vm2)}
+.projets-types input:checked + span{background:linear-gradient(145deg,#22c55e,#15803d); color:#fff; border-color:transparent; box-shadow:0 8px 20px rgba(21,128,61,.3)}
+.projets-types input:checked + span svg{color:#fff}
+.projets-types input:focus-visible + span{outline:2px solid var(--vm2); outline-offset:2px}
+.verdict{position:sticky; top:100px; padding:24px; border-radius:var(--r-lg); color:#fff; background:linear-gradient(155deg,#22c55e,#15803d 55%,#14532d); box-shadow:0 18px 38px rgba(21,128,61,.3)}
+.verdict.aucune{background:linear-gradient(155deg,#60a5fa,#2563eb 55%,#1e3a8a)}
+.verdict.pc{background:linear-gradient(155deg,#fb923c,#c2410c 55%,#7c2d12)}
+.verdict.question{background:linear-gradient(155deg,#94a3b8,#475569 55%,#1e293b)}
+.verdict small{font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; opacity:.85}
+.verdict h3{font-size:1.6rem; letter-spacing:-.03em; margin:.3rem 0 .6rem; text-transform:none; color:#fff}
+.verdict p{font-size:.88rem; opacity:.93; line-height:1.55}
+.verdict ul{margin:.7rem 0 0; padding-left:1.1rem; font-size:.86rem; line-height:1.6}
+.verdict .btn{margin-top:1rem; background:rgba(255,255,255,.2); color:#fff; border-color:rgba(255,255,255,.45)}
+.verdict .btn:hover{background:rgba(255,255,255,.3)}
+
+/* arrêtés */
+.arretes{display:grid; gap:8px}
+.arrete{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:1rem; align-items:center; padding:12px 16px; border-radius:16px;
+  background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.8); transition:transform .3s var(--ease), background .3s}
+.arrete:hover{transform:translateX(5px); background:rgba(255,255,255,.85)}
+.arrete .num{min-width:92px; text-align:center; padding:.35rem .5rem; border-radius:10px; font-size:.78rem; font-weight:800; color:#fff; background:linear-gradient(145deg,#4ade80,#15803d)}
+.arrete .num.permanent{background:linear-gradient(145deg,#a78bfa,#6d28d9)}
+.arrete .num.prefectoral{background:linear-gradient(145deg,#94a3b8,#475569)}
+.arrete b{display:block; font-size:.92rem; line-height:1.35}
+.arrete small{display:block; font-size:.78rem; color:var(--ink-mute); margin-top:.15rem}
+.arrete .dl{display:flex; align-items:center; gap:.35rem; font-size:.8rem; font-weight:600; color:var(--brand); white-space:nowrap}
+.arrete .dl svg{width:15px;height:15px}
+.plus-arretes{margin-top:12px; width:100%}
+
+/* projets & chronologie */
+.projet{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:0; padding:0; border-radius:var(--r-xl); overflow:hidden; margin-bottom:22px}
+.projet .visuel{display:grid; grid-template-rows:1fr auto; background:#dcfce7}
+.projet .visuel > img{width:100%; height:100%; min-height:260px; object-fit:cover}
+.projet .mini{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:4px; padding:4px}
+.projet .mini img{width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:8px}
+.projet .c{padding:26px 30px}
+.statut-p{display:inline-block; font-size:.72rem; font-weight:700; padding:.2rem .6rem; border-radius:var(--r-pill); background:rgba(251,191,107,.25); color:#9a3412}
+.chrono{list-style:none; margin:1rem 0 0; padding:0 0 0 18px; border-left:2px solid rgba(21,128,61,.25); display:grid; gap:12px}
+.chrono li{position:relative; font-size:.88rem; color:var(--ink-soft); line-height:1.5}
+.chrono li::before{content:""; position:absolute; left:-25px; top:.35rem; width:12px; height:12px; border-radius:50%; background:#fff; border:3px solid var(--vm2)}
+.chrono li b{display:block; font-size:.78rem; letter-spacing:.04em; text-transform:uppercase; color:var(--vm2)}
+.chrono li a{color:var(--brand); font-weight:600}
+
+/* ZAEnR */
+.potentiels{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-top:1.2rem}
+.pot{padding:16px; border-radius:18px; background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.85); display:flex; flex-direction:column; gap:.35rem}
+.pot b{font-size:.95rem}
+.pot .niv{align-self:flex-start; font-size:.7rem; font-weight:800; padding:.18rem .55rem; border-radius:var(--r-pill)}
+.niv.fort{background:rgba(34,197,94,.16); color:#15803d}
+.niv.moyen{background:rgba(251,191,107,.25); color:#9a3412}
+.niv.nul{background:rgba(11,26,36,.07); color:var(--ink-mute)}
+.pot p{font-size:.8rem; color:var(--ink-soft); line-height:1.5}
+.rues{display:flex; flex-wrap:wrap; gap:6px; margin-top:1rem}
+
+@media (max-width:1100px){
+  .plu-hero, .assistant, .projet{grid-template-columns:minmax(0,1fr)}
+  .cles{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .verdict{position:static}
+  .potentiels{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .plu-hero .c, .projet .c{padding:22px 20px}
+  .cta .btn{white-space:normal; text-align:left}
+  .projets-types{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .objectifs{grid-template-columns:minmax(0,1fr)}
+  .arrete{grid-template-columns:minmax(0,1fr); gap:.4rem}
+  .arrete .num{justify-self:start}
+  .potentiels{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+<div class="grain"></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-l">
+      <span class="topbar-item" id="statutMairie"><span class="pulse"></span> <span class="statut-txt">Horaires de la mairie</span></span>
+      <a class="topbar-item" href="tel:0134274040">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
+        01 34 27 40 40
+      </a>
+      <span class="topbar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        5 avenue Georges-Pompidou, 95580 Margency
+      </span>
+    </div>
+    <div class="topbar-l" style="display:flex">
+      <a href="vie-municipale.html#marches">Marchés publics</a>
+      <a href="compte-citoyen.html">Alertes SMS</a>
+      <a href="vie-municipale.html#mairie/ecrire">Nous écrire</a>
+    </div>
+  </div>
+</div>
+
+<header class="site" id="header">
+  <div class="wrap">
+    <div class="navbar glass">
+      <a class="brand" href="index.html">
+        <img class="blason" src="assets/site/blason-128.webp" width="44" height="48" alt="Blason de Margency">
+        <span class="brand-txt"><strong>Margency</strong><span>Val-d'Oise</span></span>
+      </a>
+      <nav class="main">
+          <a href="index.html">Accueil</a>
+          <a href="actualites.html">Actualités</a>
+          <a href="agenda.html">Agenda</a>
+          <a href="vie-municipale.html">Vie municipale</a>
+          <a href="vivre-a-margency.html">Vivre à Margency</a>
+          <a href="services.html">Tous les services</a>
+        </nav>
+      <div class="nav-actions">
+        <a class="btn btn-solid" href="compte-citoyen.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="lbl">Compte citoyen</span>
+        </a>
+        <button class="icon-btn burger" id="burger" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <div class="wrap">
+    <div class="sheet-inner glass">
+      <button class="icon-btn close" id="closeSheet" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <nav>
+            <a href="index.html">Accueil</a>
+            <a href="actualites.html">Actualités</a>
+            <a href="agenda.html">Agenda</a>
+            <a href="vie-municipale.html">Vie municipale</a>
+            <a href="enfance-education.html">Enfance &amp ; Éducation</a>
+            <a href="sport-loisirs-culture.html">Sport, Loisirs &amp ; Culture</a>
+            <a href="vivre-a-margency.html">Vivre à Margency</a>
+            <a class="active" href="environnement-urbanisme.html">Environnement &amp ; Urbanisme</a>
+            <a href="action-sociale.html">Action sociale</a>
+            <a href="conseil-municipal.html">Conseil municipal</a>
+            <a href="services.html">Tous les services</a>
+            <a href="compte-citoyen.html">Compte citoyen</a>
+          </nav>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb">
+        <a href="index.html">Accueil</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        <a href="environnement-urbanisme.html">Environnement &amp ; Urbanisme</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        <b id="crumbCur">Plan Local d'Urbanisme</b>
+      </div>
+      <div class="eyebrow" style="color:#15803d">Environnement &amp ; Urbanisme</div>
+      <h1>Construire, rénover, <em>préserver</em></h1>
+      <p class="lead">Le PLU et ses règles, les autorisations pour vos travaux, les arrêtés du Maire, les projets de la commune et la transition énergétique.</p>
+      <nav class="seg glass" id="seg" aria-label="Rubriques Environnement et Urbanisme">
+        <a href="#plu" data-v="plu" data-i="map">Plan Local d'Urbanisme</a>
+        <a href="#demarches" data-v="demarches" data-i="doc">Démarches urbanisme</a>
+        <a href="#arretes" data-v="arretes" data-i="scroll">Arrêtés municipaux</a>
+        <a href="#logements" data-v="logements" data-i="build">Logements</a>
+        <a href="#projets" data-v="projets" data-i="tools">Travaux &amp ; Projets</a>
+        <a href="#revision" data-v="revision" data-i="cal">Révision du PLU</a>
+        <a href="#voies" data-v="voies" data-i="bus">Voies privées</a>
+        <a href="#zaenr" data-v="zaenr" data-i="bulb">Énergies renouvelables</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="views"><div class="wrap">
+
+  <!-- ==================== PLU ==================== -->
+  <section class="view" data-view="plu" hidden>
+    <div class="panel glass plu-hero">
+      <div class="c">
+        <span class="en-vigueur" id="pluStatut"><i></i><span></span></span>
+        <h2 class="h2" style="margin-top:.9rem">Le Plan Local d'Urbanisme</h2>
+        <p style="color:var(--ink-soft);margin-top:.6rem">Il fixe les règles de construction sur toute la commune : hauteur, densité, aspect extérieur, implantation par rapport aux limites du terrain, espaces boisés à protéger. Avant tout projet, vérifiez que vos travaux les respectent.</p>
+        <div class="cles" id="pluCles"></div>
+        <div class="cta">
+          <a class="btn btn-vert" id="lienGeoportail" target="_blank" rel="noopener" data-ico="map">Consulter le PLU sur la carte</a>
+          <a class="btn btn-glass" href="#demarches" data-ico="doc">Quelle autorisation pour mes travaux ?</a>
+        </div>
+      </div>
+      <div class="photo" style="background-image:url('assets/urbanisme/panneau-pos-plu.jpg')"></div>
+    </div>
+    <div class="panel glass">
+      <h2>Le dossier complet du PLU</h2>
+      <p>Toutes les pièces du PLU approuvé, telles que publiées par la commune. Certains plans sont volumineux.</p>
+      <div id="pluDossier" style="margin-top:1.2rem"></div>
+    </div>
+    <div class="two">
+      <div class="panel glass" style="margin-bottom:0">
+        <h2>Le cadastre</h2>
+        <p>Le <b>plan cadastral</b> localise et délimite chaque parcelle ; il est consultable gratuitement en ligne. La <b>matrice cadastrale</b> (propriétaires, valeurs fiscales) est confidentielle : un extrait de vos propriétés ou le nom du propriétaire d'une parcelle se demandent par écrit, en mairie ou au centre des impôts fonciers.</p>
+        <div class="cta"><a class="btn btn-glass" id="lienCadastre" target="_blank" rel="noopener" data-ico="map">cadastre.data.gouv.fr</a></div>
+      </div>
+      <div class="panel glass" style="margin-bottom:0" id="contactUrba"></div>
+    </div>
+  </section>
+
+  <!-- ==================== DÉMARCHES ==================== -->
+  <section class="view" data-view="demarches" hidden>
+    <div class="panel glass">
+      <h2>Quelle autorisation pour mon projet&nbsp;?</h2>
+      <p>Tous les travaux qui créent une construction ou modifient l'aspect extérieur d'un bâtiment sont soumis à autorisation : la loi l'impose et des sanctions existent. Décrivez votre projet pour savoir quel dossier déposer.</p>
+      <div class="assistant" style="margin-top:1.4rem">
+        <form id="assistant" onsubmit="return false">
+          <div class="field"><span>Votre projet</span><div class="projets-types" id="typesProjet"></div></div>
+          <div class="grid-2" id="champsSurface" style="margin-top:14px">
+            <label class="field"><span id="labelSurface">Surface créée (m²)</span><input name="surface" type="number" min="0" step="1" placeholder="Ex. : 18"></label>
+            <label class="field" id="champExistant"><span>Surface actuelle de la maison (m²)</span><input name="existant" type="number" min="0" step="1" placeholder="Ex. : 120"></label>
+          </div>
+        </form>
+        <aside class="verdict" id="verdict" aria-live="polite"></aside>
+      </div>
+      <p class="fiche-note" style="font-size:.8rem;color:var(--ink-mute);margin-top:1rem">Indications générales, établies d'après les règles nationales. Des règles particulières peuvent s'appliquer selon la zone du PLU, les abords d'un monument historique ou un secteur protégé : le service urbanisme confirme votre cas.</p>
+    </div>
+    <div class="two">
+      <div class="panel glass" style="margin-bottom:0">
+        <h2>Déposer votre dossier</h2>
+        <ul class="clean" style="margin-top:1rem">
+          <li><span>Téléchargez et remplissez le formulaire officiel sur service-public.fr</span></li>
+          <li><span>Remettez-le en main propre au service urbanisme, en mairie, <b>ou envoyez-le par e-mail</b> à <a class="lnk" href="mailto:urbanisme@mairie-margency.fr">urbanisme@mairie-margency.fr</a></span></li>
+          <li><span>Le service vous conseille avant le dépôt : n'hésitez pas à le rencontrer</span></li>
+        </ul>
+        <div class="cta">
+          <a class="btn btn-glass btn-sm" href="https://www.service-public.fr/particuliers/vosdroits/F1986" target="_blank" rel="noopener" data-ico="link">Permis de construire</a>
+          <a class="btn btn-glass btn-sm" href="https://www.service-public.fr/particuliers/vosdroits/F17578" target="_blank" rel="noopener" data-ico="link">Déclaration préalable</a>
+          <a class="btn btn-glass btn-sm" href="https://www.service-public.fr/particuliers/vosdroits/F17669" target="_blank" rel="noopener" data-ico="link">Permis de démolir</a>
+        </div>
+      </div>
+      <div class="panel glass" style="margin-bottom:0" id="contactUrba2"></div>
+    </div>
+  </section>
+
+  <!-- ==================== ARRÊTÉS ==================== -->
+  <section class="view" data-view="arretes" hidden>
+    <div class="panel glass" style="margin-bottom:16px">
+      <h2>Les arrêtés du Maire</h2>
+      <p>Un arrêté municipal est une décision du Maire (circulation, stationnement, travaux, sécurité, environnement). Il s'applique dès qu'il est publié, affiché ou notifié. Il peut être contesté devant le tribunal administratif, en général dans les <b>deux mois</b> qui suivent sa publication.</p>
+    </div>
+    <div class="outils">
+      <label class="recherche glass" data-ico="filter"><input id="rechArr" placeholder="Rechercher : rue Henri-Dunant, stationnement, parcs, éclairage…"></label>
+      <div class="filtre glass" id="filtreArr"></div>
+    </div>
+    <div class="filtre glass" id="anneesArr" style="margin-bottom:12px;display:inline-flex"></div>
+    <p class="compte" id="compteArr"></p>
+    <div class="arretes" id="arretes"></div>
+  </section>
+
+  <!-- ==================== LOGEMENTS ==================== -->
+  <section class="view" data-view="logements" hidden>
+    <div class="panel glass" style="margin-bottom:22px">
+      <h2>Programmes de logements</h2>
+      <p>De nouveaux logements sont construits à Margency pour répondre à une demande en hausse et accompagner la croissance de la ville.</p>
+    </div>
+    <div id="logements"></div>
+    <div class="two">
+      <div class="panel glass" style="margin-bottom:0">
+        <h2>Demander un logement social</h2>
+        <p>La demande se fait en ligne ou auprès d'un bailleur, puis se renouvelle chaque année. Le CCAS de Margency vous aide à constituer et suivre votre dossier.</p>
+        <div class="cta"><a class="btn btn-vert" href="https://www.demande-logement-social.gouv.fr" target="_blank" rel="noopener" data-ico="link">demande-logement-social.gouv.fr</a><a class="btn btn-glass" href="action-sociale.html#ccas" data-ico="hands">Être aidé par le CCAS</a></div>
+      </div>
+      <div class="panel glass" style="margin-bottom:0">
+        <h2>L'urbanisme du logement</h2>
+        <p>Le PLU encadre le développement de l'habitat : mixité sociale, préservation de l'« esprit village », zones à urbaniser. Pour connaître les règles de votre parcelle, consultez le PLU.</p>
+        <div class="cta"><a class="btn btn-glass" href="#plu" data-ico="map">Le Plan Local d'Urbanisme</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PROJETS ==================== -->
+  <section class="view" data-view="projets" hidden>
+    <div id="projets"></div>
+    <div class="note glass" data-ico-note="scroll"><div><b>Travaux sur la voirie</b><span>Fermetures de rue, stationnement interdit, emprises de chantier : chaque intervention fait l'objet d'un arrêté. <a class="lnk" href="#arretes">Consulter les arrêtés municipaux</a>.</span></div></div>
+  </section>
+
+  <!-- ==================== RÉVISION DU PLU ==================== -->
+  <section class="view" data-view="revision" hidden>
+    <div class="panel glass">
+      <span class="en-vigueur" id="revStatut"><i></i><span></span></span>
+      <h2 style="margin-top:.9rem">La révision du PLU</h2>
+      <p>Prescrite en novembre 2022, la révision a actualisé le PLU de 2017 pour garantir un aménagement cohérent de la commune dans les années à venir.</p>
+      <h3>Les objectifs</h3>
+      <ul class="clean objectifs">
+        <li><span>Encadrer le développement de l'habitat, en cohérence avec les équipements et services, et respecter les obligations de mixité sociale</span></li>
+        <li><span>Améliorer l'offre d'équipements collectifs et de services</span></li>
+        <li><span>Améliorer la circulation et les déplacements dans la ville</span></li>
+        <li><span>Renforcer la trame verte et bleue et actualiser les espaces boisés classés</span></li>
+        <li><span>Préserver le patrimoine bâti et naturel (arbres remarquables) et développer les liaisons piétonnes et cyclables</span></li>
+        <li><span>Envisager l'ouverture à l'urbanisation de la zone 2AU</span></li>
+        <li><span>Intégrer les lois ALUR, ELAN et Climat et Résilience</span></li>
+        <li><span>Actualiser le règlement et mettre en œuvre des orientations d'aménagement (OAP)</span></li>
+      </ul>
+    </div>
+    <div class="panel glass">
+      <h2>Les étapes de la procédure</h2>
+      <p>Chaque étape, avec ses documents officiels.</p>
+      <ol class="chrono" id="chronoRevision"></ol>
+    </div>
+  </section>
+
+  <!-- ==================== VOIES PRIVÉES ==================== -->
+  <section class="view" data-view="voies" hidden>
+    <div class="panel glass">
+      <h2>Classement des voies privées dans le domaine public</h2>
+      <p>Six voies privées ouvertes à la circulation publique font l'objet d'une procédure de transfert d'office dans le domaine public communal. La commune en assurera alors l'entretien.</p>
+      <div class="rues" id="rues"></div>
+      <h3>L'enquête publique</h3>
+      <ol class="chrono" id="chronoVoies"></ol>
+    </div>
+    <div class="panel glass"><h2>Le dossier</h2><div class="docs compact" id="docsVoies" style="margin-top:1.2rem"></div></div>
+  </section>
+
+  <!-- ==================== ZAEnR ==================== -->
+  <section class="view" data-view="zaenr" hidden>
+    <div class="panel glass">
+      <div class="eyebrow vm">Zones d'accélération des énergies renouvelables</div>
+      <h2 style="margin-top:.5rem">Margency mise sur le solaire et la géothermie</h2>
+      <p>La loi du 10 mars 2023 demande à chaque commune d'identifier des zones favorables aux énergies renouvelables. Objectifs : réduire les émissions de gaz à effet de serre de 40 % entre 1990 et 2030, atteindre la neutralité carbone en 2050, réduire la dépendance énergétique et la précarité énergétique.</p>
+      <h3>Le potentiel de la commune</h3>
+      <div class="potentiels">
+        <div class="pot"><span class="niv fort">Fort</span><b>Géothermie</b><p>Tout le territoire, sauf les zones naturelles et la zone à urbaniser 2AU.</p></div>
+        <div class="pot"><span class="niv fort">Retenu</span><b>Solaire en toiture</b><p>Plusieurs zones identifiées par l'État, dans les zones urbaines du PLU.</p></div>
+        <div class="pot"><span class="niv moyen">Faible</span><b>Méthanisation</b><p>Potentiel faible selon les données de l'État.</p></div>
+        <div class="pot"><span class="niv nul">Défavorable</span><b>Éolien</b><p>Situation patrimoniale, environnementale et relief peu favorables.</p></div>
+        <div class="pot"><span class="niv nul">Aucun</span><b>Hydraulique</b><p>Aucun cours d'eau sur la commune.</p></div>
+      </div>
+      <div class="cta">
+        <a class="btn btn-vert" id="lienPV" target="_blank" rel="noopener" data-ico="sun">Carte des zones photovoltaïques</a>
+        <a class="btn btn-glass" id="lienGeo" target="_blank" rel="noopener" data-ico="map">Carte des zones de géothermie</a>
+        <a class="btn btn-glass" id="lienPortail" target="_blank" rel="noopener" data-ico="link">Portail national des énergies renouvelables</a>
+      </div>
+    </div>
+    <div class="two">
+      <div class="panel glass" style="margin-bottom:0">
+        <h2>Ce que cela change</h2>
+        <ul class="clean" style="margin-top:1rem">
+          <li><span>Les zones ont un caractère <b>incitatif</b> : ce n'est pas une obligation pour les propriétaires</span></li>
+          <li><span>Des opérateurs peuvent y repérer les potentiels et proposer des projets aux propriétaires</span></li>
+          <li><span>Des installations restent possibles hors de ces zones</span></li>
+          <li><span>Panneaux solaires sur votre toit : une déclaration préalable est nécessaire, <a class="lnk" href="#demarches">voir les démarches</a></span></li>
+        </ul>
+      </div>
+      <div class="panel glass" style="margin-bottom:0">
+        <h2>La concertation</h2>
+        <ol class="chrono" id="chronoZaenr"></ol>
+      </div>
+    </div>
+  </section>
+
+  </div></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand">
+          <img class="blason blason-lg" src="assets/site/blason-256.webp" width="55" height="60" alt="Blason de Margency">
+          <strong>Mairie de Margency</strong>
+        </div>
+        <p class="f-about">5, avenue Georges-Pompidou — 95580 Margency<br><span data-horaires-mairie>Lundi, mardi, vendredi : 8h30–12h et 13h30–17h.<br>Mercredi, jeudi, samedi : 8h30–11h45.</span></p>
+                <div class="socials">
+          <a class="soc" href="https://www.facebook.com/profile.php?id=100007993065299" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a class="soc" href="https://www.instagram.com/margency95580/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc" href="https://twitter.com/villedemargency" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg></a>
+        </div>
+        </div>
+        <div>
+          <h4>La commune</h4>
+          <ul>
+            <li><a href="services.html">Notre ville</a></li>
+            <li><a href="conseil-municipal.html#elus">Le conseil municipal</a></li>
+            <li><a href="conseil-municipal.html#seances">Comptes rendus</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="agenda.html">Agenda</a></li>
+            <li><a href="vie-municipale.html#magazines">Le bulletin municipal</a></li>
+            <li><a href="vie-municipale.html#marches">Marchés publics</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Tous les services</a></li>
+            <li><a href="vie-municipale.html#demarches">Démarches en ligne</a></li>
+            <li><a href="enfance-education.html#portail">Portail Famille</a></li>
+            <li><a href="environnement-urbanisme.html">Urbanisme</a></li>
+            <li><a href="action-sociale.html">Action sociale (CCAS)</a></li>
+            <li><a href="vie-municipale.html#dechets">Déchets &amp ; collecte</a></li>
+            <li><a href="compte-citoyen.html">Compte citoyen</a></li>
+            <li><a class="agent-link" href="gestion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Gérer le site</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pratique</h4>
+          <ul>
+            <li><a href="vie-municipale.html#mairie/ecrire">Nous contacter</a></li>
+            <li><a href="vivre-a-margency.html#salles">Réserver une salle</a></li>
+            <li><a href="sport-loisirs-culture.html#associations">Associations</a></li>
+            <li><a href="vivre-a-margency.html#commerces">Commerces</a></li>
+            <li><a href="vivre-a-margency.html">Nouvel arrivant</a></li>
+            <li><a href="services.html">Toutes les rubriques</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© <span data-annee>2026</span> Commune de Margency — Val-d'Oise. Tous droits réservés.</span>
+      <span style="display:flex;gap:1.4rem;flex-wrap:wrap">
+        <a href="mentions-legales.html#mentions">Mentions légales</a>
+        <a href="mentions-legales.html#accessibilite">Accessibilité : non conforme</a>
+        <a href="mentions-legales.html#donnees">Données personnelles</a>
+        <a href="https://commons.wikimedia.org/wiki/File:Blason_ville_fr_Margency_(Val-d%27Oise).svg" target="_blank" rel="noopener">Blason : Wikimedia Commons, CC BY-SA 3.0</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/icones.js"></script>
+<script src="data/urbanisme.js"></script>
+<script src="js/compte-demo.js"></script>
+<script src="js/horaires.js"></script>
+<script>
+(function(){
+  var esc = MD.esc, U = window.URBA, TODAY = MD.AUJOURDHUI;
+  var ICO = Object.assign({}, window.ICONES, {
+    filter:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>', download:'<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>', arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+    fence:'<path d="M4 21V7l2-3 2 3v14M16 21V7l2-3 2 3v14M4 11h16M4 17h16"/>', pool:'<path d="M2 18c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0M2 14c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0M8 12V5a2 2 0 0 1 4 0M16 12V5a2 2 0 0 0-4 0"/>',
+    window:'<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M12 3v18M4 12h16"/>', wall:'<path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-6h6v6"/>'
+  });
+  function svg(n){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(ICO[n] || '')+'</svg>'; }
+  function norm(t){ return (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  function dateLongue(iso){ if(!iso) return ''; var p = iso.split('-'); return (+p[2]) + ' ' + MOIS[+p[1]-1] + ' ' + p[0]; }
+  function doc(d, code){
+    return '<a class="doc" href="'+esc(d.url)+'" target="_blank" rel="noopener">'+(code ? '<span class="code">'+esc(code)+'</span>' : '<span class="pdf">PDF</span>')+
+      '<span><b>'+esc(d.titre)+'</b><small>'+esc([d.taille, d.publie ? 'publié le ' + dateLongue(d.publie) : ''].filter(Boolean).join(' · '))+'</small></span></a>';
+  }
+  function contactUrba(){
+    var S = U.service;
+    return '<h2>Service urbanisme</h2><p>'+esc(S.responsable)+' vous informe et vous conseille avant vos travaux.</p>'+
+      '<div class="coord"><a href="tel:'+S.telephone.replace(/\s/g,'')+'">'+svg('phone')+'<span><b>'+esc(S.telephone)+'</b></span></a><a href="mailto:'+esc(S.email)+'">'+svg('mail')+'<span>'+esc(S.email)+'</span></a></div>'+
+      '<table class="horaires" style="margin-top:.8rem">'+S.horaires.map(function(h){ return '<tr><td>'+esc(h[0])+'</td><td>'+esc(h[1])+'</td></tr>'; }).join('')+'</table>';
+  }
+  document.getElementById('contactUrba').innerHTML = contactUrba();
+  document.getElementById('contactUrba2').innerHTML = contactUrba();
+
+  /* ============ PLU ============ */
+  var P = U.plu;
+  document.querySelector('#pluStatut span').textContent = 'En vigueur depuis le ' + dateLongue(P.approbation);
+  document.getElementById('lienGeoportail').href = P.geoportail;
+  document.getElementById('lienCadastre').href = P.cadastre;
+  function trouve(re){ return P.dossier.filter(function(d){ return re.test(d.titre); })[0]; }
+  var CLES = [['doc','Règlement',/^P5/,'Les règles zone par zone'],['map','Plan de zonage',/^P6A/,'Dans quelle zone est ma parcelle ?'],['leaf','PADD',/^P3/,'Le projet de la commune'],['build','OAP',/^P4/,'Les secteurs de projet']];
+  document.getElementById('pluCles').innerHTML = CLES.map(function(c){
+    var d = trouve(c[2]); if(!d) return '';
+    return '<a class="cle" href="'+esc(d.url)+'" target="_blank" rel="noopener"><span class="ic sm">'+svg(c[0])+'</span><b>'+c[1]+'</b><small>'+c[3]+' · '+esc(d.taille)+'</small></a>';
+  }).join('');
+  var GROUPES = [['Les pièces principales', /^P[1-6]/], ['Annexes sanitaires : eau et assainissement', /^P7/], ['Servitudes et risques', /^P8/], ['Annexes informatives : bruit, sols, patrimoine', /^P9/], ['Réponses aux avis et à l\'enquête publique', /^M/]];
+  document.getElementById('pluDossier').innerHTML = GROUPES.map(function(g){
+    var l = P.dossier.filter(function(d){ return g[1].test(d.titre); }); if(!l.length) return '';
+    return '<div class="groupe-docs"><h3>'+g[0]+'</h3><div class="docs compact">'+l.map(function(d){
+      var m = d.titre.match(/^(P\d+[a-zA-Z]?(?:-\d)?)\s*-?\s*(.*)$/);
+      return m ? doc({titre:m[2], url:d.url, taille:d.taille}, m[1].toUpperCase()) : doc(d);
+    }).join('')+'</div></div>';
+  }).join('') + (P.ancien && P.ancien.length ? '<details style="margin-top:1.4rem"><summary style="cursor:pointer;font-weight:700;color:var(--ink-soft)">Documents de l\'ancien PLU (2017) et de sa modification simplifiée de 2022</summary><div class="docs compact" style="margin-top:.8rem">'+P.ancien.map(function(d){ return doc(d); }).join('')+'</div></details>' : '');
+
+  /* ============ ASSISTANT AUTORISATION ============ */
+  var TYPES = [
+    ['extension','wall','Agrandissement, véranda, surélévation'], ['abri','home','Abri de jardin, garage, carport'], ['construction','build','Construction d\'une maison'],
+    ['piscine','pool','Piscine'], ['facade','window','Fenêtres, façade, toiture, ravalement'], ['solaire','sun','Panneaux solaires'],
+    ['cloture','fence','Clôture, portail, mur'], ['demolition','trash','Démolition'], ['interieur','key','Travaux intérieurs']];
+  document.getElementById('typesProjet').innerHTML = TYPES.map(function(t, i){
+    return '<label><input type="radio" name="type" value="'+t[0]+'"'+(i === 0 ? ' checked' : '')+'><span>'+svg(t[1])+esc(t[2])+'</span></label>'; }).join('');
+  var fa = document.getElementById('assistant');
+  var DP = {nom:'Déclaration préalable', cls:'', delai:'1 mois d\'instruction en général', lien:'https://www.service-public.fr/particuliers/vosdroits/F17578', cerfa:'Formulaire de déclaration préalable'};
+  var PC = {nom:'Permis de construire', cls:'pc', delai:'2 mois d\'instruction pour une maison individuelle', lien:'https://www.service-public.fr/particuliers/vosdroits/F1986', cerfa:'Formulaire de permis de construire'};
+  var RIEN = {nom:'Aucune formalité', cls:'aucune', delai:'', lien:'', cerfa:''};
+  var QUESTION = {nom:'À vérifier avec le service', cls:'question', delai:'', lien:'', cerfa:''};
+  function verdict(){
+    var type = (fa.querySelector('input[name=type]:checked') || {}).value, s = +fa.surface.value || 0, ex = +fa.existant.value || 0;
+    var avecSurface = ['extension','abri','construction','piscine'].indexOf(type) > -1;
+    document.getElementById('champsSurface').hidden = !avecSurface;
+    document.getElementById('champExistant').hidden = type !== 'extension';
+    document.getElementById('labelSurface').textContent = type === 'piscine' ? 'Surface du bassin (m²)' : 'Surface créée (plancher ou emprise au sol, m²)';
+    var r, pourquoi = [], archi = false;
+    switch(type){
+      case 'extension':
+        if(!s){ r = null ; break; }
+        if(s <= 5) r = RIEN, pourquoi.push('Moins de 5 m² créés.');
+        else if(s <= 40) r = DP, pourquoi.push('Entre 5 et 40 m² créés, en zone urbaine couverte par le PLU.');
+        else r = PC, pourquoi.push('Plus de 40 m² créés.');
+        if(r !== RIEN && ex && s + ex > 150){ r = PC ; archi = true ; pourquoi.push('La surface totale après travaux dépasse 150 m² : permis de construire et recours à un architecte obligatoires.'); }
+        break;
+      case 'abri': case 'construction':
+        if(!s){ r = null ; break; }
+        r = s <= 5 ? RIEN : s <= 20 ? DP : PC;
+        pourquoi.push(s <= 5 ? 'Moins de 5 m².' : s <= 20 ? 'Entre 5 et 20 m².' : 'Plus de 20 m².');
+        if(type === 'construction' && s > 150){ archi = true ; pourquoi.push('Au-delà de 150 m², le recours à un architecte est obligatoire.'); }
+        break;
+      case 'piscine':
+        if(!s){ r = null ; break; }
+        r = s <= 10 ? RIEN : s <= 100 ? DP : PC;
+        pourquoi.push(s <= 10 ? 'Bassin de 10 m² ou moins.' : s <= 100 ? 'Bassin de 10 à 100 m², non couvert ou avec un abri de moins de 1,80 m.' : 'Bassin de plus de 100 m² (ou abri de plus de 1,80 m).');
+        break;
+      case 'facade': r = DP ; pourquoi.push('Tout changement de l\'aspect extérieur (fenêtres, volets, couleur, toiture, velux, ravalement) demande une déclaration préalable.'); break;
+      case 'solaire': r = DP ; pourquoi.push('La pose de panneaux sur un toit modifie l\'aspect extérieur. Margency encourage le solaire : voir les zones d\'accélération.'); break;
+      case 'cloture': r = QUESTION ; pourquoi.push('Une déclaration préalable est exigée si le PLU ou une délibération le prévoit, ou dans un secteur protégé. Le service urbanisme vous le confirme.'); break;
+      case 'demolition': r = QUESTION ; pourquoi.push('Un permis de démolir est nécessaire si la commune l\'a instauré ou si le bâtiment est dans un secteur protégé. Renseignez-vous avant tout commencement.'); break;
+      case 'interieur': r = RIEN ; pourquoi.push('Pas de formalité d\'urbanisme si les travaux ne modifient ni l\'aspect extérieur, ni la surface, ni la destination du bâtiment.'); break;
+    }
+    var v = document.getElementById('verdict');
+    if(!r){ v.className = 'verdict question'; v.innerHTML = '<small>Votre résultat</small><h3>Indiquez la surface</h3><p>La formalité dépend de la surface créée.</p>'; return; }
+    v.className = 'verdict ' + r.cls;
+    v.innerHTML = '<small>Votre résultat</small><h3>'+esc(r.nom)+(archi ? ' + architecte' : '')+'</h3><p>'+pourquoi.map(esc).join(' ')+'</p>'+
+      (r.delai ? '<ul><li>'+esc(r.delai)+'</li><li>Dossier à déposer en mairie ou par e-mail au service urbanisme</li><li>Affichage de l\'autorisation sur le terrain pendant toute la durée des travaux</li></ul>' : '')+
+      (r.lien ? '<a class="btn" href="'+r.lien+'" target="_blank" rel="noopener">'+svg('doc')+esc(r.cerfa)+'</a>' : r === QUESTION ? '<a class="btn" href="tel:'+U.service.telephone.replace(/\s/g,'')+'">'+svg('phone')+'Appeler le service urbanisme</a>' : '');
+  }
+  fa.addEventListener('change', verdict); fa.addEventListener('input', verdict); verdict();
+
+  /* ============ ARRÊTÉS ============ */
+  var A = U.arretes.slice().sort(function(a, b){ return (a.publie || '') < (b.publie || '') ? 1 : -1; });
+  var TYPE_A = {temporaire:'Temporaires', permanent:'Permanents', prefectoral:'Préfectoraux'};
+  var typeA = 'tous', anneeA = 'toutes', rechA = '', limite = 25;
+  var annees = A.map(function(a){ return (a.publie || '').slice(0,4); }).filter(function(y, i, l){ return y && l.indexOf(y) === i; });
+  function rendreArr(){
+    document.getElementById('filtreArr').innerHTML = [['tous','Tous']].concat(Object.keys(TYPE_A).map(function(k){ return [k, TYPE_A[k]]; })).map(function(t){
+      var n = t[0] === 'tous' ? A.length : A.filter(function(a){ return a.type === t[0]; }).length ; if(!n) return '';
+      return '<button data-t="'+t[0]+'" class="'+(t[0] === typeA ? 'on' : '')+'">'+t[1]+'<b>'+n+'</b></button>'; }).join('');
+    document.getElementById('anneesArr').innerHTML = ['toutes'].concat(annees).map(function(y){ return '<button data-y="'+y+'" class="'+(y === anneeA ? 'on' : '')+'">'+(y === 'toutes' ? 'Toutes les années' : y)+'</button>'; }).join('');
+    var q = norm(rechA), vis = A.filter(function(a){
+      return (typeA === 'tous' || a.type === typeA) && (anneeA === 'toutes' || (a.publie || '').slice(0,4) === anneeA) && (!q || norm([a.numero, a.titre, a.description].join(' ')).indexOf(q) > -1); });
+    document.getElementById('compteArr').textContent = vis.length + ' arrêté' + (vis.length > 1 ? 's' : '');
+    document.getElementById('arretes').innerHTML = (vis.length ? vis.slice(0, limite).map(function(a){
+      return '<a class="arrete" href="'+esc(a.url)+'" target="_blank" rel="noopener"><span class="num '+esc(a.type)+'">'+esc(a.numero || (a.type === 'prefectoral' ? 'Préfecture' : '—'))+'</span>'+
+        '<span><b>'+esc(a.titre)+'</b><small>'+(a.type === 'permanent' ? 'Arrêté permanent · ' : a.type === 'prefectoral' ? 'Arrêté préfectoral · ' : '')+'publié le '+esc(dateLongue(a.publie))+(a.description ? ' · '+esc(a.description) : '')+'</small></span>'+
+        '<span class="dl">'+svg('download')+'PDF</span></a>';
+    }).join('') : '<div class="vide glass">Aucun arrêté ne correspond.</div>') + (vis.length > limite ? '<button class="btn btn-glass plus-arretes" id="plusArr">Afficher les '+(vis.length - limite)+' autres</button>' : '');
+  }
+  document.getElementById('filtreArr').addEventListener('click', function(e){ var b = e.target.closest('[data-t]'); if(b){ typeA = b.dataset.t ; limite = 25; rendreArr(); } });
+  document.getElementById('anneesArr').addEventListener('click', function(e){ var b = e.target.closest('[data-y]'); if(b){ anneeA = b.dataset.y ; limite = 25; rendreArr(); } });
+  document.getElementById('rechArr').addEventListener('input', function(e){ rechA = e.target.value.trim(); limite = 25; rendreArr(); });
+  document.getElementById('arretes').addEventListener('click', function(e){ if(e.target.closest('#plusArr')){ limite = 1000; rendreArr(); } });
+  rendreArr();
+
+  /* ============ LOGEMENTS ============ */
+  document.getElementById('logements').innerHTML = U.logements.map(function(l){
+    return '<article class="panel glass projet"><div class="visuel"><img src="'+esc(l.image)+'" alt="'+esc(l.nom)+'" loading="lazy">'+
+      (l.photos && l.photos.length ? '<div class="mini">'+l.photos.map(function(p){ return '<img src="'+esc(p)+'" alt="" loading="lazy">'; }).join('')+'</div>' : '')+'</div>'+
+      '<div class="c"><div class="eyebrow vm">'+esc(l.lieu)+'</div><h2 class="h2" style="margin-top:.4rem">'+esc(l.nom)+'</h2><p style="color:var(--ink-soft);margin-top:.6rem">'+esc(l.description)+'</p>'+
+      (l.formules ? '<p style="color:var(--ink-soft);margin-top:.6rem;font-size:.9rem">'+esc(l.formules)+'</p>' : '')+
+      '<div class="cta">'+(l.telephone ? '<a class="btn btn-vert" href="tel:'+l.telephone.split('·')[0].replace(/\s/g,'')+'">'+svg('phone')+esc(l.contact || 'Contact')+'</a>' : '')+
+      (l.site ? '<a class="btn btn-glass" href="'+esc(l.site)+'" target="_blank" rel="noopener">'+svg('link')+'Site du programme</a>' : '')+'</div></div></article>';
+  }).join('');
+
+  /* ============ PROJETS ============ */
+  document.getElementById('projets').innerHTML = U.projets.map(function(p){
+    return '<article class="panel glass projet"><div class="visuel"><img src="'+esc(p.image)+'" alt="'+esc(p.titre)+'" loading="lazy">'+
+      (p.photos && p.photos.length ? '<div class="mini">'+p.photos.map(function(x){ return '<img src="'+esc(x)+'" alt="" loading="lazy">'; }).join('')+'</div>' : '')+'</div>'+
+      '<div class="c"><span class="statut-p">'+esc(p.statut)+'</span><h2 class="h2" style="margin-top:.6rem">'+esc(p.titre)+'</h2><p style="font-size:.84rem;color:var(--ink-mute)">'+svg('map').replace('<svg','<svg style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"')+esc(p.lieu)+'</p>'+
+      '<p style="color:var(--ink-soft);margin-top:.7rem">'+esc(p.resume)+'</p>'+
+      (p.etapes && p.etapes.length ? '<h3>Les étapes</h3><ol class="chrono">'+p.etapes.map(function(e){ return '<li><b>'+esc(e[0])+'</b>'+esc(e[1])+'</li>'; }).join('')+'</ol>' : '')+
+      '</div></article>';
+  }).join('') || '<div class="vide glass">Aucun projet publié pour le moment.</div>';
+
+  /* ============ RÉVISION : chronologie depuis les documents ============ */
+  var ETAPES = [
+    [/DEL 4 - 17112022/, 'Novembre 2022', 'Le conseil municipal prescrit la révision du PLU et fixe les modalités de concertation.'],
+    [/DEL 5 - 14122023/, 'Décembre 2023', 'Débat en conseil municipal sur les orientations du projet d\'aménagement (PADD).'],
+    [/DEL 11 - 23052024/, 'Mai 2024', 'Ajustement de la délibération de lancement.'],
+    [/DEL 5 - 19122024/, 'Décembre 2024', 'Arrêt du projet de PLU et bilan de la concertation.'],
+    [/Avis|MRAE|Mémoire en réponse à l'avis/i, 'Printemps 2025', 'Avis des personnes publiques associées (État, Département, Autorité environnementale, communes voisines…).'],
+    [/enquête publique|commissaire enquêteur|Arrêté 2025-020|Désignation/i, 'Printemps 2025', 'Enquête publique : chacun peut consulter le projet et donner son avis.'],
+    [/Rapport d'enquête/i, 'Juillet 2025', 'Rapport et conclusions du commissaire enquêteur.'],
+    [/DEL 13 - 18092025/, 'Septembre 2025', 'Le conseil municipal approuve le nouveau PLU.']];
+  var reste = P.procedure.slice(), approuve = P.approbation && P.approbation <= TODAY;
+  document.querySelector('#revStatut span').textContent = approuve ? 'Révision terminée : PLU approuvé le ' + dateLongue(P.approbation) : 'Révision en cours';
+  document.getElementById('chronoRevision').innerHTML = ETAPES.map(function(e){
+    var docs = reste.filter(function(d){ return e[0].test(d.titre); });
+    reste = reste.filter(function(d){ return docs.indexOf(d) === -1; });
+    if(!docs.length) return '';
+    return '<li><b>'+e[1]+'</b>'+e[2]+'<div class="docs compact" style="margin-top:.6rem">'+docs.map(function(d){ return doc(d); }).join('')+'</div></li>';
+  }).join('') + (reste.length ? '<li><b>Autres documents</b><div class="docs compact" style="margin-top:.6rem">'+reste.map(function(d){ return doc(d); }).join('')+'</div></li>' : '') +
+    '<li><b>Aujourd\'hui</b>Le PLU révisé s\'applique. <a href="#plu">Consulter le dossier complet</a>.</li>';
+
+  /* ============ VOIES PRIVÉES ============ */
+  var VP = U.voies;
+  document.getElementById('rues').innerHTML = VP.rues.map(function(r){ return '<span class="chip">'+svg('map')+esc(r)+'</span>'; }).join('');
+  document.getElementById('chronoVoies').innerHTML =
+    '<li><b>16 décembre 2022</b>Arrêté n° '+esc(VP.arrete)+' ouvrant l\'enquête publique.</li>'+
+    '<li><b>Du '+esc(dateLongue(VP.enquete[0]))+' au '+esc(dateLongue(VP.enquete[1]))+'</b>Enquête publique en mairie, avec '+esc(VP.commissaire)+', commissaire enquêteur. Quatre permanences ont permis aux habitants de donner leur avis.</li>'+
+    '<li><b>Février 2023</b>Rapport et conclusions du commissaire enquêteur, à consulter ci-dessous.</li>';
+  document.getElementById('docsVoies').innerHTML = VP.documents.map(function(d){ return doc(d); }).join('');
+
+  /* ============ ZAEnR ============ */
+  var Z = U.zaenr;
+  document.getElementById('lienPV').href = Z.photovoltaique ; document.getElementById('lienGeo').href = Z.geothermie ; document.getElementById('lienPortail').href = Z.portail;
+  document.getElementById('chronoZaenr').innerHTML =
+    '<li><b>Du '+esc(dateLongue(Z.concertation[0]))+' au '+esc(dateLongue(Z.concertation[1]))+'</b>Concertation du public : observations par e-mail au service urbanisme.</li>'+
+    '<li><b>'+esc(dateLongue(Z.conseil))+'</b>Délibération du conseil municipal sur l\'identification des zones.</li>';
+
+  /* ============ icônes déclaratives ============ */
+  document.querySelectorAll('[data-i]').forEach(function(el){ if(el.tagName === 'A') el.insertAdjacentHTML('afterbegin', svg(el.dataset.i)); else el.innerHTML = svg(el.dataset.i); });
+  document.querySelectorAll('[data-ico]').forEach(function(el){ el.insertAdjacentHTML('afterbegin', svg(el.dataset.ico)); });
+  document.querySelectorAll('[data-ico-note]').forEach(function(el){ el.insertAdjacentHTML('afterbegin', svg(el.dataset.icoNote)); });
+
+  /* ============ ROUTAGE ============ */
+  var VUES = {plu:'Plan Local d\'Urbanisme', demarches:'Démarches urbanisme', arretes:'Arrêtés municipaux', logements:'Logements', projets:'Travaux & Projets', revision:'Révision du PLU', voies:'Classement des voies privées', zaenr:'Énergies renouvelables (ZAEnR)'};
+  var premier = true;
+  function route(){
+    var h = location.hash.replace('#', '').split('/'), v = VUES[h[0]] ? h[0] : 'plu';
+    document.querySelectorAll('[data-view]').forEach(function(x){ x.hidden = x.dataset.view !== v; });
+    document.querySelectorAll('#seg a[data-v]').forEach(function(a){ a.classList.toggle('on', a.dataset.v === v); });
+    document.getElementById('crumbCur').textContent = VUES[v];
+    document.title = VUES[v] + ' — Environnement & Urbanisme — Mairie de Margency';
+    if(!premier) document.getElementById('seg').scrollIntoView({behavior:'smooth', block:'start'});
+    premier = false;
+  }
+  window.addEventListener('hashchange', route);
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href]'); if(!a) return;
+    var h = a.getAttribute('href').replace(/^environnement-urbanisme\.html/, '');
+    if(h.charAt(0) === '#' && h === location.hash){ e.preventDefault(); route(); }
+  });
+  MD.chrome();
+  route();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Ce que le site produit en fonctionnement — jamais du code, jamais à publier.
+
+# Demandes envoyées par les habitants : données personnelles.
+data/demandes.json
+
+# Sauvegardes automatiques écrites avant chaque enregistrement depuis la gestion.
+data/historique/*
+!data/historique/.gitkeep
+
+# Images et documents déposés depuis la gestion.
+assets/uploads/*
+!assets/uploads/.gitkeep
+
+# macOS et Python
+.DS_Store
+__pycache__/
+*.pyc

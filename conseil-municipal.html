@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conseil municipal — Mairie de Margency</title>
+<meta name="description" content="Les séances du conseil municipal de Margency : ordres du jour, délibérations, votes, procès-verbaux et composition du conseil.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/site/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/site/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=2">
+<style>
+.muted{color:var(--ink-mute)}
+.view{animation:viewIn .5s var(--ease) both}
+@keyframes viewIn{from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none}}
+.views{padding-bottom:60px}
+
+/* ---------- onglets ---------- */
+.seg{display:inline-flex; gap:4px; padding:5px; border-radius:var(--r-pill); margin-top:1.6rem}
+.seg a{display:flex; align-items:center; gap:.5rem; padding:.62rem 1.15rem; border-radius:var(--r-pill); white-space:nowrap;
+  font-size:.9rem; font-weight:600; color:var(--ink-soft); transition:background .3s, color .3s, box-shadow .3s}
+.seg a svg{width:17px;height:17px}
+.seg a:hover{color:var(--ink)}
+.seg a.on{background:#fff; color:var(--ink); box-shadow:0 6px 18px rgba(9,42,54,.12)}
+.seg b{font-size:.72rem; padding:.1rem .45rem; border-radius:var(--r-pill); background:rgba(11,26,36,.07)}
+
+/* ---------- bandeau « prochaine séance » ---------- */
+.next{display:flex; align-items:center; gap:1.1rem; padding:18px 22px; border-radius:var(--r-md); margin-bottom:22px; flex-wrap:wrap}
+.next .ic{width:46px;height:46px;border-radius:15px;flex:none;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(145deg,#14867d,#0b5f58); box-shadow:0 8px 20px rgba(15,118,110,.32), inset 0 1px 0 rgba(255,255,255,.35)}
+.next .ic svg{width:22px;height:22px}
+.next b{display:block; font-size:1rem}
+.next span{display:block; font-size:.86rem; color:var(--ink-soft)}
+.next .pub{margin-left:auto; display:flex; align-items:center; gap:.5rem; font-size:.82rem; font-weight:600; color:var(--brand);
+  padding:.5rem .9rem; border-radius:var(--r-pill); background:rgba(15,118,110,.09)}
+.next .pub svg{width:15px;height:15px}
+
+/* ============ UNE SÉANCE ============ */
+.seance{padding:0; border-radius:var(--r-xl); margin-bottom:26px; scroll-margin-top:120px}
+.s-head{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:26px; align-items:center; padding:30px 32px 24px}
+.stamp{width:108px; flex:none; text-align:center; padding:14px 0 12px; border-radius:22px; color:#fff;
+  background:linear-gradient(155deg,#1b8f86,#0b5f58 60%,#0d4a55);
+  box-shadow:0 14px 30px rgba(15,118,110,.35), inset 0 1px 0 rgba(255,255,255,.35)}
+.stamp small{display:block; font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; opacity:.85}
+.stamp b{display:block; font-size:2.7rem; font-weight:700; line-height:1; letter-spacing:-.04em; margin:.15rem 0}
+.stamp span{display:block; font-size:.78rem; font-weight:600; opacity:.92}
+.s-title h2{font-size:clamp(1.35rem,2.2vw,1.8rem); letter-spacing:-.03em}
+.chips{display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.8rem}
+.chip{display:inline-flex; align-items:center; gap:.4rem; padding:.36rem .78rem; border-radius:var(--r-pill);
+  font-size:.8rem; font-weight:600; color:var(--ink-soft); background:rgba(255,255,255,.6); border:1px solid rgba(255,255,255,.8)}
+.chip svg{width:14px;height:14px; color:var(--brand)}
+.chip.warn{color:#92400e; background:rgba(254,243,199,.8); border-color:rgba(217,119,6,.25); cursor:help; position:relative}
+.chip.warn svg{color:#d97706}
+.chip.warn:hover .tip, .chip.warn:focus .tip{opacity:1; transform:translate(-50%,0); pointer-events:auto}
+.tip{position:absolute; left:50%; top:calc(100% + 10px); z-index:5; width:290px; padding:.75rem .9rem; border-radius:12px;
+  font-size:.8rem; font-weight:500; line-height:1.5; color:#fff; background:#0b1a24;
+  box-shadow:0 14px 30px rgba(0,0,0,.25); opacity:0; transform:translate(-50%,6px); pointer-events:none; transition:.25s var(--ease)}
+/* l'en-tête passe au-dessus du fil de la séance, sinon celui-ci recouvre l'infobulle */
+.seance > .s-head{z-index:3}
+.s-sec{font-size:.82rem; color:var(--ink-mute); margin-top:.6rem}
+.tally{display:flex; gap:10px}
+.tally div{min-width:92px; text-align:center; padding:12px 10px; border-radius:16px; background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.75)}
+.tally b{display:block; font-size:1.7rem; font-weight:700; letter-spacing:-.04em; line-height:1.05}
+.tally span{font-size:.7rem; font-weight:600; color:var(--ink-mute); text-transform:uppercase; letter-spacing:.06em}
+.tally .ok b{color:#15803d}
+.tally .acte b{color:#2563eb}
+.tally .rep b{color:#d97706}
+
+/* le fil de la séance : de la convocation au procès-verbal */
+.track{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; margin:0 32px; padding:18px 0 22px; position:relative;
+  border-top:1px solid rgba(11,26,36,.07)}
+.track::before{content:""; position:absolute; left:12.5%; right:12.5%; top:34px; height:2px;
+  background:linear-gradient(90deg, rgba(15,118,110,.55), rgba(15,118,110,.18))}
+.tstep{position:relative; text-align:center; padding:0 6px}
+.tstep i{width:32px;height:32px;margin:0 auto .5rem;border-radius:50%;display:grid;place-items:center;color:#fff;font-style:normal;position:relative;z-index:1;
+  background:linear-gradient(145deg,#14b8a6,#0f766e); box-shadow:0 0 0 5px rgba(238,244,243,.9), 0 6px 14px rgba(15,118,110,.3)}
+.tstep i svg{width:15px;height:15px}
+.tstep b{display:block; font-size:.82rem}
+.tstep span{display:block; font-size:.76rem; color:var(--ink-mute)}
+
+.s-body{display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:22px; padding:0 32px 30px}
+.s-body h3{font-size:.76rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); margin:0 0 .8rem}
+
+/* ordre du jour */
+.odj{display:grid; gap:8px}
+.pt{border-radius:16px; background:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.78);
+  transition:background .3s, box-shadow .35s var(--ease), transform .35s var(--ease)}
+.pt:hover{background:rgba(255,255,255,.72); box-shadow:0 10px 26px rgba(9,42,54,.08)}
+.pt[open]{background:rgba(255,255,255,.8); box-shadow:0 14px 32px rgba(9,42,54,.1)}
+.pt summary{list-style:none; display:grid; grid-template-columns:auto minmax(0,1fr) auto auto; gap:.8rem; align-items:center;
+  padding:12px 14px; cursor:pointer; border-radius:16px}
+.pt summary::-webkit-details-marker{display:none}
+.pt summary:focus-visible{outline:2px solid var(--brand); outline-offset:2px}
+.num{min-width:38px; height:30px; padding:0 .45rem; border-radius:10px; display:grid; place-items:center;
+  font-size:.76rem; font-weight:700; color:var(--ink-soft); background:rgba(11,26,36,.06)}
+.pt-t b{display:block; font-size:.92rem; font-weight:600; line-height:1.35}
+.theme{display:inline-block; margin-top:.2rem; font-size:.68rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--tc)}
+.res{display:inline-flex; align-items:center; gap:.35rem; padding:.3rem .65rem; border-radius:var(--r-pill);
+  font-size:.72rem; font-weight:700; white-space:nowrap}
+.res svg{width:13px;height:13px}
+.res.unanimite{color:#166534; background:rgba(34,197,94,.14)}
+.res.acte{color:#1e40af; background:rgba(59,130,246,.13)}
+.res.reportee{color:#92400e; background:rgba(245,158,11,.17)}
+.chev{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:var(--ink-mute);transition:transform .35s var(--ease)}
+.chev svg{width:16px;height:16px}
+.pt[open] .chev{transform:rotate(180deg)}
+.pt-body{padding:0 16px 16px 66px; animation:viewIn .35s var(--ease) both}
+.pt-body p{font-size:.9rem; color:var(--ink-soft); line-height:1.65}
+.pt-actions{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.8rem}
+.subdocs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; margin-top:.8rem}
+.subdocs a{display:flex; align-items:center; gap:.5rem; padding:.5rem .7rem; border-radius:10px; font-size:.8rem; font-weight:500;
+  background:rgba(255,255,255,.65); border:1px solid rgba(11,26,36,.08); transition:.25s}
+.subdocs a:hover{background:#fff; color:var(--brand); border-color:rgba(15,118,110,.3)}
+.subdocs a svg{width:14px;height:14px;color:var(--danger);flex:none}
+.subdocs a span{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.subdocs a small{color:var(--ink-mute); font-size:.7rem}
+
+/* colonne de droite */
+.side{display:grid; gap:16px; align-content:start}
+.box{padding:18px; border-radius:18px; background:rgba(255,255,255,.45); border:1px solid rgba(255,255,255,.75)}
+.docs{display:grid; gap:8px}
+.doc{display:flex; align-items:center; gap:.8rem; padding:10px 12px; border-radius:13px; background:rgba(255,255,255,.65);
+  border:1px solid rgba(11,26,36,.06); transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .3s}
+.doc:hover{transform:translateY(-3px); background:#fff; box-shadow:0 10px 22px rgba(9,42,54,.1)}
+.doc .pdf{width:38px;height:44px;border-radius:9px;flex:none;display:grid;place-items:center;color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.04em;
+  background:linear-gradient(160deg,#f87171,#b91c1c); box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.doc b{display:block; font-size:.88rem}
+.doc small{display:block; font-size:.74rem; color:var(--ink-mute)}
+.doc .dl{margin-left:auto; color:var(--ink-mute)}
+.doc .dl svg{width:17px;height:17px}
+.doc:hover .dl{color:var(--brand)}
+
+.presence-bar{display:flex; height:12px; border-radius:99px; overflow:hidden; margin:.2rem 0 .7rem; background:rgba(11,26,36,.06)}
+.presence-bar div{height:100%}
+.pb-p{background:linear-gradient(90deg,#14b8a6,#0f766e)}
+.pb-v{background:linear-gradient(90deg,#93c5fd,#3b82f6)}
+.pb-a{background:rgba(11,26,36,.14)}
+.legend{display:flex; flex-wrap:wrap; gap:.4rem 1rem; font-size:.8rem; color:var(--ink-soft)}
+.legend span{display:flex; align-items:center; gap:.4rem}
+.legend i{width:9px;height:9px;border-radius:50%;display:block}
+.who{margin-top:.8rem}
+.who summary{cursor:pointer; font-size:.82rem; font-weight:600; color:var(--brand); list-style:none}
+.who summary::-webkit-details-marker{display:none}
+.who dl{margin:.7rem 0 0; font-size:.8rem; line-height:1.55}
+.who dt{font-weight:700; color:var(--ink); margin-top:.5rem}
+.who dd{margin:0; color:var(--ink-soft)}
+.infos{display:grid; gap:10px}
+.info b{display:block; font-size:.86rem}
+.info p{font-size:.82rem; color:var(--ink-soft); margin-top:.15rem; line-height:1.55}
+.annonce{display:flex; gap:.6rem; font-size:.84rem; color:var(--ink-soft)}
+.annonce svg{width:17px;height:17px;flex:none;color:var(--brand);margin-top:.1rem}
+.public{display:flex; gap:.9rem; align-items:flex-start; padding:18px 22px; border-radius:var(--r-md); margin-top:6px}
+.public svg{width:22px;height:22px;flex:none;color:var(--brand);margin-top:.1rem}
+.public b{display:block}
+.public span{font-size:.88rem; color:var(--ink-soft)}
+
+/* ============ LES ÉLUS ============ */
+.elus-intro{display:flex; gap:1rem; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:18px}
+.elus-intro p{color:var(--ink-soft); max-width:60ch}
+.count-pill{display:flex; align-items:baseline; gap:.45rem; padding:.6rem 1.1rem; border-radius:var(--r-pill)}
+.count-pill b{font-size:1.6rem; letter-spacing:-.03em}
+.count-pill span{font-size:.82rem; color:var(--ink-mute)}
+.maire{display:grid; grid-template-columns:auto minmax(0,1fr); gap:30px; align-items:center; padding:24px; border-radius:var(--r-xl); margin-bottom:10px}
+.maire .portrait{width:200px; aspect-ratio:4/5; border-radius:26px}
+.maire .eyebrow{margin-bottom:.6rem}
+.maire h2{font-size:clamp(1.8rem,3vw,2.5rem); letter-spacing:-.035em}
+.maire p{color:var(--ink-soft); margin-top:.6rem; max-width:48ch}
+/* le portrait, serti dans le verre */
+.portrait{position:relative; overflow:hidden; flex:none; background:linear-gradient(160deg,#cfe6e3,#9cc9c4);
+  box-shadow:0 12px 28px rgba(9,42,54,.18), inset 0 0 0 1px rgba(255,255,255,.6)}
+.portrait img{width:100%; height:100%; object-fit:cover; object-position:50% 22%; transition:transform .8s var(--ease)}
+.portrait::after{content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(128deg, rgba(255,255,255,.3) 0%, rgba(255,255,255,0) 40%),
+             linear-gradient(180deg, rgba(9,42,54,0) 62%, rgba(9,42,54,.22) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+.portrait .ini{position:absolute; inset:0; display:grid; place-items:center; font-weight:700; font-size:1.4rem; color:#fff}
+.av{width:52px;height:52px;border-radius:17px;flex:none;display:grid;place-items:center;font-weight:700;font-size:1.02rem;color:#fff;
+  background:linear-gradient(145deg,var(--a1),var(--a2))}
+.group{margin-top:26px}
+.group h3{display:flex; align-items:center; gap:.6rem; font-size:.78rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:.9rem}
+.group h3 b{font-size:.72rem; padding:.1rem .5rem; border-radius:var(--r-pill); background:rgba(11,26,36,.07); letter-spacing:0}
+.elu-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(168px, 1fr)); gap:14px}
+.elu{display:flex; flex-direction:column; padding:10px 10px 14px; border-radius:var(--r-md);
+  transition:transform .45s var(--ease), box-shadow .45s var(--ease), background .3s}
+.elu .portrait{width:100%; aspect-ratio:4/5; border-radius:16px; box-shadow:0 8px 18px rgba(9,42,54,.14), inset 0 0 0 1px rgba(255,255,255,.6)}
+.elu:hover{transform:translateY(-6px) scale(1.015); background:rgba(255,255,255,.72); box-shadow:0 20px 42px rgba(9,42,54,.16), var(--glass-inner)}
+.elu:hover .portrait img{transform:scale(1.06)}
+.elu b{display:block; font-size:.92rem; line-height:1.3; margin:.75rem .3rem 0}
+.elu small{display:block; font-size:.76rem; color:var(--ink-mute); margin:.1rem .3rem 0}
+
+@media (max-width:1100px){
+  .s-head{grid-template-columns:auto minmax(0,1fr)}
+  .tally{grid-column:1 / -1}
+  .s-body{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .s-head{grid-template-columns:minmax(0,1fr); padding:22px 20px 18px; gap:16px}
+  .stamp{width:auto; display:flex; align-items:baseline; gap:.6rem; padding:10px 16px; justify-content:flex-start}
+  .stamp b{font-size:1.8rem; margin:0}
+  .tally div{min-width:0; flex:1}
+  .track{grid-template-columns:minmax(0,1fr) minmax(0,1fr); row-gap:16px; margin:0 20px}
+  .track::before{display:none}
+  .s-body{padding:0 20px 22px}
+  .pt summary{grid-template-columns:auto minmax(0,1fr) auto; }
+  .pt summary .res{grid-column:2; justify-self:start}
+  .pt summary .chev{grid-row:1; grid-column:3}
+  .pt-body{padding:0 14px 14px 14px}
+  .subdocs{grid-template-columns:minmax(0,1fr)}
+  .elu-grid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+  .maire{grid-template-columns:minmax(0,1fr); padding:16px; gap:16px}
+  .maire .portrait{width:100%; max-width:260px}
+  .next .pub{margin-left:0}
+  .seg{display:flex}
+  .seg a{flex:1; justify-content:center; padding:.6rem .7rem; font-size:.86rem}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+<div class="grain"></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-l">
+      <span class="topbar-item" id="statutMairie"><span class="pulse"></span> <span class="statut-txt">Horaires de la mairie</span></span>
+      <a class="topbar-item" href="tel:0134274040">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
+        01 34 27 40 40
+      </a>
+      <span class="topbar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        5 avenue Georges-Pompidou, 95580 Margency
+      </span>
+    </div>
+    <div class="topbar-l" style="display:flex">
+      <a href="vie-municipale.html#marches">Marchés publics</a>
+      <a href="compte-citoyen.html">Alertes SMS</a>
+      <a href="vie-municipale.html#mairie/ecrire">Nous écrire</a>
+    </div>
+  </div>
+</div>
+
+<header class="site" id="header">
+  <div class="wrap">
+    <div class="navbar glass">
+      <a class="brand" href="index.html">
+        <img class="blason" src="assets/site/blason-128.webp" width="44" height="48" alt="Blason de Margency">
+        <span class="brand-txt"><strong>Margency</strong><span>Val-d'Oise</span></span>
+      </a>
+      <nav class="main">
+          <a href="index.html">Accueil</a>
+          <a href="actualites.html">Actualités</a>
+          <a href="agenda.html">Agenda</a>
+          <a href="vie-municipale.html">Vie municipale</a>
+          <a href="vivre-a-margency.html">Vivre à Margency</a>
+          <a href="services.html">Tous les services</a>
+        </nav>
+      <div class="nav-actions">
+        <a class="btn btn-solid" href="compte-citoyen.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="lbl">Compte citoyen</span>
+        </a>
+        <button class="icon-btn burger" id="burger" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <div class="wrap">
+    <div class="sheet-inner glass">
+      <button class="icon-btn close" id="closeSheet" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <nav>
+            <a href="index.html">Accueil</a>
+            <a href="actualites.html">Actualités</a>
+            <a href="agenda.html">Agenda</a>
+            <a href="vie-municipale.html">Vie municipale</a>
+            <a href="enfance-education.html">Enfance &amp ; Éducation</a>
+            <a href="sport-loisirs-culture.html">Sport, Loisirs &amp ; Culture</a>
+            <a href="vivre-a-margency.html">Vivre à Margency</a>
+            <a href="environnement-urbanisme.html">Environnement &amp ; Urbanisme</a>
+            <a href="action-sociale.html">Action sociale</a>
+            <a class="active" href="conseil-municipal.html">Conseil municipal</a>
+            <a href="services.html">Tous les services</a>
+            <a href="compte-citoyen.html">Compte citoyen</a>
+          </nav>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="crumb">
+        <a href="index.html">Accueil</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        <a href="vie-municipale.html">Vie municipale</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        <b>Conseil municipal</b>
+      </div>
+      <div class="eyebrow">Vie municipale</div>
+      <h1>Le <em>conseil municipal</em></h1>
+      <p class="lead">Ce qui a été décidé, par qui, et avec quel vote. Pour chaque séance : l'ordre du jour, le résultat de chaque délibération, les présences et les documents officiels.</p>
+      <nav class="seg glass" id="seg" aria-label="Sections">
+        <a href="#seances" data-v="seances">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>
+          Les séances <b id="nbSeances"></b></a>
+        <a href="#elus" data-v="elus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>
+          Les élus <b id="nbElus"></b></a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="views">
+    <div class="wrap" id="app"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand">
+          <img class="blason blason-lg" src="assets/site/blason-256.webp" width="55" height="60" alt="Blason de Margency">
+          <strong>Mairie de Margency</strong>
+        </div>
+        <p class="f-about">5, avenue Georges-Pompidou — 95580 Margency<br><span data-horaires-mairie>Lundi, mardi, vendredi : 8h30–12h et 13h30–17h.<br>Mercredi, jeudi, samedi : 8h30–11h45.</span></p>
+                <div class="socials">
+          <a class="soc" href="https://www.facebook.com/profile.php?id=100007993065299" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a class="soc" href="https://www.instagram.com/margency95580/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc" href="https://twitter.com/villedemargency" target="_blank" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg></a>
+        </div>
+        </div>
+        <div>
+          <h4>La commune</h4>
+          <ul>
+            <li><a href="services.html">Notre ville</a></li>
+            <li><a href="conseil-municipal.html#elus">Le conseil municipal</a></li>
+            <li><a href="conseil-municipal.html#seances">Comptes rendus</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="agenda.html">Agenda</a></li>
+            <li><a href="vie-municipale.html#magazines">Le bulletin municipal</a></li>
+            <li><a href="vie-municipale.html#marches">Marchés publics</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Tous les services</a></li>
+            <li><a href="vie-municipale.html#demarches">Démarches en ligne</a></li>
+            <li><a href="enfance-education.html#portail">Portail Famille</a></li>
+            <li><a href="environnement-urbanisme.html">Urbanisme</a></li>
+            <li><a href="action-sociale.html">Action sociale (CCAS)</a></li>
+            <li><a href="vie-municipale.html#dechets">Déchets &amp ; collecte</a></li>
+            <li><a href="compte-citoyen.html">Compte citoyen</a></li>
+            <li><a class="agent-link" href="gestion.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Gérer le site</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pratique</h4>
+          <ul>
+            <li><a href="vie-municipale.html#mairie/ecrire">Nous contacter</a></li>
+            <li><a href="vivre-a-margency.html#salles">Réserver une salle</a></li>
+            <li><a href="sport-loisirs-culture.html#associations">Associations</a></li>
+            <li><a href="vivre-a-margency.html#commerces">Commerces</a></li>
+            <li><a href="vivre-a-margency.html">Nouvel arrivant</a></li>
+            <li><a href="services.html">Toutes les rubriques</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© <span data-annee>2026</span> Commune de Margency — Val-d'Oise. Tous droits réservés.</span>
+      <span style="display:flex;gap:1.4rem;flex-wrap:wrap">
+        <a href="mentions-legales.html#mentions">Mentions légales</a>
+        <a href="mentions-legales.html#accessibilite">Accessibilité : non conforme</a>
+        <a href="mentions-legales.html#donnees">Données personnelles</a>
+        <a href="https://commons.wikimedia.org/wiki/File:Blason_ville_fr_Margency_(Val-d%27Oise).svg" target="_blank" rel="noopener">Blason : Wikimedia Commons, CC BY-SA 3.0</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="data/conseil.js"></script>
+<script src="js/compte-demo.js"></script>
+<script src="js/horaires.js"></script>
+<script>
+(function(){
+  var C = window.CONSEIL, app = document.getElementById('app'), svg = MD.svg, esc = MD.esc;
+  var TODAY = MD.AUJOURDHUI;
+  var JOURS = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  var THEMES = {Institution:'#475569', Associations:'#7c3aed', Personnel:'#2563eb', Environnement:'#15803d', 'Solidarité':'#be185d', Patrimoine:'#b45309'};
+  var RES = {
+    unanimite:{txt:"Adoptée à l'unanimité", ic:'check'},
+    acte:{txt:'Prend acte', ic:'eye'},
+    reportee:{txt:'Reportée', ic:'back'}
+  };
+  var ICON_PDF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/></svg>';
+
+  var seances = C.seances.slice().sort(function(a, b){ return a.date < b.date ? 1 : -1; });
+  var tousElus = [C.elus.maire].concat(C.elus.adjoints, C.elus.delegues, C.elus.conseillers);
+  document.getElementById('nbSeances').textContent = seances.length;
+  document.getElementById('nbElus').textContent = tousElus.length;
+
+  function jour(iso){ var d = new Date(iso + 'T12:00:00'); return {j:JOURS[d.getDay()], n:d.getDate(), m:MOIS[d.getMonth()], y:d.getFullYear()}; }
+  function dateLongue(iso){ var d = jour(iso); return d.j + ' ' + d.n + ' ' + d.m + ' ' + d.y; }
+  function publie(p){ if(!p) return ''; var x = p.split('/'); return MD.dateFr(x[2] + '-' + x[1] + '-' + x[0]); }
+  function duree(a, b){
+    var m = function(h){ var p = h.replace('h',':').split(':'); return (+p[0]) * 60 + (+p[1] || 0); };
+    var d = m(b) - m(a); return Math.floor(d / 60) + ' h ' + ('0' + d % 60).slice(-2);
+  }
+  function initiales(nom){ return nom.split(/[\s-]+/).filter(Boolean).map(function(p){ return p[0]; }).slice(0,2).join('').toUpperCase(); }
+  var AV = [['#2dd4bf','#0f766e'],['#60a5fa','#2563eb'],['#a78bfa','#6d28d9'],['#f472b6','#be185d'],['#fbbf6b','#9e5527'],['#4ade80','#15803d']];
+  function avatar(nom, i){ var c = AV[i % AV.length]; return '<span class="av" style="--a1:'+c[0]+';--a2:'+c[1]+'" aria-hidden="true">'+esc(initiales(nom))+'</span>'; }
+
+  /* ============================================================
+     LES SÉANCES
+     ============================================================ */
+  function vueSeances(){
+    var futures = seances.filter(function(s){ return s.date >= TODAY; });
+    var bandeau = futures.length
+      ? '<div class="next glass"><span class="ic">'+svg('info')+'</span><div><b>Prochaine séance : '+esc(dateLongue(futures[futures.length-1].date))+' à '+esc(futures[futures.length-1].debut)+'</b>'+
+          '<span>'+esc(futures[futures.length-1].lieu)+' · séance publique, ouverte à tous les habitants</span></div></div>'
+      : '<div class="next glass"><span class="ic">'+svg('info')+'</span><div><b>Aucune séance annoncée pour le moment</b>'+
+          '<span>La convocation et l\'ordre du jour sont publiés ici quelques jours avant chaque séance.</span></div>'+
+          '<span class="pub">'+svg('check')+'Dernière séance : '+esc(jour(seances[0].date).n + ' ' + jour(seances[0].date).m)+'</span></div>';
+
+    app.innerHTML = '<div class="view">' + bandeau + seances.map(carteSeance).join('') +
+      '<div class="public glass">'+svg('users')+'<div><b>Les séances sont publiques</b>'+
+        '<span>Tout habitant peut assister au conseil municipal, sans inscription. Seules les délibérations votées ont une valeur officielle : les résumés de cette page les présentent simplement, les documents PDF font foi.</span></div></div>'+
+    '</div>';
+
+    app.querySelectorAll('[data-goto]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        var el = document.getElementById('seance-' + a.dataset.goto);
+        if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+  }
+
+  function carteSeance(s){
+    var d = jour(s.date), pts = s.points;
+    var nb = function(r){ return pts.filter(function(p){ return p.resultat === r; }).length; };
+    var P = s.presences, total = P.presents.length + P.pouvoirs.length + P.absents.length;
+    var pct = function(n){ return (n / total * 100).toFixed(2) + '%'; };
+    var docs = s.documents;
+
+    var convocation = s.convocation === 2
+      ? '<span class="chip warn" tabindex="0">'+svg('alert')+'2ᵉ convocation<span class="tip" role="tooltip">Le quorum n\'avait pas été atteint lors de la première réunion. Sur deuxième convocation, le conseil peut délibérer quel que soit le nombre d\'élus présents (article L2121-17 du Code général des collectivités territoriales).</span></span>'
+      : '';
+
+    return '<article class="seance glass" id="seance-'+s.id+'">'+
+      '<div class="s-head">'+
+        '<div class="stamp"><small>'+d.j+'</small><b>'+d.n+'</b><span>'+d.m+' '+d.y+'</span></div>'+
+        '<div class="s-title"><h2>'+esc(s.titre)+'</h2>'+
+          '<div class="chips">'+
+            '<span class="chip">'+svg('info')+esc(s.debut)+(s.fin ? ' → '+esc(s.fin)+' · '+duree(s.debut, s.fin) : '')+'</span>'+
+            '<span class="chip">'+svg('home')+esc(s.lieu)+'</span>'+ convocation +
+          '</div>'+
+          (s.secretaire ? '<p class="s-sec">Secrétaire de séance : '+esc(s.secretaire)+'</p>' : '')+'</div>'+
+        '<div class="tally">'+
+          '<div class="ok"><b>'+nb('unanimite')+'</b><span>adoptées</span></div>'+
+          (nb('acte') ? '<div class="acte"><b>'+nb('acte')+'</b><span>prise d\'acte</span></div>' : '')+
+          '<div class="rep"><b>'+nb('reportee')+'</b><span>reportées</span></div>'+
+        '</div>'+
+      '</div>'+
+
+      '<div class="track" aria-label="Déroulé de la séance">'+
+        tstep('mail', 'Convocation', docs.convocation ? 'publiée le ' + publie(docs.convocation.publie) : '—')+
+        tstep('users', 'Séance', d.n + ' ' + d.m + ', ' + s.debut)+
+        tstep('check', 'Délibérations', docs.liste ? 'publiées le ' + publie(docs.liste.publie) : '—')+
+        tstep('book', 'Procès-verbal', docs.pv ? 'publié le ' + publie(docs.pv.publie) : 'à venir')+
+      '</div>'+
+
+      '<div class="s-body">'+
+        '<section><h3>Ordre du jour · '+pts.length+' point'+(pts.length > 1 ? 's' : '')+'</h3><div class="odj">'+ (pts.length ? pts.map(function(p, i){ return point(p, i === 0 && s === seances[0]); }).join('') : '<p class="muted" style="font-size:.9rem">L\'ordre du jour sera publié avec la convocation.</p>') +'</div></section>'+
+        '<aside class="side">'+
+          '<div class="box"><h3>Documents officiels</h3><div class="docs">'+
+            docCard('Convocation', docs.convocation)+ docCard('Liste des délibérations', docs.liste)+ docCard('Procès-verbal', docs.pv)+
+          '</div></div>'+
+          (total ? '<div class="box"><h3>Présences · '+total+' élus</h3>'+
+            '<div class="presence-bar" role="img" aria-label="'+P.presents.length+' présents, '+P.pouvoirs.length+' représentés, '+P.absents.length+' absents">'+
+              '<div class="pb-p" style="width:'+pct(P.presents.length)+'"></div><div class="pb-v" style="width:'+pct(P.pouvoirs.length)+'"></div><div class="pb-a" style="width:'+pct(P.absents.length)+'"></div></div>'+
+            '<div class="legend"><span><i class="pb-p"></i>'+P.presents.length+' présents</span><span><i class="pb-v"></i>'+P.pouvoirs.length+' représentés</span><span><i class="pb-a"></i>'+P.absents.length+' absents</span></div>'+
+            '<details class="who"><summary>Voir le détail</summary><dl>'+
+              '<dt>Présents</dt><dd>'+P.presents.map(esc).join(', ')+'</dd>'+
+              '<dt>Représentés (pouvoir donné à)</dt><dd>'+P.pouvoirs.map(function(x){ return esc(x[0]) + ' → ' + esc(x[1]); }).join('<br>')+'</dd>'+
+              '<dt>Absents excusés</dt><dd>'+P.absents.map(esc).join(', ')+'</dd>'+
+            '</dl></details>'+
+          '</div>' : '')+
+          (s.infos && s.infos.length ? '<div class="box"><h3>Points d\'information</h3><div class="infos">'+ s.infos.map(function(x){
+              return '<div class="info"><b>'+esc(x.titre)+'</b><p>'+esc(x.texte)+'</p></div>'; }).join('') +'</div></div>' : '')+
+          (s.annonce ? '<div class="box"><div class="annonce">'+svg('bell')+'<span>'+esc(s.annonce)+'</span></div></div>' : '')+
+        '</aside>'+
+      '</div>'+
+    '</article>';
+  }
+
+  function tstep(ic, t, sub){
+    return '<div class="tstep"><i>'+svg(ic)+'</i><b>'+t+'</b><span>'+esc(sub)+'</span></div>';
+  }
+  function docCard(nom, d){
+    if(!d) return '';
+    return '<a class="doc" href="'+d.url+'" target="_blank" rel="noopener">'+
+      '<span class="pdf">PDF</span><span><b>'+nom+'</b><small>'+esc(d.taille)+' · publié le '+publie(d.publie)+'</small></span>'+
+      '<span class="dl">'+svg('download')+'</span></a>';
+  }
+  function point(p, ouvert){
+    var r = RES[p.resultat], col = THEMES[p.theme] || '#475569';
+    var actions = '';
+    if(p.doc) actions += '<a class="btn btn-glass btn-sm" href="'+p.doc.url+'" target="_blank" rel="noopener">'+ICON_PDF+' Lire la délibération <span class="muted" style="font-weight:500">('+esc(p.doc.taille)+')</span></a>';
+    if(p.lien) actions += '<a class="btn btn-glass btn-sm" href="#seance-'+p.lien+'" data-goto="'+p.lien+'">'+svg('arrow')+' Voir la séance du '+jour(p.lien).n+' '+jour(p.lien).m+'</a>';
+    var sous = p.sousDocs ? '<div class="subdocs">'+ p.sousDocs.map(function(x){
+        return '<a href="'+x.url+'" target="_blank" rel="noopener">'+ICON_PDF+'<span>'+esc(x.nom)+'</span><small>'+esc(x.taille)+'</small></a>'; }).join('') +'</div>' : '';
+    return '<details class="pt"'+(ouvert ? ' open' : '')+'>'+
+      '<summary><span class="num">'+esc(p.n)+'</span>'+
+        '<span class="pt-t"><b>'+esc(p.titre)+'</b><span class="theme" style="--tc:'+col+'">'+esc(p.theme)+'</span></span>'+
+        '<span class="res '+p.resultat+'">'+svg(r.ic)+r.txt+'</span>'+
+        '<span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>'+
+      '</summary>'+
+      '<div class="pt-body"><p>'+esc(p.resume)+'</p>'+ sous + (actions ? '<div class="pt-actions">'+actions+'</div>' : '') +'</div>'+
+    '</details>';
+  }
+
+  /* ============================================================
+     LES ÉLUS
+     ============================================================ */
+  function portrait(e, i, prio){
+    var c = AV[i % AV.length];
+    return '<span class="portrait" style="--a1:'+c[0]+';--a2:'+c[1]+'">'+
+      (e.photo ? '<img src="'+e.photo+'" alt="Portrait de '+esc(e.nom)+'" width="480" height="720"'+(prio ? '' : ' loading="lazy"')+'>'
+               : '<span class="ini" style="background:linear-gradient(145deg,var(--a1),var(--a2))">'+esc(initiales(e.nom))+'</span>')+
+    '</span>';
+  }
+
+  function vueElus(){
+    var E = C.elus, k = 1;
+    var carte = function(e){ return '<div class="elu glass">'+portrait(e, k++)+'<b>'+esc(e.nom)+'</b><small>'+esc(e.role)+'</small></div>'; };
+    app.innerHTML = '<div class="view">'+
+      '<div class="maire glass">'+portrait(E.maire, 0, true)+
+        '<div><div class="eyebrow">Maire de Margency</div><h2>'+esc(E.maire.nom)+'</h2>'+
+        '<p>Élu en mars 2026 pour six ans, le conseil municipal vote le budget et les décisions de la commune. Il élit le maire et les adjoints parmi ses '+tousElus.length+' membres.</p></div></div>'+
+      '<div class="group"><h3>Les adjoints <b>'+E.adjoints.length+'</b></h3><div class="elu-grid">'+E.adjoints.map(carte).join('')+'</div></div>'+
+      '<div class="group"><h3>Conseillers municipaux délégués <b>'+E.delegues.length+'</b></h3><div class="elu-grid">'+E.delegues.map(carte).join('')+'</div></div>'+
+      '<div class="group"><h3>Conseillers municipaux <b>'+E.conseillers.length+'</b></h3><div class="elu-grid">'+E.conseillers.map(carte).join('')+'</div></div>'+
+    '</div>';
+  }
+
+  /* ============================================================
+     ROUTAGE
+     ============================================================ */
+  function route(){
+    var h = location.hash.replace('#', '');
+    var elus = h === 'elus';
+    document.querySelectorAll('#seg a').forEach(function(a){ a.classList.toggle('on', a.dataset.v === (elus ? 'elus' : 'seances')); });
+    if(elus){ vueElus(); return; }
+    vueSeances();
+    if(h.indexOf('seance-') === 0){
+      var el = document.getElementById(h);
+      /* au chargement, on attend les polices pour que la position soit juste, et on saute sans animation */
+      var auChargement = premier;   /* capturé maintenant : « premier » repasse à false juste après */
+      var aller = function(){ el.scrollIntoView({behavior : auChargement ? 'instant' : 'smooth', block:'start'}); };
+      if(el) (auChargement && document.fonts ? document.fonts.ready : Promise.resolve()).then(function(){ setTimeout(aller, 0); });
+    }
+    premier = false;
+  }
+  var premier = true;
+  window.addEventListener('hashchange', route);
+  MD.chrome();
+  route();
+})();
+</script>
+</body>
+</html>
