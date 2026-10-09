@@ -1,5 +1,5 @@
 /* Vie municipale : services, publications, budgets, marchés publics, offres d'emploi, collectes.
-   Contenus repris de mairie-margency.fr. Modifiable depuis gestion.html. */
+   Modifié depuis gestion.html le 09/10/2026 à 02:25. */
 window.VIE = {
  "services": [
   {
@@ -84,6 +84,14 @@ window.VIE = {
   }
  ],
  "magazines": [
+  {
+   "titre": "À l'écoute de Margency — Octobre 2026",
+   "url": "https://www.mairie-margency.fr/userfile/fichier-telechargement/1790839246-MAG_MARGENCY_SEPT-78-2.pdf",
+   "taille": "11,4 Mo",
+   "publie": "2026-10-01",
+   "couverture": "",
+   "liseuse": "https://www.calameo.com/books/004931493d6168d877ec1"
+  },
   {
    "titre": "À l'écoute de Margency — Décembre 2025",
    "url": "https://www.mairie-margency.fr/userfile/fichier-telechargement/1764163608-MAG_MARGENCY_decembre.pdf",

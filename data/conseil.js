@@ -1,139 +1,7 @@
-/* Conseil municipal de Margency — les deux dernières séances.
-   Dates, ordres du jour, votes et documents repris de mairie-margency.fr ;
-   résumés rédigés à partir des procès-verbaux officiels. */
+/* Conseil municipal de Margency : séances et élus.
+   Modifié depuis gestion.html le 09/10/2026 à 02:24. */
 window.CONSEIL = {
  "seances": [
-  {
-   "id": "2026-07-23",
-   "titre": "Conseil municipal du 23 juillet 2026",
-   "date": "2026-07-23",
-   "debut": "19h00",
-   "fin": "20h05",
-   "lieu": "En mairie",
-   "convocation": 2,
-   "secretaire": "Isabelle Corneloup",
-   "presences": {
-    "presents": [
-     "Thierry Brun",
-     "Isabelle Corneloup",
-     "Dominique Réveillère",
-     "Mohammed Nifa",
-     "Mussawir Abdul",
-     "Tanya Akriche",
-     "Fodié Diarra",
-     "David Dumeunier",
-     "Florence Frey",
-     "Anne-Sophie Romagné",
-     "Françoise Mallet"
-    ],
-    "pouvoirs": [
-     [
-      "Monique Mornacco",
-      "Isabelle Corneloup"
-     ],
-     [
-      "Claude Collineau",
-      "Thierry Brun"
-     ],
-     [
-      "Sophie Sönnichsen",
-      "Mohammed Nifa"
-     ]
-    ],
-    "absents": [
-     "Florence Ville-Vallée",
-     "Michel Plaignaud",
-     "Claudine Barrie",
-     "Nadine Daguenet",
-     "Bernard Glénat",
-     "Sébastien Maugendre",
-     "Thierry Rousselet",
-     "Sophie Naudi-Bonnemaison",
-     "Yacine Naimi"
-    ]
-   },
-   "documents": {
-    "convocation": {
-     "url": "assets/conseil/1784634250-convocation-CM-23072026.pdf",
-     "taille": "335 Ko",
-     "publie": "21/07/2026"
-    },
-    "liste": {
-     "url": "assets/conseil/1785140942-liste-delib-23072026.pdf",
-     "taille": "173 Ko",
-     "publie": "27/07/2026"
-    },
-    "pv": {
-     "url": "assets/conseil/1787057994-PV-CM-23072026.pdf",
-     "taille": "1578 Ko",
-     "publie": "18/08/2026"
-    }
-   },
-   "infos": [],
-   "annonce": "Le maire annonce une formation destinée aux élus le 14 novembre.",
-   "points": [
-    {
-     "n": "1",
-     "titre": "Nomination du secrétaire de séance",
-     "theme": "Institution",
-     "resultat": "unanimite",
-     "resume": "Isabelle Corneloup est désignée secrétaire de séance, selon l'ordre alphabétique de la liste des conseillers.",
-     "doc": {
-      "url": "assets/conseil/1785141011-DEL123072026-NOMINATION-SECRETAIRE-SEANCE.pdf",
-      "taille": "521 Ko",
-      "publie": "27/07/2026"
-     }
-    },
-    {
-     "n": "2",
-     "titre": "Approbation du procès-verbal du 25 juin 2026",
-     "theme": "Institution",
-     "resultat": "unanimite",
-     "resume": "Deux précisions sont ajoutées au procès-verbal : le composteur concerné est celui de la résidence de la Renaudière, et le repas porté à domicile sera facturé 9,85 € aux bénéficiaires. Une conseillère absente le 25 juin ne prend pas part au vote.",
-     "doc": {
-      "url": "assets/conseil/1785141110-DEL223072026-APPROB-pv-cm-25062026.pdf",
-      "taille": "501 Ko",
-      "publie": "27/07/2026"
-     }
-    },
-    {
-     "n": "3",
-     "titre": "Compte rendu des décisions prises par le maire",
-     "theme": "Institution",
-     "resultat": "acte",
-     "resume": "Le conseil prend connaissance de cinq décisions : un dispositif de secours prévu pour la fête du village puis annulé, la mise à disposition gratuite du préau de l'école élémentaire Saint-Exupéry à deux clubs sportifs d'Eaubonne (boxe thaïlandaise et judo), et un contrat de maintenance des installations de mise en sûreté des écoles (810 € HT par an). Après débat, il est convenu que ces deux clubs pourront participer au forum des associations.",
-     "doc": {
-      "url": "assets/conseil/1785141172-DEL323072026-COMPTE-RENDU-DECISIONS-PRISES-PAR-LE-MAIRE.pdf",
-      "taille": "959 Ko",
-      "publie": "27/07/2026"
-     }
-    },
-    {
-     "n": "4",
-     "titre": "Règlement des salles municipales",
-     "theme": "Associations",
-     "resultat": "unanimite",
-     "resume": "Adoption du nouveau règlement des salles municipales proposées à la location : fin du paiement par chèque, état des lieux d'entrée possible le samedi ou le dimanche, horaires fixés par le service location. Ce point avait été reporté lors de la séance du 25 juin.",
-     "doc": {
-      "url": "assets/conseil/1785141242-DEL423072026-MODIF-REGLEMENT-UTILISATION-DES-SALLES-MUNICIPALES.pdf",
-      "taille": "4326 Ko",
-      "publie": "27/07/2026"
-     }
-    },
-    {
-     "n": "5",
-     "titre": "Modification du tableau des effectifs",
-     "theme": "Personnel",
-     "resultat": "unanimite",
-     "resume": "Un poste d'adjoint administratif devient un poste de rédacteur à temps complet au 1er août 2026, et un poste d'adjoint technique territorial à temps complet est créé au 27 août 2026.",
-     "doc": {
-      "url": "assets/conseil/1785141305-DEL523072026-MODIFICATION-DU-TABLEAU-DES-EFFECTIFS.pdf",
-      "taille": "606 Ko",
-      "publie": "27/07/2026"
-     }
-    }
-   ]
-  },
   {
    "id": "2026-06-25",
    "titre": "Conseil municipal du 25 juin 2026",
@@ -465,6 +333,324 @@ window.CONSEIL = {
       "url": "assets/conseil/1783323858-DEL13B-SIGNATURE-BAIL-ANCIENNES-ECURIES.pdf",
       "taille": "554 Ko",
       "publie": "06/07/2026"
+     }
+    }
+   ]
+  },
+  {
+   "id": "2026-07-23",
+   "titre": "Conseil municipal du 23 juillet 2026",
+   "date": "2026-07-23",
+   "debut": "19h00",
+   "fin": "20h05",
+   "lieu": "En mairie",
+   "convocation": 2,
+   "secretaire": "Isabelle Corneloup",
+   "presences": {
+    "presents": [
+     "Thierry Brun",
+     "Isabelle Corneloup",
+     "Dominique Réveillère",
+     "Mohammed Nifa",
+     "Mussawir Abdul",
+     "Tanya Akriche",
+     "Fodié Diarra",
+     "David Dumeunier",
+     "Florence Frey",
+     "Anne-Sophie Romagné",
+     "Françoise Mallet"
+    ],
+    "pouvoirs": [
+     [
+      "Monique Mornacco",
+      "Isabelle Corneloup"
+     ],
+     [
+      "Claude Collineau",
+      "Thierry Brun"
+     ],
+     [
+      "Sophie Sönnichsen",
+      "Mohammed Nifa"
+     ]
+    ],
+    "absents": [
+     "Florence Ville-Vallée",
+     "Michel Plaignaud",
+     "Claudine Barrie",
+     "Nadine Daguenet",
+     "Bernard Glénat",
+     "Sébastien Maugendre",
+     "Thierry Rousselet",
+     "Sophie Naudi-Bonnemaison",
+     "Yacine Naimi"
+    ]
+   },
+   "documents": {
+    "convocation": {
+     "url": "assets/conseil/1784634250-convocation-CM-23072026.pdf",
+     "taille": "335 Ko",
+     "publie": "21/07/2026"
+    },
+    "liste": {
+     "url": "assets/conseil/1785140942-liste-delib-23072026.pdf",
+     "taille": "173 Ko",
+     "publie": "27/07/2026"
+    },
+    "pv": {
+     "url": "assets/conseil/1787057994-PV-CM-23072026.pdf",
+     "taille": "1578 Ko",
+     "publie": "18/08/2026"
+    }
+   },
+   "infos": [],
+   "annonce": "Le maire annonce une formation destinée aux élus le 14 novembre.",
+   "points": [
+    {
+     "n": "1",
+     "titre": "Nomination du secrétaire de séance",
+     "theme": "Institution",
+     "resultat": "unanimite",
+     "resume": "Isabelle Corneloup est désignée secrétaire de séance, selon l'ordre alphabétique de la liste des conseillers.",
+     "doc": {
+      "url": "assets/conseil/1785141011-DEL123072026-NOMINATION-SECRETAIRE-SEANCE.pdf",
+      "taille": "521 Ko",
+      "publie": "27/07/2026"
+     }
+    },
+    {
+     "n": "2",
+     "titre": "Approbation du procès-verbal du 25 juin 2026",
+     "theme": "Institution",
+     "resultat": "unanimite",
+     "resume": "Deux précisions sont ajoutées au procès-verbal : le composteur concerné est celui de la résidence de la Renaudière, et le repas porté à domicile sera facturé 9,85 € aux bénéficiaires. Une conseillère absente le 25 juin ne prend pas part au vote.",
+     "doc": {
+      "url": "assets/conseil/1785141110-DEL223072026-APPROB-pv-cm-25062026.pdf",
+      "taille": "501 Ko",
+      "publie": "27/07/2026"
+     }
+    },
+    {
+     "n": "3",
+     "titre": "Compte rendu des décisions prises par le maire",
+     "theme": "Institution",
+     "resultat": "acte",
+     "resume": "Le conseil prend connaissance de cinq décisions : un dispositif de secours prévu pour la fête du village puis annulé, la mise à disposition gratuite du préau de l'école élémentaire Saint-Exupéry à deux clubs sportifs d'Eaubonne (boxe thaïlandaise et judo), et un contrat de maintenance des installations de mise en sûreté des écoles (810 € HT par an). Après débat, il est convenu que ces deux clubs pourront participer au forum des associations.",
+     "doc": {
+      "url": "assets/conseil/1785141172-DEL323072026-COMPTE-RENDU-DECISIONS-PRISES-PAR-LE-MAIRE.pdf",
+      "taille": "959 Ko",
+      "publie": "27/07/2026"
+     }
+    },
+    {
+     "n": "4",
+     "titre": "Règlement des salles municipales",
+     "theme": "Associations",
+     "resultat": "unanimite",
+     "resume": "Adoption du nouveau règlement des salles municipales proposées à la location : fin du paiement par chèque, état des lieux d'entrée possible le samedi ou le dimanche, horaires fixés par le service location. Ce point avait été reporté lors de la séance du 25 juin.",
+     "doc": {
+      "url": "assets/conseil/1785141242-DEL423072026-MODIF-REGLEMENT-UTILISATION-DES-SALLES-MUNICIPALES.pdf",
+      "taille": "4326 Ko",
+      "publie": "27/07/2026"
+     }
+    },
+    {
+     "n": "5",
+     "titre": "Modification du tableau des effectifs",
+     "theme": "Personnel",
+     "resultat": "unanimite",
+     "resume": "Un poste d'adjoint administratif devient un poste de rédacteur à temps complet au 1er août 2026, et un poste d'adjoint technique territorial à temps complet est créé au 27 août 2026.",
+     "doc": {
+      "url": "assets/conseil/1785141305-DEL523072026-MODIFICATION-DU-TABLEAU-DES-EFFECTIFS.pdf",
+      "taille": "606 Ko",
+      "publie": "27/07/2026"
+     }
+    }
+   ]
+  },
+  {
+   "id": "2026-09-24",
+   "titre": "Conseil municipal du 24 septembre 2026",
+   "date": "2026-09-24",
+   "debut": "",
+   "fin": "",
+   "lieu": "En mairie",
+   "convocation": 1,
+   "secretaire": "",
+   "presences": {
+    "presents": [],
+    "pouvoirs": [],
+    "absents": []
+   },
+   "documents": {
+    "convocation": {
+     "url": "assets/conseil/1789739081-convoc-CM-24092026.pdf",
+     "taille": "476 Ko",
+     "publie": "18/09/2026"
+    },
+    "liste": {
+     "url": "assets/conseil/1790587225-LISTEDELCM-24092026.pdf",
+     "taille": "398 Ko",
+     "publie": "28/09/2026"
+    }
+   },
+   "infos": [],
+   "annonce": "Le procès-verbal de cette séance n'est pas encore publié : les présences, les horaires et le résultat des votes seront complétés dès sa parution.",
+   "points": [
+    {
+     "n": "1",
+     "titre": "Nomination du secrétaire de séance",
+     "theme": "Institution",
+     "resultat": "attente",
+     "resume": "Désignation de l'élu chargé du secrétariat de la séance, premier point de tout conseil municipal.",
+     "doc": {
+      "url": "assets/conseil/1790587262-DEL124092026NOMINATION-SECRETAIRE-DE-SEANCE.pdf",
+      "taille": "502 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "2",
+     "titre": "Approbation du procès-verbal de la séance du 23 juillet 2026",
+     "theme": "Institution",
+     "resultat": "attente",
+     "resume": "Validation du compte rendu écrit de la séance précédente.",
+     "doc": {
+      "url": "assets/conseil/1790587299-DEL224092026APPROBATION-PV-CM-23072026.pdf",
+      "taille": "481 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "3",
+     "titre": "Compte rendu des décisions prises par le Maire",
+     "theme": "Institution",
+     "resultat": "attente",
+     "resume": "Le maire rend compte au conseil des décisions qu'il a prises dans le cadre de ses délégations.",
+     "doc": {
+      "url": "assets/conseil/1790587341-DEL324092026DECISIONS-PRISES-PAR-LE-MAIRE.pdf",
+      "taille": "1637 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "4A",
+     "titre": "Subvention à l'association « Kids and Life »",
+     "theme": "Associations",
+     "resultat": "attente",
+     "resume": "Attribution d'une subvention à l'association Kids and Life.",
+     "doc": {
+      "url": "assets/conseil/1790587390-DEL4A-SUBVENTION-ASSOCIATION-KIDS-AND-LIFE.pdf",
+      "taille": "858 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "4B",
+     "titre": "Décision modificative n°2",
+     "theme": "Institution",
+     "resultat": "attente",
+     "resume": "Ajustement des crédits inscrits au budget en cours d'année.",
+     "doc": {
+      "url": "assets/conseil/1790587419-DEL4B-DM-NUMERO-2.pdf",
+      "taille": "1208 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "5A",
+     "titre": "Appel à projets « Budget participatif écologique » — projets des écoles",
+     "theme": "Environnement",
+     "resultat": "attente",
+     "resume": "Candidature de la commune à l'appel à projets du budget participatif écologique, volet écoles.",
+     "doc": {
+      "url": "assets/conseil/1790587476-DEL5A24092026-AAP-BUDGET-PARTICIAPTIF-ECOLES.pdf",
+      "taille": "949 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "5B",
+     "titre": "Appel à projets « Budget participatif écologique » — parc de la Mairie",
+     "theme": "Environnement",
+     "resultat": "attente",
+     "resume": "Candidature de la commune au même appel à projets, pour l'aménagement du parc de la Mairie.",
+     "doc": {
+      "url": "assets/conseil/1790587542-DEL5B24092026-AAP-BUDGET-PARTICIPATIF-ECOLOGIQUE-PARC-DE-LA-MAIRIE.pdf",
+      "taille": "986 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "6",
+     "titre": "Anciennes Écuries : avenant n°2 au marché de travaux, lot 3 gros œuvre",
+     "theme": "Patrimoine",
+     "resultat": "attente",
+     "resume": "Avenant n°2 au marché n°2023-037 passé avec l'entreprise Bonnevie pour la restauration des Anciennes Écuries, lot gros œuvre.",
+     "doc": {
+      "url": "assets/conseil/1790587598-DEL624092026-AVENANT-N.2-MARCHE-2023-037-BONNEVIE-ANCIENNES-ECURIES.pdf",
+      "taille": "807 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "7",
+     "titre": "Anciennes Écuries : avenant n°1 au marché de travaux, lot 8 CVC",
+     "theme": "Patrimoine",
+     "resultat": "attente",
+     "resume": "Avenant n°1 au marché n°2023-042 passé avec l'entreprise Tempere pour le lot chauffage, ventilation et climatisation.",
+     "doc": {
+      "url": "assets/conseil/1790587664-DEL724092026-AVENANT-N.1-MARCHE-TRAVAUX-2023-042-TEMPERE-RESTAU-ANC-ECURIES.pdf",
+      "taille": "631 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "8",
+     "titre": "Anciennes Écuries : avenant n°2 au marché de maîtrise d'œuvre",
+     "theme": "Patrimoine",
+     "resultat": "attente",
+     "resume": "Avenant n°2 au marché n°2021-003 passé avec l'agence Chevron, maître d'œuvre de la restauration.",
+     "doc": {
+      "url": "assets/conseil/1790587748-DEL824092026-AVENANT-N.2-MARCHE-MO-AGENCE-CHEVRON-RESTAU-ANCIENNES-ECURIES.pdf",
+      "taille": "969 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "9",
+     "titre": "Garantie d'emprunt SNL Prologues",
+     "theme": "Solidarité",
+     "resultat": "attente",
+     "resume": "Garantie accordée par la commune à un emprunt de Solidarités Nouvelles pour le Logement, pour du logement très social.",
+     "doc": {
+      "url": "assets/conseil/1791443224-DEL9r24092026-GARANTIE-EMPRUNT-SNL-Prologues.pdf",
+      "taille": "1003 Ko",
+      "publie": "08/10/2026"
+     }
+    },
+    {
+     "n": "10",
+     "titre": "Assurances IARD : adhésion au groupement de commandes 2028-2031",
+     "theme": "Institution",
+     "resultat": "attente",
+     "resume": "Adhésion à un groupement de commandes pour les assurances incendie, accidents et risques divers, période 2028-2031.",
+     "doc": {
+      "url": "assets/conseil/1790587849-DEL1024092026-ADHESION-GROUPEMENT-DE-COMMANDES-POUR-LES-ASSURANCES-IARD-2028-2031.pdf",
+      "taille": "4159 Ko",
+      "publie": "28/09/2026"
+     }
+    },
+    {
+     "n": "11",
+     "titre": "Convention d'occupation domaniale pour un relais de télérelevé",
+     "theme": "Institution",
+     "resultat": "attente",
+     "resume": "Signature d'une convention autorisant l'installation d'un relais destiné au télérelevé des compteurs.",
+     "doc": {
+      "url": "assets/conseil/1790587892-DEL1124092026-CONVENTION-OCCUPATION-DOMANIALE-POUR-HEBERGEMENT-DE-RELAIS-POUR-LE-TELERELEVE.pdf",
+      "taille": "4568 Ko",
+      "publie": "28/09/2026"
      }
     }
    ]
